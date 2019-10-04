@@ -1,4 +1,5 @@
 // pages/chat-list/chat-list.js
+import regeneratorRuntime from '../../utils/runtime.js';
 
 /**
  * 会话列表页面
@@ -33,23 +34,23 @@ Page({
      */
     async onShow() {
 
-        getApp().getIMHandler().setOnReceiveMessageListener({
-            listener: (msg) => {
-                console.log('会话列表', msg);
-                msg.type === 'get-conversations' && this.setData({conversations: msg.conversations.map(item => this.getConversationsItem(item))})
-            }
-        });
-        try {
-            await getApp().getIMHandler().sendMsg({
-                content: {
-                    type: 'get-conversations',
-                    userId: getApp().globalData.userInfo.userId
-                }
-            });
-            console.log('获取会话列表消息发送成功');
-        } catch (e) {
-            console.log('获取会话列表失败', e);
-        }
+        // getApp().getIMHandler().setOnReceiveMessageListener({
+        //     listener: (msg) => {
+        //         console.log('会话列表', msg);
+        //         msg.type === 'get-conversations' && this.setData({conversations: msg.conversations.map(item => this.getConversationsItem(item))})
+        //     }
+        // });
+        // try {
+        //     await getApp().getIMHandler().sendMsg({
+        //         content: {
+        //             type: 'get-conversations',
+        //             userId: getApp().globalData.userInfo.userId
+        //         }
+        //     });
+        //     console.log('获取会话列表消息发送成功');
+        // } catch (e) {
+        //     console.log('获取会话列表失败', e);
+        // }
 
 
     },

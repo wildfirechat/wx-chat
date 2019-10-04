@@ -1,3 +1,4 @@
+import regeneratorRuntime from '../../utils/runtime.js';
 /**
  * 用户处理消息的收发UI更新
  */

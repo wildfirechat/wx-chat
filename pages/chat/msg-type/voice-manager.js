@@ -1,6 +1,8 @@
 import IMOperator from "../im-operator";
 import FileManager from "./base/file-manager";
 import {downloadFile} from "../../../utils/tools";
+import regeneratorRuntime from '../../../utils/runtime.js';
+
 
 export default class VoiceManager extends FileManager {
     constructor(page) {

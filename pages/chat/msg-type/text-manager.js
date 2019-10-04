@@ -1,3 +1,5 @@
+import regeneratorRuntime from '../../../utils/runtime.js';
+
 export default class TextManager {
     constructor(page) {
         this._page = page;

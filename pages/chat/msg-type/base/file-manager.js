@@ -1,5 +1,7 @@
 import FileSaveManager from "../../file-save-manager";
 import {downloadFile} from "../../../../utils/tools";
+import regeneratorRuntime from '../../../../utils/runtime.js';
+
 
 export default class FileManager {
 

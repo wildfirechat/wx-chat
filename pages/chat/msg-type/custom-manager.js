@@ -1,4 +1,5 @@
 import IMOperator from "../im-operator";
+import regeneratorRuntime from '../../../utils/runtime.js';
 
 export default class CustomManager {
     constructor(page) {
