@@ -33,6 +33,9 @@ import regeneratorRuntime from '../utils/runtime.js';
 // import {encode as , decode } from '../utils/base64-arraybuffer.js';
 
 var protobuf = require('../weichatPb/protobuf.js');
+protobuf.util.Long = Long;
+protobuf.configure();
+
 var protocol = require('./protocol');
 var protocolRoot = protobuf.Root.fromJSON(protocol);
 
@@ -265,9 +268,6 @@ export default class WfcImpl {
     }
 
     connect(host, userId, clientId, token) {
-        var protobuf = require("../weichatPb/protobuf.js");
-        protobuf.util.Long = Long;
-        protobuf.configure();
         connect(host, userId, clientId, token, (client, privateSecret, connectTime) => {
             this.mqttClient = client;
             this.privateSecret = privateSecret;
@@ -370,7 +370,7 @@ export default class WfcImpl {
             }
             var ur = GetUserSettingResult.decode(data);
             ur.entry.map((e) => {
-                if (e.updateDt.compare(this.settingHead) > 0) {
+                if (new Long(e.updateDt).compare(this.settingHead) > 0) {
                     this.settingHead = e.updateDt;
                 }
             });
@@ -425,7 +425,7 @@ export default class WfcImpl {
             console.log('fr', fr);
             let uids = [];
             fr.entry.map((e) => {
-                if (e.updateDt.compare(this.friendHead) > 0) {
+                if (new Long(e.updateDt).compare(this.friendHead) > 0) {
                     this.friendHead = e.updateDt;
                 }
                 uids.push(e.uid);
@@ -858,7 +858,7 @@ export default class WfcImpl {
         let updateDt = new Long(0);
         if (members) {
             members.forEach(member => {
-                if (member.updateDt.compare(updateDt) > 0) {
+                if (new Long(member.updateDt).compare(updateDt) > 0) {
                     updateDt = member.updateDt;
                 }
             });
@@ -1558,19 +1558,19 @@ export default class WfcImpl {
 
 
     _encrypt(request) {
-        var data = wx.base64ToArrayBuffer(AESEncrypt(new Int8Array(request), this.privateSecret));
-        return data;
+      var base64Data = AESEncrypt(new Int8Array(request), this.privateSecret);
+      return base64Data;
     }
 
     _decrypt(buf) {
-        var data = AESDecrypt(buf.toString('base64'), this.privateSecret, true);
-      return wx.base64ToArrayBuffe(data);;
+      var data = AESDecrypt(buf.toString('base64'), this.privateSecret, true);
+      return data;
     }
 
     _decryptPublishResponse(packet) {
         var data = AESDecrypt(packet.payload.slice(1, packet.payload.length).toString('base64'), this.privateSecret, true);
         if (data) {
-          return wx.base64ToArrayBuffe(data);;
+          return data;;
         }
         return null;
     }
