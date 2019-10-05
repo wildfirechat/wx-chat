@@ -6,10 +6,10 @@
             <view class="chat-item-name-style">{{item.ui.title}}</view>
             <!-- <view class="chat-item-name-style">targetName</view> -->
             <!--<image src="./../../image/chat/send_fail.png" style="width: 28rpx;height: 28rpx;margin-right: 6rpx;"/>-->
-            <text class="chat-item-content-style">{{item.content}}</text>
+            <text class="chat-item-content-style">{{item.ui.lastMsgContent}}</text>
         </view>
         <view class="chat-item-status-super-style">
-            <view class="chat-item-time-style">{{item.timeStr}}</view>
+            <view class="chat-item-time-style">{{item.ui.time}}</view>
         </view>
     </view>
     <view class="list-divide-line" style="width: 79.5%;margin-left: 20.5%"/>

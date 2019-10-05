@@ -2,6 +2,8 @@
 import regeneratorRuntime from '../../utils/runtime.js';
 import EventType from '../../wfc-bundle/wfc/wfcEvent.js';
 import ConnectionStatus from '../../wfc-bundle/wfc/connectionStatus.js';
+import MessageConfig from '../../wfc-bundle/wfc/messageConfig.js';
+import PersistFlag from '../../wfc-bundle/wfc/messages/persistFlag.js';
 
 /**
  * 会话列表页面
@@ -37,6 +39,13 @@ Page({
         this.wfc.eventEmiter.on(EventType.GroupInfoUpdate, (groupInfo) => {
             console.log('grouInfo update', groupInfo);
             this.showConversationList();
+        });
+
+        this.wfc.eventEmiter.on(EventType.ReceiveMessage, (msg) => {
+            console.log('receive msg', msg);
+            if (MessageConfig.getMessageContentPersitFlag(msg.content.type) == PersistFlag.Persist_And_Count) {
+                this.showConversationList();
+            }
         });
     },
 
@@ -82,7 +91,13 @@ Page({
         let clUi = conversations.map(item => {
             item.ui = {
                 title: item.title(),
-                portrait: item.portrait()
+                portrait: item.portrait(),
+                lastMsgContent: '',
+                time: ''
+            }
+            if (item.lastMessage && item.lastMessage.messageContent) {
+                item.ui.lastMsgContent = item.lastMessage.messageContent.digest();
+                item.ui.time = 'todo msg time';
             }
             return item;
         });
