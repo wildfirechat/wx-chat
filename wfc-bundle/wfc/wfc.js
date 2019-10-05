@@ -8,7 +8,7 @@ import Message from './messages/message';
 import { EventEmitter } from 'events';
 import regeneratorRuntime from '../../utils/runtime.js'
 // 其实就是imclient，后续可能需要改下名字
-export default class WfcManager {
+export class WfcManager {
     impl = new WfcImpl();
     eventEmiter = new EventEmitter();
 
@@ -428,9 +428,9 @@ export default class WfcManager {
 }
 // global.WfcManager = WfcManager;
 
-// const self = new WfcManager();
+const self = new WfcManager();
 // global.WfcManager = self;
-// export default self;
+export default self;
 
 // //remote
 var username = 'GNMtGtZZ';

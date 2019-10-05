@@ -1,8 +1,8 @@
-import WfcManager  from "../wfc-bundle/wfc/wfc";
+import wfc from "../wfc-bundle/wfc/wfc";
 
 export default class AppIMDelegate {
 
-     wfc = new WfcManager();
+    //  wfc = new WfcManager();
 
     constructor(app) {
         this._app = app;
@@ -14,9 +14,9 @@ export default class AppIMDelegate {
       // this.wfc.connect('http://pc.wildfirechat.cn', "uiuJuJcc", "cf760da4605865a51569402605040", "iNkRQm66ZRdhbsoMNHyG+3Hyx8ss7fnDH5XIWWlJA7qIHZslFPhE2b2s5X0wZ/wEuxLVBbtZ3U7JUU7o9CuNj2OmHAcYm0eG3jFZB+kf3VwkLPvos/jWa9Brasw8FAQoact/jkzFp/qFJq9Ml/eWiVDMZLaLoomYQBqP6h42ShU=");
 
       // local
-        this.wfc.connect('http://pc.wildfirechat.cn', 'UhVCUCTT', 'cf760da4605865a51569402605040', 'UyT0K1uNKaCLE2Yle/ICRFUrnDlUhHWkgndmeNmtSjaswMIvWgi6FFAR3XNozBi9y3yH2zk/3yCk5Q9e8UfkWHP5tuXxodUs5uQdK3CgpcaapEICzX+Wulsb6lXgOEIAGnzKRBdQTbFouZ7SSCsrAz+QmXk+jgD3mF9MnQkvVhg=');
+        wfc.connect('http://pc.wildfirechat.cn', 'UhVCUCTT', 'cf760da4605865a51569402605040', 'UyT0K1uNKaCLE2Yle/ICRFUrnDlUhHWkgndmeNmtSjaswMIvWgi6FFAR3XNozBi9y3yH2zk/3yCk5Q9e8UfkWHP5tuXxodUs5uQdK3CgpcaapEICzX+Wulsb6lXgOEIAGnzKRBdQTbFouZ7SSCsrAz+QmXk+jgD3mF9MnQkvVhg=');
 
-        console.log('app-im-delegate onLaunch, wfc connect', this.wfc);
+        console.log('app-im-delegate onLaunch, wfc connect', wfc);
     }
 
     onShow(options) {
@@ -31,6 +31,6 @@ export default class AppIMDelegate {
     }
 
     getIMHandlerDelegate() {
-      return this.wfc;
+      return wfc;
     }
 }

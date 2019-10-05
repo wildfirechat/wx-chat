@@ -48,12 +48,14 @@ export default class ConversationInfo {
     title() {
         let targetName = this.conversation.target;
         let title = targetName;
-        switch (this.conversation.conversationType) {
+        switch (this.conversation.type) {
             case ConversationType.Single:
+                console.log('title, user', this.conversation.target);
                 let u = wfc.getUserInfo(this.conversation.target, false);
                 targetName = u.displayName;
                 break
             case ConversationType.Group:
+                console.log('title, group', this.conversation.target);
                 let g = wfc.getGroupInfo(this.conversation.target, false);
                 targetName = g.name;
                 break

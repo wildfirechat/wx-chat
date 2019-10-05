@@ -246,7 +246,6 @@ export default class WfcImpl {
         let userIdA = JSON.parse(userIds);
         userIdA.map((userId => {
             this._reloadUserInfoFromRemote(userId);
-            this.eventEmitter.emit(EventType.UserInfoUpdate, userId);
         }))
     }
 
@@ -505,10 +504,10 @@ export default class WfcImpl {
 
     async _reloadUserInfoFromRemote(userId) {
         console.log('reload userInfo from remote', userId);
-        var userRequest = new UserRequest();
+        var userRequest = UserRequest.create();
         userRequest.uid = userId;
         userRequest.updateDt = 0;
-        var pullUserRequest = new PullUserRequest();
+        var pullUserRequest = PullUserRequest.create();
         pullUserRequest.request.push(userRequest);
         this._publish("UPUI", PullUserRequest.encode(pullUserRequest).finish(), (errorCode, data) => {
             if (errorCode !== 0) {
@@ -530,7 +529,6 @@ export default class WfcImpl {
     getUserInfo(userId, refresh = false) {
         var userInfo = this.store.getUser(userId);
 
-        console.log('getUserInfo', refresh, userInfo instanceof NullGroupInfo);
         if (refresh || userInfo instanceof NullUserInfo) {
             console.log('----------reload');
             this._reloadUserInfoFromRemote(userId);
@@ -765,10 +763,10 @@ export default class WfcImpl {
     }
 
     async _reloadGroupInfoFromRemote(groupId) {
-        var userRequest = new UserRequest();
+        var userRequest = UserRequest.create();
         userRequest.uid = groupId;
         userRequest.updateDt = 0;
-        var pullUserRequest = new PullUserRequest();
+        var pullUserRequest = PullUserRequest.create();
         pullUserRequest.request.push(userRequest);
         this._publish('GPGI', PullUserRequest.encode(pullUserRequest).finish(), (errorCode, data) => {
             if (errorCode !== 0) {
@@ -1558,19 +1556,19 @@ export default class WfcImpl {
 
 
     _encrypt(request) {
-      var base64Data = AESEncrypt(new Int8Array(request), this.privateSecret);
-      return base64Data;
+        var base64Data = AESEncrypt(new Int8Array(request), this.privateSecret);
+        return base64Data;
     }
 
     _decrypt(buf) {
-      var data = AESDecrypt(buf.toString('base64'), this.privateSecret, true);
-      return data;
+        var data = AESDecrypt(buf.toString('base64'), this.privateSecret, true);
+        return data;
     }
 
     _decryptPublishResponse(packet) {
         var data = AESDecrypt(packet.payload.slice(1, packet.payload.length).toString('base64'), this.privateSecret, true);
         if (data) {
-          return data;;
+            return data;;
         }
         return null;
     }
@@ -1584,7 +1582,7 @@ export default class WfcImpl {
     }
 
     _toProtoMessage(msg) {
-        let pbMsg = new PbMessage();
+        let pbMsg = PbMessage.create();
         pbMsg.conversation = msg.conversation;
         pbMsg.fromUser = this.getUserId();
         pbMsg.content = this._toProtoMessageContent(msg.messageContent);;

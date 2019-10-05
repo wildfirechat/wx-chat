@@ -1,6 +1,5 @@
 // pages/chat-list/chat-list.js
 import regeneratorRuntime from '../../utils/runtime.js';
-import WfcManager from '../../wfc-bundle/wfc/wfc.js';
 import EventType from '../../wfc-bundle/wfc/wfcEvent.js';
 import ConnectionStatus from '../../wfc-bundle/wfc/connectionStatus.js';
 
@@ -8,6 +7,8 @@ import ConnectionStatus from '../../wfc-bundle/wfc/connectionStatus.js';
  * 会话列表页面
  */
 Page({
+
+    wfc: {},
 
     /**
      * 页面的初始数据
@@ -20,7 +21,23 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad(options) {
+        this.wfc = getApp().getIMHandler();
 
+        this.wfc.eventEmiter.on(EventType.ConnectionStatusChanged, (status) => {
+            if (status === ConnectionStatus.ConnectionStatusConnected) {
+                this.showConversationList();
+            }
+        });
+
+        this.wfc.eventEmiter.on(EventType.UserInfoUpdate, (userInfo) => {
+            console.log('userInfo update', userInfo);
+            this.showConversationList();
+        });
+
+        this.wfc.eventEmiter.on(EventType.GroupInfoUpdate, (groupInfo) => {
+            console.log('grouInfo update', groupInfo);
+            this.showConversationList();
+        });
     },
 
     toChat(e) {
@@ -55,21 +72,28 @@ Page({
         //     console.log('获取会话列表失败', e);
         // }
 
-        var wfc = getApp().getIMHandler();
-      console.log('chat-list onShow', wfc);
-
-        wfc.eventEmiter.on(EventType.ConnectionStatusChanged, (status)=>{
-            if(status === ConnectionStatus.ConnectionStatusConnected){
-              let conversations = wfc.getConversationList([0, 1, 2], [0, 1]);
-                console.log('cl', conversations);
-            }
-
-        });
-
-
+        if (this.wfc.getConnectionStatus() === ConnectionStatus.ConnectionStatusConnected) {
+            this.showConversationList();
+        }
     },
+
+    showConversationList() {
+        let conversations = this.wfc.getConversationList([0, 1, 2], [0, 1]);
+        let clUi = conversations.map(item => {
+            item.ui = {
+                title: item.title(),
+                portrait: item.portrait()
+            }
+            return item;
+        });
+        console.log('cl', clUi);
+        this.setData({
+            conversations: clUi
+        });
+    },
+
     getConversationsItem(item) {
-        let {latestMsg, ...msg} = item;
+        let { latestMsg, ...msg } = item;
         return Object.assign(msg, JSON.parse(latestMsg));
     }
 });
