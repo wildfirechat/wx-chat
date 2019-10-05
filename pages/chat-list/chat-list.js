@@ -1,5 +1,8 @@
 // pages/chat-list/chat-list.js
 import regeneratorRuntime from '../../utils/runtime.js';
+import WfcManager from '../../wfc-bundle/wfc/wfc.js';
+import EventType from '../../wfc-bundle/wfc/wfcEvent.js';
+import ConnectionStatus from '../../wfc-bundle/wfc/connectionStatus.js';
 
 /**
  * 会话列表页面
@@ -51,6 +54,17 @@ Page({
         // } catch (e) {
         //     console.log('获取会话列表失败', e);
         // }
+
+        var wfc = getApp().getIMHandler();
+      console.log('chat-list onShow', wfc);
+
+        wfc.eventEmiter.on(EventType.ConnectionStatusChanged, (status)=>{
+            if(status === ConnectionStatus.ConnectionStatusConnected){
+              let conversations = wfc.getConversationList([0, 1, 2], [0, 1]);
+                console.log('cl', conversations);
+            }
+
+        });
 
 
     },

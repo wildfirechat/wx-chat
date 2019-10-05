@@ -15,6 +15,8 @@ export default class AppIMDelegate {
 
       // local
         this.wfc.connect('http://pc.wildfirechat.cn', 'UhVCUCTT', 'cf760da4605865a51569402605040', 'UyT0K1uNKaCLE2Yle/ICRFUrnDlUhHWkgndmeNmtSjaswMIvWgi6FFAR3XNozBi9y3yH2zk/3yCk5Q9e8UfkWHP5tuXxodUs5uQdK3CgpcaapEICzX+Wulsb6lXgOEIAGnzKRBdQTbFouZ7SSCsrAz+QmXk+jgD3mF9MnQkvVhg=');
+
+        console.log('app-im-delegate onLaunch, wfc connect', this.wfc);
     }
 
     onShow(options) {
@@ -29,6 +31,6 @@ export default class AppIMDelegate {
     }
 
     getIMHandlerDelegate() {
-        return this.iIMHandler;
+      return this.wfc;
     }
 }
