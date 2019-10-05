@@ -1,3 +1,4 @@
+# fork from https://github.com/unmagic/wechat-im
 # wechat-im
 
 [![Build Status](https://travis-ci.org/unmagic/wechat-im.svg?branch=master)](https://travis-ci.org/unmagic/wechat-im)
