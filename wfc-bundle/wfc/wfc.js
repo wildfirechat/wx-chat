@@ -6,7 +6,7 @@ import ImageMessageContent from './messages/imageMessageContent';
 import ConversationType from './model/conversationType';
 import Message from './messages/message';
 import { EventEmitter } from 'events';
-import regeneratorRuntime from '../utils/runtime.js'
+import regeneratorRuntime from '../../utils/runtime.js'
 // 其实就是imclient，后续可能需要改下名字
 export default class WfcManager {
     impl = new WfcImpl();

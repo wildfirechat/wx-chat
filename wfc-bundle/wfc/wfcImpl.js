@@ -29,7 +29,7 @@ import UserSettingScope from './userSettingScope';
 import EventType from './wfcEvent';
 import WfcStore from './wfc_store';
 import ConnectionStatus from './connectionStatus';
-import regeneratorRuntime from '../utils/runtime.js';
+import regeneratorRuntime from '../../utils/runtime.js';
 // import {encode as , decode } from '../utils/base64-arraybuffer.js';
 
 var protobuf = require('../weichatPb/protobuf.js');
