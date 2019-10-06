@@ -1365,8 +1365,8 @@ export default class WfcImpl {
         }
 
         if (message.messageContent instanceof MediaMessageContent) {
-            if (message.messageContent.file) {
-                this.uploadMedia(message.messageContent.file, message.messageContent.mediaType,
+            if (message.messageContent.localPath && message.messageContent.localPath !== '') {
+                this.uploadMedia(message.messageContent.localPath, message.messageContent.mediaType,
                     (remoteMediaUrl) => {
                         message.messageContent.remotePath = remoteMediaUrl;
                         console.log('remote Url', remoteMediaUrl);
@@ -1496,54 +1496,41 @@ export default class WfcImpl {
     }
 
     // file 是从html input来的
-    async uploadMedia(file, mediaType, successCB, failCB, progressCB) {
-        const buf = Buffer.from([1]);
-        this._publish('GQNUT', buf, (errorCode, data) => {
+    async uploadMedia(localPath, mediaType, successCB, failCB, progressCB) {
+        this._publish('GQNUT', [1], (errorCode, data) => {
             if (errorCode === 0) {
                 let tokenResult = GetUploadTokenResult.decode(data);
-                let req = new XMLHttpRequest();
-                let formData = new FormData();
-
                 let fileNmae = this.userId + '-' + new Date().getTime() + '-' + Math.round(Math.random() * 10000);
-                let type = 'application_octet-stream';
-                if (mediaType === 3) {
-                    type = 'image_jpeg';
-                } else if (mediaType === 2) {
-                    type = 'audio_amr';
 
-                }
-                let blob = new Blob([file], { type: type })
-                formData.append('file', blob, fileNmae);
-                formData.append('token', tokenResult.token);
-                formData.append('key', fileNmae);
-
-                let timeout = false;
-                var timer = setTimeout(function () {
-                    timeout = true;
-                    req.abort();
-                    failCB(-1);
-                }, 10000);
-                req.onreadystatechange = () => {
-                    if (req.readyState !== 4) return;
-                    if (timeout) return;
-                    clearTimeout(timer);
-                    if (req.status === 200) {
-                        let uploadResult = JSON.parse(req.responseText);
-                        if (successCB) {
-                            successCB(tokenResult.domain + '/' + uploadResult.key);
+                let url = 'http://' + tokenResult.server + '/fs';
+                let uploadTask = wx.uploadFile({
+                    url: url,
+                    filePath: localPath,
+                    name: fileNmae,
+                    formData: {
+                        'token': tokenResult.token,
+                        'key': fileNmae
+                    },
+                    success: function success(res) {
+                        console.log(res.data);
+                        if (res.statusCode === 200) {
+                            let uploadResult = JSON.parse(res.data);
+                            if (successCB) {
+                                successCB(tokenResult.domain + '/' + uploadResult.key);
+                            }
+                        } else {
+                            if (failCB) {
+                                failCB(res.statusCode);
+                            }
                         }
                     }
-                };
-                req.onprogress = (evt) => {
-                    if (evt.lengthComputable) {
-                        if (progressCB) {
-                            progressCB(evt.loaded, evt.total);
-                        }
-                    };
-                };
-                req.open("POST", 'http://' + tokenResult.server + '/fs');
+                });
 
-                req.send(formData);
+                uploadTask.onProgressUpdate((res) => {
+                    if (progressCB) {
+                        progressCB(res.totalBytesSent, res.totalBytesExpectedToSend);
+                    }
+                });
             } else {
                 if (failCB) {
                     failCB(errorCode);

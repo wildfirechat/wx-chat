@@ -107,6 +107,8 @@ Page({
             sizeType: ['compressed'],
             sourceType: chooseIndex === 0 ? ['album'] : ['camera'],
             success: (res) => {
+                let imageMessageContent = new ImageMessageContent(res.tempFilePaths[0], null, null);
+                this.sendMessage(imageMessageContent);
                 // this.msgManager.sendMsg({ type: IMOperator.ImageType, content: res.tempFilePaths[0] })
             }
         });

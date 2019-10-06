@@ -1,15 +1,15 @@
 import MessageContent from './messageContent'
 import MessageContentMediaType from './messageContentMediaType';
 export default class MediaMessageContent extends MessageContent {
-    file;
     localPath = '';
     remotePath = '';
     mediaType = 0;
 
-    constructor(messageType, mediaType = 0, file) {
+    constructor(messageType, mediaType, localPath, remotePath = '') {
         super(messageType);
         this.mediaType = mediaType;
-        this.file = file;
+        this.localPath = localPath;
+        this.remotePath = remotePath;
     }
 
     encode() {

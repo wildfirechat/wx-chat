@@ -5,8 +5,8 @@ import MessageContentType from "./messageContentType";
 export default class StickerMessageContent extends MediaMessageContent {
     width = 0;
     height = 0;
-    constructor(width, height) {
-        super(MessageContentType.Sticker, MessageContentMediaType.File);
+    constructor(localPath, remotePath, width, height) {
+        super(MessageContentType.Sticker, MessageContentMediaType.File, localPath, remotePath);
         this.width = width;
         this.height = height;
     }
