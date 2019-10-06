@@ -2,12 +2,18 @@
 import IMOperator from "./im-operator";
 import UI from "./ui";
 import MsgManager from "./msg-manager";
+import wfc from "../../wfc-bundle/wfc/wfc";
+import ConversationInfo from "../../wfc-bundle/wfc/model/conversationInfo";
+import TextMessageContent from "../../wfc-bundle/wfc/messages/textMessageContent";
+import EventType from "../../wfc-bundle/wfc/wfcEvent";
+import Conversation from "../../wfc-bundle/wfc/model/conversation";
 
 /**
  * 聊天页面
  */
 Page({
 
+    conversation: {},
     /**
      * 页面的初始数据
      */
@@ -28,37 +34,45 @@ Page({
         }],
     },
 
+
     /**
      * 生命周期函数--监听页面加载
      */
     onLoad(options) {
 
-        const friend = JSON.parse(options.friend);
-        console.log(friend);
+        const conversationInfoJson = JSON.parse(options.conversationInfo);
         this.setData({
             pageHeight: wx.getSystemInfoSync().windowHeight,
         });
+        let conversationInfo = Object.assign(new ConversationInfo(), conversationInfoJson)
+        this.conversation = Object.assign(new Conversation(), conversationInfo.conversation);
         wx.setNavigationBarTitle({
-            title: friend.friendName || ''
+            title: conversationInfo.title() || ''
         });
-        this.imOperator = new IMOperator(this, friend);
+        // this.imOperator = new IMOperator(this, friend);
         this.UI = new UI(this);
-        this.msgManager = new MsgManager(this);
+        // this.msgManager = new MsgManager(this);
 
-        this.imOperator.onSimulateReceiveMsg((msg) => {
-            this.msgManager.showMsg({msg})
-        });
+        // this.imOperator.onSimulateReceiveMsg((msg) => {
+        //     this.msgManager.showMsg({ msg })
+        // });
         this.UI.updateChatStatus('正在聊天中...');
+
+        wfc.eventEmiter.on(EventType.ReceiveMessage, msg => {
+            this.showMessageList();
+        });
     },
     onReady() {
         this.chatInput = this.selectComponent('#chatInput');
     },
     onSendMessageEvent(e) {
         let content = e.detail.value;
-        this.msgManager.sendMsg({type: IMOperator.TextType, content});
+        let textMsgContent = new TextMessageContent(content);
+        wfc.sendConversationMessage(this.conversation, textMsgContent)
+        // this.msgManager.sendMsg({ type: IMOperator.TextType, content });
     },
     onVoiceRecordEvent(e) {
-        const {detail: {recordStatus, duration, tempFilePath, fileSize,}} = e;
+        const { detail: { recordStatus, duration, tempFilePath, fileSize, } } = e;
         if (recordStatus === 2) {
             this.msgManager.sendMsg({
                 type: IMOperator.VoiceType,
@@ -84,7 +98,7 @@ Page({
             sizeType: ['compressed'],
             sourceType: chooseIndex === 0 ? ['album'] : ['camera'],
             success: (res) => {
-                this.msgManager.sendMsg({type: IMOperator.ImageType, content: res.tempFilePaths[0]})
+                this.msgManager.sendMsg({ type: IMOperator.ImageType, content: res.tempFilePaths[0] })
             }
         });
     },
@@ -96,11 +110,11 @@ Page({
         console.log(e);
     },
     //模拟上传文件，注意这里的cbOk回调函数传入的参数应该是上传文件成功时返回的文件url，这里因为模拟，我直接用的savedFilePath
-    simulateUploadFile({savedFilePath, duration, itemIndex}) {
+    simulateUploadFile({ savedFilePath, duration, itemIndex }) {
         return new Promise((resolve, reject) => {
             setTimeout(() => {
                 let urlFromServerWhenUploadSuccess = savedFilePath;
-                resolve({url: urlFromServerWhenUploadSuccess});
+                resolve({ url: urlFromServerWhenUploadSuccess });
             }, 1000);
         });
     },
@@ -116,7 +130,7 @@ Page({
             showCancel: true,
             success: (res) => {
                 if (res.confirm) {
-                    this.msgManager.sendMsg({type: IMOperator.CustomType})
+                    this.msgManager.sendMsg({ type: IMOperator.CustomType })
                 }
             }
         })
@@ -130,11 +144,11 @@ Page({
         this.msgManager.stopAllVoice();
     },
 
-    async sendMsg({content, itemIndex}) {
+    async sendMsg({ content, itemIndex }) {
         try {
-            const {msg} = await this.imOperator.onSimulateSendMsg({content})
+            const { msg } = await this.imOperator.onSimulateSendMsg({ content })
             this.UI.updateViewWhenSendSuccess(msg, itemIndex);
-            return {msg};
+            return { msg };
         } catch (e) {
             console.error(e);
             this.UI.updateViewWhenSendFailed(itemIndex);
@@ -148,6 +162,41 @@ Page({
         const itemIndex = parseInt(e.currentTarget.dataset.resendIndex);
         const item = this.data.chatItems[itemIndex];
         this.UI.updateDataWhenStartSending(item, false, false);
-        this.msgManager.resend({...item, itemIndex});
+        this.msgManager.resend({ ...item, itemIndex });
     },
+
+    showMessageList() {
+        let messages = wfc.getMessages(this.conversation);
+        let uiMsgs = messages.map(m => {
+            // time:item.time,
+            // length:length,
+            // index:index,
+            // headUrl:item.headUrl,
+            // item.isMy,
+            // showTime:item.showTime,
+            // time:item.time,
+            // content:item.content,
+            // type:item.type, text, voice, image
+            // voiceDuration:item.voiceDuration,
+            // isPlaying:item.isPlaying,
+            // sendStatus:item.sendStatu
+            let item = {
+                showTime: false,
+                time: 'to do time',
+                headUrl: wfc.getUserInfo(m.from).portrait,
+                isMy: m.direction == 0,
+                content: '',
+                type: ''
+            };
+            if (m.messageContent instanceof TextMessageContent) {
+                item.content = m.messageContent.content;
+                item.type = 'text';
+            }
+            return item;
+        });
+
+        this.setData({
+            chatItems: uiMsgs
+        });
+    }
 });
