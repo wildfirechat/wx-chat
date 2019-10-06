@@ -2,6 +2,7 @@ import MessageContent from './messageContent'
 import MessageContentMediaType from './messageContentMediaType';
 export default class MediaMessageContent extends MessageContent {
     file;
+    localPath = '';
     remotePath = '';
     mediaType = 0;
 

@@ -7,6 +7,9 @@ import ConversationInfo from "../../wfc-bundle/wfc/model/conversationInfo";
 import TextMessageContent from "../../wfc-bundle/wfc/messages/textMessageContent";
 import EventType from "../../wfc-bundle/wfc/wfcEvent";
 import Conversation from "../../wfc-bundle/wfc/model/conversation";
+import ImageMessageContent from "../../wfc-bundle/wfc/messages/imageMessageContent";
+import SoundMessageContent from "../../wfc-bundle/wfc/messages/soundMessageContent";
+import MessageStatus from "../../wfc-bundle/wfc/messages/messageStatus";
 
 /**
  * 聊天页面
@@ -61,6 +64,12 @@ Page({
         wfc.eventEmiter.on(EventType.ReceiveMessage, msg => {
             this.showMessageList();
         });
+        wfc.eventEmiter.on(EventType.SendMessage, msg => {
+            this.showMessageList();
+        });
+        wfc.eventEmiter.on(EventType.MessageStatusUpdate, msg => {
+            this.showMessageList();
+        });
     },
     onReady() {
         this.chatInput = this.selectComponent('#chatInput');
@@ -68,9 +77,9 @@ Page({
     onSendMessageEvent(e) {
         let content = e.detail.value;
         let textMsgContent = new TextMessageContent(content);
-        wfc.sendConversationMessage(this.conversation, textMsgContent)
-        // this.msgManager.sendMsg({ type: IMOperator.TextType, content });
+        this.sendMessage(textMsgContent);
     },
+
     onVoiceRecordEvent(e) {
         const { detail: { recordStatus, duration, tempFilePath, fileSize, } } = e;
         if (recordStatus === 2) {
@@ -98,7 +107,7 @@ Page({
             sizeType: ['compressed'],
             sourceType: chooseIndex === 0 ? ['album'] : ['camera'],
             success: (res) => {
-                this.msgManager.sendMsg({ type: IMOperator.ImageType, content: res.tempFilePaths[0] })
+                // this.msgManager.sendMsg({ type: IMOperator.ImageType, content: res.tempFilePaths[0] })
             }
         });
     },
@@ -165,6 +174,22 @@ Page({
         this.msgManager.resend({ ...item, itemIndex });
     },
 
+    sendMessage(messageContent) {
+        wfc.sendConversationMessage(this.conversation, messageContent, null,
+            () => {
+                this.showMessageList();
+            },
+            () => {
+                this.showMessageList();
+            },
+            () => {
+                this.showMessageList();
+            },
+            () => {
+                this.showMessageList();
+            });
+    },
+
     showMessageList() {
         let messages = wfc.getMessages(this.conversation);
         let uiMsgs = messages.map(m => {
@@ -179,18 +204,44 @@ Page({
             // type:item.type, text, voice, image
             // voiceDuration:item.voiceDuration,
             // isPlaying:item.isPlaying,
-            // sendStatus:item.sendStatu
+            // sendStatus:item.sendStatus sending, success, failed
+
+            // TODO item.ui.xx
             let item = {
                 showTime: false,
                 time: 'to do time',
                 headUrl: wfc.getUserInfo(m.from).portrait,
                 isMy: m.direction == 0,
-                content: '',
-                type: ''
+                isPlaying: false,
             };
+
+            switch (m.status) {
+                case MessageStatus.Sending:
+                    item.sendStatus = 'sending';
+                    break;
+                case MessageStatus.Sent:
+                    item.sendStatus = 'success';
+                    break;
+                case MessageStatus.SendFailure:
+                    item.sendStatus = 'failed';
+                    break;
+                default:
+                    break;
+            }
+
             if (m.messageContent instanceof TextMessageContent) {
                 item.content = m.messageContent.content;
                 item.type = 'text';
+            } else if (m.messageContent instanceof ImageMessageContent) {
+                item.content = m.messageContent.localPath || m.messageContent.remotePath;
+                item.type = 'image';
+            } else if (m.messageContent instanceof SoundMessageContent) {
+                item.content = m.messageContent.localPath || m.messageContent.remotePath;
+                item.voiceDuration = m.messageContent.duration;
+                item.type = 'voice';
+            } else {
+                // TODO more message content type
+
             }
             return item;
         });
