@@ -10,6 +10,8 @@ import Conversation from "../../wfc-bundle/wfc/model/conversation";
 import ImageMessageContent from "../../wfc-bundle/wfc/messages/imageMessageContent";
 import SoundMessageContent from "../../wfc-bundle/wfc/messages/soundMessageContent";
 import MessageStatus from "../../wfc-bundle/wfc/messages/messageStatus";
+import VoiceManager from "./msg-type/voice-manager";
+import regeneratorRuntime from '../../utils/runtime.js';
 
 /**
  * 聊天页面
@@ -55,6 +57,7 @@ Page({
         // this.imOperator = new IMOperator(this, friend);
         this.UI = new UI(this);
         // this.msgManager = new MsgManager(this);
+        this.voiceManager = new VoiceManager(this);
 
         // this.imOperator.onSimulateReceiveMsg((msg) => {
         //     this.msgManager.showMsg({ msg })
@@ -71,6 +74,9 @@ Page({
             this.showMessageList();
         });
     },
+    onShow() {
+        this.showMessageList();
+    },
     onReady() {
         this.chatInput = this.selectComponent('#chatInput');
     },
@@ -83,13 +89,10 @@ Page({
     onVoiceRecordEvent(e) {
         const { detail: { recordStatus, duration, tempFilePath, fileSize, } } = e;
         if (recordStatus === 2) {
-            this.msgManager.sendMsg({
-                type: IMOperator.VoiceType,
-                content: tempFilePath,
-                duration: Math.floor(duration / 1000)
-            });
+            let voiceMsgContent = new SoundMessageContent(tempFilePath, null, Math.floor(duration / 1000))
+            this.sendMessage(voiceMsgContent);
         }
-        this.msgManager.stopAllVoice();
+        this.voiceManager.stopAllVoicePlay(true);
     },
     /**
      * 点击extra中的item时触发
@@ -130,6 +133,12 @@ Page({
         });
     },
 
+    chatVoiceItemClickEvent(e) {
+        let dataset = e.currentTarget.dataset;
+        console.log('点击的语音Item包含的信息', dataset);
+        this.voiceManager._playVoice({ dataset })
+    },
+
     /**
      * 自定义事件
      */
@@ -152,7 +161,7 @@ Page({
     },
 
     onUnload() {
-        this.msgManager.stopAllVoice();
+        this.voiceManager.stopAllVoicePlay(true);
     },
 
     async sendMsg({ content, itemIndex }) {
@@ -245,7 +254,9 @@ Page({
                 // TODO more message content type
 
             }
-            return item;
+
+            m.ui = item;
+            return m;
         });
 
         this.setData({
