@@ -266,8 +266,8 @@ export default class WfcImpl {
         MessageConfig.registerMessageContent(name, type, contentClazz);
     }
 
-    connect(host, userId, clientId, token) {
-        connect(host, userId, clientId, token, (client, privateSecret, connectTime) => {
+    connect(appId, appKey, host, port, userId, clientId, token) {
+        connect(appId, appKey, host, port, userId, clientId, token, (client, privateSecret, connectTime) => {
             this.mqttClient = client;
             this.privateSecret = privateSecret;
 

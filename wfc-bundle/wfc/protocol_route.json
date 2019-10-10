@@ -1,0 +1,94 @@
+{
+  "options": {
+    "java_package": "cn.wildfirechat.proto",
+    "java_outer_classname": "WFCMessage"
+  },
+  "nested": {
+    "IMHttpWrapper": {
+      "fields": {
+        "token": {
+          "rule": "required",
+          "type": "string",
+          "id": 1
+        },
+        "clientId": {
+          "rule": "required",
+          "type": "string",
+          "id": 2
+        },
+        "request": {
+          "rule": "required",
+          "type": "string",
+          "id": 3
+        },
+        "data": {
+          "type": "bytes",
+          "id": 4
+        }
+      }
+    },
+    "RouteRequest": {
+      "fields": {
+        "app": {
+          "type": "string",
+          "id": 1
+        },
+        "platform": {
+          "type": "int32",
+          "id": 2
+        },
+        "pushType": {
+          "type": "int32",
+          "id": 3
+        },
+        "deviceName": {
+          "type": "string",
+          "id": 4
+        },
+        "deviceVersion": {
+          "type": "string",
+          "id": 5
+        },
+        "phoneName": {
+          "type": "string",
+          "id": 6
+        },
+        "language": {
+          "type": "string",
+          "id": 7
+        },
+        "carrierName": {
+          "type": "string",
+          "id": 8
+        },
+        "appVersion": {
+          "type": "string",
+          "id": 9
+        },
+        "sdkVersion": {
+          "type": "string",
+          "id": 10
+        }
+      }
+    },
+    "RouteResponse": {
+      "fields": {
+        "host": {
+          "rule": "required",
+          "type": "string",
+          "id": 1
+        },
+        "longPort": {
+          "rule": "required",
+          "type": "int32",
+          "id": 2
+        },
+        "shortPort": {
+          "rule": "required",
+          "type": "int32",
+          "id": 3
+        }
+      }
+    }
+  }
+}

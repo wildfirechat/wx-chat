@@ -405,8 +405,8 @@ export class WfcManager {
     // 一定需要带上http://或者 wx://
     // 网页 http://pc.wildfirechat.cn
     // 微信小程序 wx://pc.wildifirechat.cn
-    connect(host, userId, clientId, token) {
-        this.impl.connect(host, userId, clientId, token);
+    connect(appId, appKey, host, port, userId, clientId, token) {
+        this.impl.connect(appId, appKey, host, port, userId, clientId, token);
     }
 
     async testSendImageMessage(file, thumbnail) {

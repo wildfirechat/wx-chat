@@ -500,6 +500,10 @@
         "date": {
           "type": "string",
           "id": 6
+        },
+        "path": {
+          "type": "string",
+          "id": 7
         }
       }
     },
@@ -1380,6 +1384,22 @@
         "sdkVersion": {
           "type": "string",
           "id": 10
+        },
+        "wxAppId": {
+          "type": "string",
+          "id": 11
+        },
+        "wxAppKey": {
+          "type": "string",
+          "id": 12
+        },
+        "webAppId": {
+          "type": "string",
+          "id": 13
+        },
+        "webAppKey": {
+          "type": "string",
+          "id": 14
         }
       }
     },
