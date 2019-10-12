@@ -1,8 +1,8 @@
 // pages/chat-list/chat-list.js
-import EventType from '../../wfc-bundle/wfc/wfcEvent.js';
-import ConnectionStatus from '../../wfc-bundle/wfc/connectionStatus.js';
-import MessageConfig from '../../wfc-bundle/wfc/messageConfig.js';
-import PersistFlag from '../../wfc-bundle/wfc/messages/persistFlag.js';
+import EventType from '../../wfc-bundle/client/wfcEvent.js';
+import ConnectionStatus from '../../wfc-bundle/client/connectionStatus.js';
+import MessageConfig from '../../wfc-bundle/client/messageConfig.js';
+import PersistFlag from '../../wfc-bundle/messages/persistFlag.js';
 
 /**
  * 会话列表页面

@@ -1,4 +1,4 @@
-import wfc from "../wfc-bundle/wfc/wfc";
+import wfc from "../wfc-bundle/client/wfc";
 
 export default class AppIMDelegate {
 

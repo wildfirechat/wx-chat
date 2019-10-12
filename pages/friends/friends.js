@@ -1,6 +1,6 @@
 // pages/friends/friends.js
-import wfc from "../../wfc-bundle/wfc/wfc";
-import EventType from '../../wfc-bundle/wfc/wfcEvent.js';
+import wfc from "../../wfc-bundle/client/wfc";
+import EventType from '../../wfc-bundle/client/wfcEvent.js';
 
 /**
  * 获取好友列表
