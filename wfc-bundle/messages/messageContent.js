@@ -39,6 +39,6 @@ export default class MessageContent {
         this.mentionedTargets = payload.mentionedTargets;
     }
 
-    atob = require('../internal/base64.min.js').atob;
-    btoa = require('../internal/base64.min.js').btoa;
+    atob = require('../util/base64.min.js').atob;
+    btoa = require('../util/base64.min.js').btoa;
 }
