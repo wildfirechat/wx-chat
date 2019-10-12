@@ -1,4 +1,9 @@
 var CryptoJS = require("crypto-js");
+var base64Decode = require('base64-arraybuffer').decode;
+var base64Encode = require('base64-arraybuffer').encode;
+// var base64Encode = require('../internal/base64.min.js').atob;
+// var base64Decode = require('../internal/base64.min.js').btoa;
+var aesjs = require('./ricmoo_aes');
 
 var AES_KEY = [0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x78, 0x79, 0x7A, 0x7B, 0x7C, 0x7D, 0x7E, 0x7F];
 
@@ -27,12 +32,11 @@ function AESEncrypt(msg, userKey = '') {
         msgWithTimeBytes.push(...msg);
     }
 
-    var msgWithTimeHexStr = bytes2HexString(msgWithTimeBytes);
+    msgWithTimeBytes = aesjs.padding.pkcs7.pad(msgWithTimeBytes);
 
-    var key = CryptoJS.enc.Utf8.parse(Uint8ToStr(key));
-    var e = CryptoJS.AES.encrypt(CryptoJS.enc.Hex.parse(msgWithTimeHexStr), key, { iv: key, mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7 })
-    var eb = e.toString()
-    return eb;
+    var aesCbc = new aesjs.ModeOfOperation.cbc(key, key);
+    var encryptedBytes = aesCbc.encrypt(msgWithTimeBytes);
+    return base64Encode(encryptedBytes);
 }
 
 /**
@@ -48,10 +52,12 @@ function AESDecrypt(msg, key, checkTime) {
     if (key.length > 0) {
         aesKey = convertUserKey(key);
     }
-    var key = CryptoJS.enc.Utf8.parse(Uint8ToStr(aesKey))
-    var value = CryptoJS.AES.decrypt(msg, key, { iv: key, mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7 });
-    var ciphertext = value.toString();
-    var cipherBytes = hexstring2btye(ciphertext)
+
+    var encryptedByteArray = new Uint8Array(base64Decode(msg));
+    var encryptedBytes = [...encryptedByteArray];
+    var aesCbc = new aesjs.ModeOfOperation.cbc(aesKey, aesKey);
+    var cipherBytes = aesCbc.decrypt(encryptedBytes);
+    cipherBytes = aesjs.padding.pkcs7.strip(cipherBytes)
     if (cipherBytes.length > 4) {
         var hours = 0;
         hours += cipherBytes[3] && 0xFF;
