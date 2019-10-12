@@ -1,0 +1,22 @@
+<view class="page-body">
+  <view class="page-section">
+    <view class="weui-cells__title">请输入手机号</view>
+    <view class="weui-cells weui-cells_after-title">
+      <view class="weui-cell weui-cell_input">
+        <input class="weui-input" bindinput="bindPhoneInput" type="number" placeholder="手机号" />
+      </view>
+    </view>
+  </view>
+
+    <view class="page-section">
+    <view class="weui-cells__title">请输入验证码</view>
+    <view class="weui-cells weui-cells_after-title">
+      <view class="weui-cell weui-cell_input">
+        <input class="weui-input" bindinput="bindCodeInput"  type="number" placeholder="验证码" />
+      </view>
+    </view>
+  </view>
+
+<button bindtap="bindLoginTap">登录</button>
+  
+</view>

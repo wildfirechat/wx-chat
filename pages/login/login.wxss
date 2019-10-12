@@ -1,0 +1,16 @@
+/* pages/login/login.wxss */
+.page-body {
+  padding: 20rpx;
+}
+
+.page-section{
+  margin-top: 20rpx;
+}
+
+button {margin: 10px;}
+.other-button-hover {
+  background-color: blue;
+}
+.button-hover {
+  background-color: red;
+}
