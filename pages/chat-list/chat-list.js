@@ -1,5 +1,4 @@
 // pages/chat-list/chat-list.js
-import regeneratorRuntime from '../../utils/runtime.js';
 import EventType from '../../wfc-bundle/wfc/wfcEvent.js';
 import ConnectionStatus from '../../wfc-bundle/wfc/connectionStatus.js';
 import MessageConfig from '../../wfc-bundle/wfc/messageConfig.js';

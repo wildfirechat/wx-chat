@@ -1,5 +1,4 @@
 import {dealChatTime} from "../../utils/time";
-import regeneratorRuntime from '../../utils/runtime.js';
 
 /**
  * 这个类是IM模拟类，作为示例仅供参考。

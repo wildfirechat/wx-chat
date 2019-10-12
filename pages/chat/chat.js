@@ -11,7 +11,6 @@ import ImageMessageContent from "../../wfc-bundle/wfc/messages/imageMessageConte
 import SoundMessageContent from "../../wfc-bundle/wfc/messages/soundMessageContent";
 import MessageStatus from "../../wfc-bundle/wfc/messages/messageStatus";
 import VoiceManager from "./msg-type/voice-manager";
-import regeneratorRuntime from '../../utils/runtime.js';
 
 /**
  * 聊天页面

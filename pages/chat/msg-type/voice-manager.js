@@ -1,6 +1,5 @@
 import IMOperator from "../im-operator";
 import { downloadFile } from "../../../utils/tools";
-import regeneratorRuntime from '../../../utils/runtime.js';
 
 
 export default class VoiceManager {

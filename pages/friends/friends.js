@@ -1,5 +1,4 @@
 // pages/friends/friends.js
-import regeneratorRuntime from '../../utils/runtime.js';
 import wfc from "../../wfc-bundle/wfc/wfc";
 import EventType from '../../wfc-bundle/wfc/wfcEvent.js';
 
