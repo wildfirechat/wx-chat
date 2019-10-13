@@ -47,12 +47,13 @@ Page({
           if(loginResult.code === 0){
               let userId = loginResult.result.userId;
               let token = loginResult.result.token;
-              wfc.connect('appId', 'appKey', 'http://pc.wildfirechat.cn',80, userId, clientId, token);
+            wfc.connect('wx_123456', '6906b704c5f60b77ffbfe85b6bbaf42894f3341d', 'http://pc.wildfirechat.cn',80, userId, clientId, token);
             wx.switchTab({
               url: '../chat-list/chat-list', fail: (e) => {
                 console.log(e)
               }
-            })          }else{
+            })
+          }else{
             console.log('login failed', loginResult);
           }
         }
