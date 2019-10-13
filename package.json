@@ -1,14 +1,8 @@
 {
   "name": "wechat-im",
   "version": "1.0.0",
-  "main": ".server/web-socket-server.js",
   "dependencies": {
     "base64-arraybuffer": "^0.2.0",
-    "crypto-js": "^3.1.9-1",
-    "events": "^3.0.0",
-    "long": "^4.0.0",
-    "nodejs-websocket": "^1.7.1",
-    "regenerator": "^0.13.1",
     "wechat-mini-programs-apis": "^1.6.2"
   },
   "devDependencies": {
