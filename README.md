@@ -1,4 +1,13 @@
-# fork from https://github.com/unmagic/wechat-im
+野火IM微信小程序
+
+![conversation_list](./image/conversation_list.png)
+![conversation](./image/conversation.png)
+![friends](image/friends.png)
+
+# fork from [wechat-im](https://github.com/unmagic/wechat-im)
+
+# 以下为原项目的README
+--------------------
 # wechat-im
 
 [![Build Status](https://travis-ci.org/unmagic/wechat-im.svg?branch=master)](https://travis-ci.org/unmagic/wechat-im)
