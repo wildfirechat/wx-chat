@@ -51,7 +51,7 @@ Page({
 
             return {
                 friendId: userInfo.uid,
-                friendHeadUrl: userInfo.portriat,
+                friendHeadUrl: userInfo.portrait,
                 friendName: userInfo.displayName
             };
         });
