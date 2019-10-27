@@ -28,7 +28,7 @@ Page({
   login(phone, code){
 
     let appServer = 'http://pc.wildfirechat.cn:8888/login'
-    let clientId = 'cf760da4605865a51569402605040'
+    let clientId = 'cid123456aaa788'
     wx.request({
       url: appServer,
       data: {
@@ -47,7 +47,7 @@ Page({
           if(loginResult.code === 0){
               let userId = loginResult.result.userId;
               let token = loginResult.result.token;
-            wfc.connect('wx_123456', '6906b704c5f60b77ffbfe85b6bbaf42894f3341d', 'http://pc.wildfirechat.cn',80, userId, clientId, token);
+            wfc.connect('wx_12345678', '2635b76b98941325cec382ecd9195a73e34b4bbb', 'http://pc.wildfirechat.cn',80, userId, clientId, token);
             wx.switchTab({
               url: '../chat-list/chat-list', fail: (e) => {
                 console.log(e)
