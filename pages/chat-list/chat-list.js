@@ -52,7 +52,7 @@ Page({
         let item = e.currentTarget.dataset.item;
         delete item.unread;
         wx.navigateTo({
-            url: `../chat/chat?conversationInfo=${JSON.stringify(item)}`
+            url: `../chat/chat?conversation=${JSON.stringify(item.conversation)}`
         });
     },
     /**

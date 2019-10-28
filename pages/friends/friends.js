@@ -1,6 +1,9 @@
 // pages/friends/friends.js
 import wfc from "../../wfc-bundle/client/wfc";
 import EventType from '../../wfc-bundle/client/wfcEvent.js';
+import ConversationInfo from "../../wfc-bundle/model/conversationInfo";
+import Conversation from "../../wfc-bundle/model/conversation";
+import ConversationType from "../../wfc-bundle/model/conversationType";
 
 /**
  * 获取好友列表
@@ -65,5 +68,14 @@ Page({
             friendName: item.nickName
         };
     },
+
+    chatTo(e) {
+        let item = e.currentTarget.dataset.item;
+        let conversation = new Conversation(ConversationType.Single, item.friendId, 0);
+
+        wx.navigateTo({
+            url: `../chat/chat?conversation=${JSON.stringify(conversation)}`
+        });
+    }
 
 });

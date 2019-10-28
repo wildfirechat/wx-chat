@@ -44,12 +44,14 @@ Page({
      */
     onLoad(options) {
 
-        const conversationInfoJson = JSON.parse(options.conversationInfo);
+        const conversationJson = JSON.parse(options.conversation);
         this.setData({
             pageHeight: wx.getSystemInfoSync().windowHeight,
         });
-        let conversationInfo = Object.assign(new ConversationInfo(), conversationInfoJson)
-        this.conversation = Object.assign(new Conversation(), conversationInfo.conversation);
+        this.conversation = Object.assign(new Conversation(), conversationJson);
+        const conversationInfo = new ConversationInfo();
+        conversationInfo.conversation = this.conversation;
+
         wx.setNavigationBarTitle({
             title: conversationInfo.title() || ''
         });
@@ -221,7 +223,7 @@ Page({
                 showTime: false,
                 time: 'to do time',
                 headUrl: wfc.getUserInfo(m.from).portrait,
-                isMy: m.direction == 0,
+                isMy: m.direction === 0,
                 isPlaying: false,
             };
 
