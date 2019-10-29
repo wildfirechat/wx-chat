@@ -3,13 +3,12 @@ import EventType from '../../wfc-bundle/client/wfcEvent.js';
 import ConnectionStatus from '../../wfc-bundle/client/connectionStatus.js';
 import MessageConfig from '../../wfc-bundle/client/messageConfig.js';
 import PersistFlag from '../../wfc-bundle/messages/persistFlag.js';
+import wfc from "../../wfc-bundle/client/wfc";
 
 /**
  * 会话列表页面
  */
 Page({
-
-    wfc: {},
 
     /**
      * 页面的初始数据
@@ -18,34 +17,42 @@ Page({
         conversations: []
     },
 
+    onConnnectionStatusChange(status) {
+        if (status === ConnectionStatus.ConnectionStatusConnected) {
+            this.showConversationList();
+        }
+    },
+
+    onUserInfosUpdate(userInfos) {
+        this.showConversationList();
+    },
+
+    onGroupInfosUpdate(groupInfos) {
+        this.showConversationList();
+    },
+
+    onReceiveMessage(msg) {
+        console.log('receive msg', msg);
+        if (MessageConfig.getMessageContentPersitFlag(msg.content.type) == PersistFlag.Persist_And_Count) {
+            this.showConversationList();
+        }
+    },
+
     /**
      * 生命周期函数--监听页面加载
      */
     onLoad(options) {
-        this.wfc = getApp().getIMHandler();
+        wfc.eventEmiter.on(EventType.ConnectionStatusChanged, this.onConnnectionStatusChange);
+        wfc.eventEmiter.on(EventType.UserInfosUpdate, this.onUserInfosUpdate);
+        wfc.eventEmiter.on(EventType.GroupInfosUpdate, this.onGroupInfosUpdate);
+        wfc.eventEmiter.on(EventType.ReceiveMessage, this.onReceiveMessage);
+    },
 
-        this.wfc.eventEmiter.on(EventType.ConnectionStatusChanged, (status) => {
-            if (status === ConnectionStatus.ConnectionStatusConnected) {
-                this.showConversationList();
-            }
-        });
-
-        this.wfc.eventEmiter.on(EventType.UserInfoUpdate, (userInfo) => {
-            console.log('userInfo update', userInfo);
-            this.showConversationList();
-        });
-
-        this.wfc.eventEmiter.on(EventType.GroupInfoUpdate, (groupInfo) => {
-            console.log('grouInfo update', groupInfo);
-            this.showConversationList();
-        });
-
-        this.wfc.eventEmiter.on(EventType.ReceiveMessage, (msg) => {
-            console.log('receive msg', msg);
-            if (MessageConfig.getMessageContentPersitFlag(msg.content.type) == PersistFlag.Persist_And_Count) {
-                this.showConversationList();
-            }
-        });
+    onUnload(options) {
+        wfc.eventEmiter.removeListener(EventType.ConnectionStatusChanged, this.onConnnectionStatusChange);
+        wfc.eventEmiter.removeListener(EventType.UserInfosUpdate, this.onUserInfosUpdate);
+        wfc.eventEmiter.removeListener(EventType.GroupInfosUpdate, this.onGroupInfosUpdate);
+        wfc.eventEmiter.removeListener(EventType.ReceiveMessage, this.onReceiveMessage);
     },
 
     chatTo(e) {
@@ -59,13 +66,13 @@ Page({
      * 生命周期函数--监听页面显示
      */
     async onShow() {
-        if (this.wfc.getConnectionStatus() === ConnectionStatus.ConnectionStatusConnected) {
+        if (wfc.getConnectionStatus() === ConnectionStatus.ConnectionStatusConnected) {
             this.showConversationList();
         }
     },
 
     showConversationList() {
-        let conversations = this.wfc.getConversationList([0, 1, 2], [0, 1]);
+        let conversations = wfc.getConversationList([0, 1, 2], [0, 1]);
         let clUi = conversations.map(item => {
             item.ui = {
                 title: item.title(),

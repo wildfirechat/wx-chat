@@ -17,33 +17,21 @@ Page({
         friends: []
     },
 
+    onUserInfoUpdate() {
+        this.showFriendList();
+    },
+
     onLoad(options) {
-        wfc.eventEmiter.on(EventType.UserInfoUpdate, userInfo => {
-            this.showFriendList();
-        })
+        wfc.eventEmiter.on(EventType.UserInfoUpdate, this.onUserInfoUpdate);
+    },
+
+    onUnload(options) {
+        wfc.eventEmiter.removeListener(EventType.UserInfoUpdate, this.onUserInfoUpdate)
     },
     /**
      * 生命周期函数--监听页面显示
      */
     async onShow() {
-        // getApp().getIMHandler().setOnReceiveMessageListener({
-        //     listener: (msg) => {
-        //         if (msg.type === 'get-friends') {
-        //             this.setData({friends: msg.friends.map(item => this.createFriendItem(item))});
-        //         }
-        //     }
-        // });
-
-        // try {
-        //     await getApp().getIMHandler().sendMsg({
-        //         content: {
-        //             type: 'get-friends',
-        //             userId: getApp().globalData.userInfo.userId
-        //         }
-        //     });
-        // } catch (e) {
-        //     console.log('获取好友列表失败', e);
-        // }
         this.showFriendList();
     },
 

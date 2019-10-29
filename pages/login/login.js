@@ -24,7 +24,7 @@ Page({
     // console.log(this.data.code)
     this.login(this.data.phone, this.data.code)
   },
-
+  
   login(phone, code){
 
     let appServer = 'http://pc.wildfirechat.cn:8888/login'

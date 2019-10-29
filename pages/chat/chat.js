@@ -38,6 +38,17 @@ Page({
         }],
     },
 
+    onReceiveMessage(msg) {
+        this.showMessageList();
+    },
+
+    onSendMessage(msg) {
+        this.showMessageList();
+    },
+
+    onMessageStatusUpdate(msg) {
+        this.showMessageList();
+    },
 
     /**
      * 生命周期函数--监听页面加载
@@ -55,26 +66,23 @@ Page({
         wx.setNavigationBarTitle({
             title: conversationInfo.title() || ''
         });
-        // this.imOperator = new IMOperator(this, friend);
         this.UI = new UI(this);
-        // this.msgManager = new MsgManager(this);
         this.voiceManager = new VoiceManager(this);
 
-        // this.imOperator.onSimulateReceiveMsg((msg) => {
-        //     this.msgManager.showMsg({ msg })
-        // });
         this.UI.updateChatStatus('正在聊天中...');
 
-        wfc.eventEmiter.on(EventType.ReceiveMessage, msg => {
-            this.showMessageList();
-        });
-        wfc.eventEmiter.on(EventType.SendMessage, msg => {
-            this.showMessageList();
-        });
-        wfc.eventEmiter.on(EventType.MessageStatusUpdate, msg => {
-            this.showMessageList();
-        });
+        wfc.eventEmiter.on(EventType.ReceiveMessage, this.onReceiveMessage);
+        wfc.eventEmiter.on(EventType.SendMessage, this.onSendMessage);
+        wfc.eventEmiter.on(EventType.MessageStatusUpdate, this.onMessageStatusUpdate);
     },
+
+    onUnload() {
+        wfc.eventEmiter.removeListener(EventType.ReceiveMessage, this.onReceiveMessage);
+        wfc.eventEmiter.removeListener(EventType.SendMessage, this.onSendMessage);
+        wfc.eventEmiter.removeListener(EventType.MessageStatusUpdate, this.onMessageStatusUpdate);
+    },
+
+
     onShow() {
         this.showMessageList();
     },
