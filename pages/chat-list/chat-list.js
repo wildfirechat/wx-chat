@@ -62,6 +62,28 @@ Page({
             url: `../chat/chat?conversation=${JSON.stringify(item.conversation)}`
         });
     },
+
+    onConversationLongTap(e) {
+        let conversationInfo = e.currentTarget.dataset.item;
+        let menuItems = ['清空会话', '删除会话'];
+        if (conversationInfo.isTop) {
+            menuItems.push('取消置顶');
+        } else {
+            menuItems.push('会话置顶');
+        }
+
+        wx.showActionSheet({
+            itemList: menuItems,
+            success(res) {
+                // TODO
+                console.log(res.tapIndex)
+            },
+            fail(res) {
+                console.log(res.errMsg)
+            }
+        });
+    },
+
     /**
      * 生命周期函数--监听页面显示
      */

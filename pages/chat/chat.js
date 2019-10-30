@@ -89,6 +89,24 @@ Page({
     onReady() {
         this.chatInput = this.selectComponent('#chatInput');
     },
+
+    onMessageLongTap(e) {
+        let menuItems = ['删除', '复制'];
+        if (true) {
+            menuItems = ['撤回'].concat(menuItems);
+        }
+
+        wx.showActionSheet({
+            itemList: menuItems,
+            success(res) {
+                // TODO
+                console.log(res.tapIndex)
+            },
+            fail(res) {
+                console.log(res.errMsg)
+            }
+        });
+    },
     onSendMessageEvent(e) {
         let content = e.detail.value;
         let textMsgContent = new TextMessageContent(content);
