@@ -1,0 +1,3 @@
+<template name="chat-notification">
+       <text class="chat-list-time-style">{{notification}}</text>
+</template>

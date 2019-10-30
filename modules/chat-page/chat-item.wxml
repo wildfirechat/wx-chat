@@ -1,15 +1,15 @@
 <import src="./time.wxml"/>
-<import src="./custom.wxml"/>
+<import src="./notification.wxml"/>
 <import src="./word.wxml"/>
 <template name="chat-item">
-    <view bindlongtap="onMessageLongTap" style="width: 100%;display: flex;flex-direction: column;align-items: center">
-        <block wx:if="{{item.ui.type!=='custom'}}">
+    <view bindlongtap="onMessageLongTap" data-item="{{item}}" style="width: 100%;display: flex;flex-direction: column;align-items: center">
+        <block wx:if="{{item.ui.type!=='notification'}}">
             <template is="chat-time" data="{{showTime:item.ui.showTime,time:item.ui.time}}"/>
             <template is="chat-word"
                       data="{{length:length,index:index,headUrl:item.ui.headUrl,isMy:item.ui.isMy,showTime:item.ui.showTime,time:item.ui.time,content:item.ui.content,type:item.ui.type,voiceDuration:item.ui.voiceDuration,isPlaying:item.ui.isPlaying,sendStatus:item.ui.sendStatus}}"/>
         </block>
         <block wx:else>
-            <template is="chat-custom" data="{{content:item.ui.content}}"/>
+            <template is="chat-notification" data="{{notification:item.ui.notification}}"/>
         </block>
     </view>
 </template>

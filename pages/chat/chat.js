@@ -11,6 +11,7 @@ import ImageMessageContent from "../../wfc-bundle/messages/imageMessageContent";
 import SoundMessageContent from "../../wfc-bundle/messages/soundMessageContent";
 import MessageStatus from "../../wfc-bundle/messages/messageStatus";
 import VoiceManager from "./msg-type/voice-manager";
+import NotificationMessageContent from "../../wfc-bundle/messages/notification/notificationMessageContent";
 
 /**
  * 聊天页面
@@ -39,14 +40,31 @@ Page({
     },
 
     onReceiveMessage(msg) {
+        if (!msg.conversation.equal(this.conversation)) {
+            return;
+        }
         this.showMessageList();
     },
 
     onSendMessage(msg) {
+        if (!msg.conversation.equal(this.conversation)) {
+            return;
+        }
         this.showMessageList();
     },
 
     onMessageStatusUpdate(msg) {
+        if (!msg.conversation.equal(this.conversation)) {
+            return;
+        }
+        this.showMessageList();
+    },
+
+    onRecallMessage(operator, messageUid) {
+        let msg = wfc.getMessageByUid(messageUid);
+        if (!msg.conversation.equal(this.conversation)) {
+            return;
+        }
         this.showMessageList();
     },
 
@@ -74,12 +92,14 @@ Page({
         wfc.eventEmiter.on(EventType.ReceiveMessage, this.onReceiveMessage);
         wfc.eventEmiter.on(EventType.SendMessage, this.onSendMessage);
         wfc.eventEmiter.on(EventType.MessageStatusUpdate, this.onMessageStatusUpdate);
+        wfc.eventEmiter.on(EventType.RecallMessage, this.onRecallMessage)
     },
 
     onUnload() {
         wfc.eventEmiter.removeListener(EventType.ReceiveMessage, this.onReceiveMessage);
         wfc.eventEmiter.removeListener(EventType.SendMessage, this.onSendMessage);
         wfc.eventEmiter.removeListener(EventType.MessageStatusUpdate, this.onMessageStatusUpdate);
+        wfc.eventEmiter.removeListener(EventType.RecallMessage, this.onRecallMessage);
     },
 
 
@@ -91,22 +111,58 @@ Page({
     },
 
     onMessageLongTap(e) {
+        let msg = e.currentTarget.dataset.item;
         let menuItems = ['删除', '复制'];
-        if (true) {
+        // TODO 还需时间判断是否可以撤回
+        if (msg.direction === 0) {
             menuItems = ['撤回'].concat(menuItems);
         }
 
+        let self = this;
         wx.showActionSheet({
             itemList: menuItems,
             success(res) {
-                // TODO
                 console.log(res.tapIndex)
+                let item = menuItems[res.tapIndex];
+                switch (item) {
+                    case '删除':
+                        self.deleteMessage(msg);
+                        break;
+                    case '复制':
+                        self.copyMessage(msg);
+                        break;
+                    case '撤回':
+                        self.recallMessage(msg);
+                        break;
+                    default:
+                        break;
+                }
             },
             fail(res) {
                 console.log(res.errMsg)
             }
         });
     },
+
+    deleteMessage(msg) {
+        wfc.deleteMessage(msg.messageId)
+        this.showMessageList();
+    },
+
+    copyMessage(msg) {
+
+    },
+
+    recallMessage(msg) {
+        wfc.recallMessage(msg.messageUid, () => {
+            this.showMessageList();
+            console.log('recall message success');
+        }, (errorCode) => {
+            console.log('recall message failed');
+        })
+
+    },
+
     onSendMessageEvent(e) {
         let content = e.detail.value;
         let textMsgContent = new TextMessageContent(content);
@@ -277,6 +333,9 @@ Page({
                 item.content = m.messageContent.localPath || m.messageContent.remotePath;
                 item.voiceDuration = m.messageContent.duration;
                 item.type = 'voice';
+            } else if (m.messageContent instanceof NotificationMessageContent) {
+                item.type = 'notification';
+                item.notification = m.messageContent.formatNotification();
             } else {
                 // TODO more message content type
 

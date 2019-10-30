@@ -57,6 +57,7 @@ Page({
 
     chatTo(e) {
         let item = e.currentTarget.dataset.item;
+        wfc.clearConversationUnreadStatus(item.conversation);
         delete item.unread;
         wx.navigateTo({
             url: `../chat/chat?conversation=${JSON.stringify(item.conversation)}`
@@ -75,8 +76,21 @@ Page({
         wx.showActionSheet({
             itemList: menuItems,
             success(res) {
-                // TODO
                 console.log(res.tapIndex)
+                let item = menuItems[res.tapIndex];
+                switch (item) {
+                    case '清空会话':
+                        break;
+                    case '删除会话':
+                        break;
+                    case '会话置顶':
+                        break;
+                    case '取消置顶':
+                        break;
+
+                    default:
+                        break;
+                }
             },
             fail(res) {
                 console.log(res.errMsg)
