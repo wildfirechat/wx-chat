@@ -1,4 +1,4 @@
-import UserSettingScope from "./usetSettingScope";
+import UserSettingScope from "../client/userSettingScope";
 
 export default class UserSettingEntry {
     scope = UserSettingScope.kUserSettingCustomBegin;

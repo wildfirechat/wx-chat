@@ -38,6 +38,10 @@ Page({
         }
     },
 
+    onSettingUpdate() {
+        this.showConversationList();
+    },
+
     /**
      * 生命周期函数--监听页面加载
      */
@@ -46,6 +50,7 @@ Page({
         wfc.eventEmiter.on(EventType.UserInfosUpdate, this.onUserInfosUpdate);
         wfc.eventEmiter.on(EventType.GroupInfosUpdate, this.onGroupInfosUpdate);
         wfc.eventEmiter.on(EventType.ReceiveMessage, this.onReceiveMessage);
+        wfc.eventEmiter.on(EventType.SettingUpdate, this.onSettingUpdate);
     },
 
     onUnload(options) {
@@ -53,6 +58,7 @@ Page({
         wfc.eventEmiter.removeListener(EventType.UserInfosUpdate, this.onUserInfosUpdate);
         wfc.eventEmiter.removeListener(EventType.GroupInfosUpdate, this.onGroupInfosUpdate);
         wfc.eventEmiter.removeListener(EventType.ReceiveMessage, this.onReceiveMessage);
+        wfc.eventEmiter.removeListener(EventType.SettingUpdate, this.onSettingUpdate);
     },
 
     chatTo(e) {
@@ -73,6 +79,7 @@ Page({
             menuItems.push('会话置顶');
         }
 
+        let self = this;
         wx.showActionSheet({
             itemList: menuItems,
             success(res) {
@@ -80,12 +87,18 @@ Page({
                 let item = menuItems[res.tapIndex];
                 switch (item) {
                     case '清空会话':
+                        wfc.clearMessages(conversationInfo.conversation);
+                        self.showConversationList();
                         break;
                     case '删除会话':
+                        wfc.removeConversation(conversationInfo.conversation, true);
+                        self.showConversationList();
                         break;
                     case '会话置顶':
+                        wfc.setConversationTop(conversationInfo.conversation, true);
                         break;
                     case '取消置顶':
+                        wfc.setConversationTop(conversationInfo.conversation, false);
                         break;
 
                     default:

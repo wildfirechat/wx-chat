@@ -43,6 +43,7 @@ Page({
         if (!msg.conversation.equal(this.conversation)) {
             return;
         }
+        wfc.clearConversationUnreadStatus(this.conversation);
         this.showMessageList();
     },
 
