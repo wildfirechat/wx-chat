@@ -69,4 +69,24 @@ export default class ConversationInfo {
         return title;
 
     }
+    static equals(info1, info2) {
+        if (!info1 || !info2) {
+            return false;
+        }
+        if (!info1.conversation.equal(info2.conversation)) {
+            return false;
+        }
+
+        let unreadCount1 = info1.unreadCount;
+        let unreadCount2 = info2.unreadCount;
+        if (unreadCount1.unread !== unreadCount2.unread
+            || unreadCount1.unreadMention === unreadCount2.unreadMention
+            || unreadCount1.unreadMentionAll === unreadCount2.unreadMentionAll) {
+            return false;
+        }
+
+        // 其他的应当都会反应在timestamp上
+        return info1.timestamp === info2.timestamp && info1.draft === info2.draft;
+
+    }
 }

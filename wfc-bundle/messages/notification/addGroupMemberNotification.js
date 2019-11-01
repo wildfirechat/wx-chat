@@ -44,7 +44,7 @@ export default class AddGroupMemberNotification extends GroupNotificationContent
 
     decode(payload) {
         super.decode(payload);
-        let json = this.this.atob(payload.binaryContent);
+        let json = this.atob(payload.binaryContent);
         let obj = JSON.parse(json);
         this.groupId = obj.g;
         this.invitor = obj.o;

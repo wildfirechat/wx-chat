@@ -14,7 +14,7 @@ export class WfcManager {
     eventEmiter = new EventEmitter();
 
     constructor() {
-        impl.eventEmitter = this.eventEmiter;
+        impl.eventEmiter = this.eventEmiter;
     }
 
     /**
@@ -57,6 +57,9 @@ export class WfcManager {
         return impl.getUserInfo(userId, refresh);
     }
 
+    getUserInfos(userIds, groupId) {
+        return impl.getUserInfos(userIds, groupId);
+    }
 
     async searchUser(keyword, successCB, failCB) {
         impl.searchUser(keyword, successCB, failCB);
