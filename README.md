@@ -16,8 +16,8 @@
 
 
 ## 开发配置
-![本地设置](../wx-chat/image/本地设置.png)
-![项目配置](../wx-chat/image/项目配置.png)
+![本地设置](../wx-chat/image/local_setting.png)
+![项目配置](../wx-chat/image/project_setting.png)
 
 ## 开发
 1. npm install
