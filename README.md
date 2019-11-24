@@ -15,6 +15,15 @@
 | [docs](https://github.com/wildfirechat/docs)                 | 野火IM相关文档，包含设计、概念、开发、使用说明          |      | |
 
 
+## 开发配置
+![本地设置](../wx-chat/image/本地设置.png)
+![项目配置](../wx-chat/image/项目配置.png)
+
+## 开发
+1. npm install
+2. 微信开发者工具 --> 工具 --> 构建 npm
+3. 微信开发者工具 --> 工具 --> 编译
+
 ## 说明
 
 本工程为野火IM微信小程序SDK和Demo的源码，目前项目正在活跃开发中。如果遇到问题，特别是返回```errorCode = 22```，请微信联系：wfchat
