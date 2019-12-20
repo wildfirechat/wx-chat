@@ -18,5 +18,6 @@
   </view>
 
 <button bindtap="bindLoginTap">登录</button>
+<button bindtap="bindAuthCodeTap">获取验证码</button>
   
 </view>
