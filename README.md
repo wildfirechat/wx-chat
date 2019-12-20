@@ -56,8 +56,8 @@
 欢迎提交pull request，一起打造一个更好的开源IM。
 
 ## 鸣谢
-1. [wechat-im](https://github.com/unmagic/wechat-im) 本项目UI部分，基于此开发
-2. [protoBufferForWechat](https://github.com/Zhang19910325/protoBufferForWechat)
+1. [wechat-im](https://github.com/unmagic/wechat-im) 本项目UI和即时通讯部分功能，基于此项开发，感谢作者。作者的项目和博客都特别棒，值得大家去学习。
+2. [protoBufferForWechat](https://github.com/Zhang19910325/protoBufferForWechat) 感谢此项目，让在微信小程序中使用protobuf成为了可能。
 
 如果有什么地方侵犯了您的权益，请联系我们删除🙏🙏🙏
 
