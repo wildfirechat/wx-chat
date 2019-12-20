@@ -6,8 +6,8 @@ export default class ImageMessageContent extends MediaMessageContent {
     // base64 encoded, 不包含头部:data:image/png;base64,
     thumbnail;
 
-    constructor(localPath, remotePath, thumbnail) {
-        super(MessageContentType.Image, MessageContentMediaType.Image, localPath, remotePath);
+    constructor(fileOrLocalPath, remotePath, thumbnail) {
+        super(MessageContentType.Image, MessageContentMediaType.Image, fileOrLocalPath, remotePath);
         this.thumbnail = thumbnail;
     }
 

@@ -69,6 +69,7 @@ export default class ConversationInfo {
         return title;
 
     }
+
     static equals(info1, info2) {
         if (!info1 || !info2) {
             return false;

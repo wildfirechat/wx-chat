@@ -46,19 +46,19 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad(options) {
-        wfc.eventEmiter.on(EventType.ConnectionStatusChanged, this.onConnnectionStatusChange);
-        wfc.eventEmiter.on(EventType.UserInfosUpdate, this.onUserInfosUpdate);
-        wfc.eventEmiter.on(EventType.GroupInfosUpdate, this.onGroupInfosUpdate);
-        wfc.eventEmiter.on(EventType.ReceiveMessage, this.onReceiveMessage);
-        wfc.eventEmiter.on(EventType.SettingUpdate, this.onSettingUpdate);
+        wfc.eventEmitter.on(EventType.ConnectionStatusChanged, this.onConnnectionStatusChange);
+        wfc.eventEmitter.on(EventType.UserInfosUpdate, this.onUserInfosUpdate);
+        wfc.eventEmitter.on(EventType.GroupInfosUpdate, this.onGroupInfosUpdate);
+        wfc.eventEmitter.on(EventType.ReceiveMessage, this.onReceiveMessage);
+        wfc.eventEmitter.on(EventType.SettingUpdate, this.onSettingUpdate);
     },
 
     onUnload(options) {
-        wfc.eventEmiter.removeListener(EventType.ConnectionStatusChanged, this.onConnnectionStatusChange);
-        wfc.eventEmiter.removeListener(EventType.UserInfosUpdate, this.onUserInfosUpdate);
-        wfc.eventEmiter.removeListener(EventType.GroupInfosUpdate, this.onGroupInfosUpdate);
-        wfc.eventEmiter.removeListener(EventType.ReceiveMessage, this.onReceiveMessage);
-        wfc.eventEmiter.removeListener(EventType.SettingUpdate, this.onSettingUpdate);
+        wfc.eventEmitter.removeListener(EventType.ConnectionStatusChanged, this.onConnnectionStatusChange);
+        wfc.eventEmitter.removeListener(EventType.UserInfosUpdate, this.onUserInfosUpdate);
+        wfc.eventEmitter.removeListener(EventType.GroupInfosUpdate, this.onGroupInfosUpdate);
+        wfc.eventEmitter.removeListener(EventType.ReceiveMessage, this.onReceiveMessage);
+        wfc.eventEmitter.removeListener(EventType.SettingUpdate, this.onSettingUpdate);
     },
 
     chatTo(e) {

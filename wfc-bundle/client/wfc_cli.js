@@ -1,11 +1,11 @@
-import { WfcManager } from "./wfc";
+import wfc from "./wfc";
 import EventType from "./wfcEvent";
 import Conversation from "../model/conversation";
 import TextMessageContent from "../messages/textMessageContent";
 
 export default class WfcCli {
 
-    wfc = new WfcManager();
+    // wfc = new WfcManager();
 
     init() {
         // //remote 138777777777
@@ -15,18 +15,19 @@ export default class WfcCli {
         var host = 'wildfirechat.cn';
         var shortPort = 80;
 
-        this.wfc.connect(username, token)
-        this.wfc.eventEmiter.on(EventType.ConnectionStatusChanged, (status) => {
+        // connect(appId, appKey, host, port, userId, clientId, token) {
+        wfc.connect('appId', 'appKey', host, shortPort, username, clientId, token)
+        wfc.eventEmitter.on(EventType.ConnectionStatusChanged, (status) => {
             vorpal.log('on connect status change', status);
         });
 
-        this.wfc.eventEmiter.on(EventType.ReceiveMessage, (msg) => {
+        wfc.eventEmitter.on(EventType.ReceiveMessage, (msg) => {
             vorpal.log('on receive msg', msg);
         });
     }
 
     getConversationList() {
-        return this.wfc.getConversationList([0, 1, 2, 3], [0, 1]);
+        return wfc.getConversationList([0, 1, 2, 3], [0, 1]);
     }
 
 }

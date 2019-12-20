@@ -1,15 +1,28 @@
 import MessageContent from './messageContent'
-import MessageContentMediaType from './messageContentMediaType';
+
 export default class MediaMessageContent extends MessageContent {
-    localPath = '';
+    file;
     remotePath = '';
+    localPath = '';
     mediaType = 0;
 
-    constructor(messageType, mediaType, localPath, remotePath = '') {
+    constructor(messageType, mediaType = 0, fileOrLocalPath, remotePath) {
         super(messageType);
         this.mediaType = mediaType;
-        this.localPath = localPath;
-        this.remotePath = remotePath;
+        if(typeof fileOrLocalPath === "string"){
+          this.localPath = fileOrLocalPath;
+          this.remotePath = remotePath;
+        }else {
+          this.file = fileOrLocalPath;
+          if (fileOrLocalPath && fileOrLocalPath.path !== undefined) {
+            this.localPath = fileOrLocalPath.path;
+            // attention: 粘贴的时候，path是空字符串，故采用了这个trick
+            if (this.localPath.indexOf(fileOrLocalPath.name) < 0) {
+              this.localPath += fileOrLocalPath.name;
+            }
+          }
+
+        }
     }
 
     encode() {

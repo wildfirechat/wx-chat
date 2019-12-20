@@ -2,11 +2,14 @@ import MessageContentMediaType from "./messageContentMediaType";
 import MediaMessageContent from "./mediaMessageContent";
 import MessageContentType from "./messageContentType";
 
+import wfc from "../client/wfc"
+
+
 export default class StickerMessageContent extends MediaMessageContent {
     width = 0;
     height = 0;
-    constructor(localPath, remotePath, width, height) {
-        super(MessageContentType.Sticker, MessageContentMediaType.File, localPath, remotePath);
+    constructor(filerOrLocalPath, remotePath, width, height) {
+        super(MessageContentType.Sticker, MessageContentMediaType.File, filerOrLocalPath, remotePath);
         this.width = width;
         this.height = height;
     }
@@ -21,14 +24,14 @@ export default class StickerMessageContent extends MediaMessageContent {
         let obj = {
             x: this.width,
             y: this.height,
-        }
-        payload.binaryContent = this.btoa(JSON.stringify(obj));
+        };
+        payload.binaryContent = wfc.utf8_to_b64(JSON.stringify(obj));
         return payload;
     };
 
     decode(payload) {
         super.decode(payload);
-        let obj = JSON.parse(this.atob(payload.binaryContent));
+        let obj = JSON.parse(wfc.b64_to_utf8(payload.binaryContent));
         this.width = obj.x;
         this.height = obj.y;
     }

@@ -90,17 +90,17 @@ Page({
 
         this.UI.updateChatStatus('正在聊天中...');
 
-        wfc.eventEmiter.on(EventType.ReceiveMessage, this.onReceiveMessage);
-        wfc.eventEmiter.on(EventType.SendMessage, this.onSendMessage);
-        wfc.eventEmiter.on(EventType.MessageStatusUpdate, this.onMessageStatusUpdate);
-        wfc.eventEmiter.on(EventType.RecallMessage, this.onRecallMessage)
+        wfc.eventEmitter.on(EventType.ReceiveMessage, this.onReceiveMessage);
+        wfc.eventEmitter.on(EventType.SendMessage, this.onSendMessage);
+        wfc.eventEmitter.on(EventType.MessageStatusUpdate, this.onMessageStatusUpdate);
+        wfc.eventEmitter.on(EventType.RecallMessage, this.onRecallMessage)
     },
 
     onUnload() {
-        wfc.eventEmiter.removeListener(EventType.ReceiveMessage, this.onReceiveMessage);
-        wfc.eventEmiter.removeListener(EventType.SendMessage, this.onSendMessage);
-        wfc.eventEmiter.removeListener(EventType.MessageStatusUpdate, this.onMessageStatusUpdate);
-        wfc.eventEmiter.removeListener(EventType.RecallMessage, this.onRecallMessage);
+        wfc.eventEmitter.removeListener(EventType.ReceiveMessage, this.onReceiveMessage);
+        wfc.eventEmitter.removeListener(EventType.SendMessage, this.onSendMessage);
+        wfc.eventEmitter.removeListener(EventType.MessageStatusUpdate, this.onMessageStatusUpdate);
+        wfc.eventEmitter.removeListener(EventType.RecallMessage, this.onRecallMessage);
     },
 
 
