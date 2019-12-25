@@ -2,7 +2,9 @@
   "name": "wechat-im",
   "version": "1.0.0",
   "dependencies": {
+    "atob": "^2.1.2",
     "base64-arraybuffer": "^0.2.0",
+    "btoa": "^1.2.1",
     "events": "^3.0.0",
     "long": "^4.0.0",
     "wechat-mini-programs-apis": "^1.6.2"
