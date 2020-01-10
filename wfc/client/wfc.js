@@ -59,8 +59,8 @@ export class WfcManager {
         return impl.getUserInfos(userIds, groupId);
     }
 
-    async searchUser(keyword, successCB, failCB) {
-        impl.searchUser(keyword, successCB, failCB);
+    async searchUser(keyword, searchType, page, successCB, failCB) {
+        impl.searchUser(keyword, searchType, page, successCB, failCB);
     }
 
     searchFriends(keyword) {
@@ -115,12 +115,20 @@ export class WfcManager {
         return impl.getMyFriendList(fresh);
     }
 
+    getFriendAlias(userId) {
+        return impl.getFriendAlias(userId);
+    }
+
+    async setFriendAlias(userId, alias, successCB, failCB) {
+        impl.setFriendAlias(userId, alias, successCB, failCB);
+    }
+
     async createGroup(groupId, groupType, name, portrait, memberIds = [], lines = [0], notifyContent, successCB, failCB) {
         impl.createGroup(groupId, groupType, name, portrait, memberIds, lines, notifyContent, successCB, failCB);
     }
 
-    async setGroupManager(groupId, isSet, memberIds, lines, notifyMessageContent, successCB, failCB) {
-        impl.setGroupManager(groupId, isSet, memberIds, lines, notifyMessageContent, successCB, failCB);
+    async setGroupManager(groupId, isSet, memberIds, lines, notifyContent, successCB, failCB) {
+        impl.setGroupManager(groupId, isSet, memberIds, lines, notifyContent, successCB, failCB);
     }
 
     getGroupInfo(groupId, refresh = false) {
