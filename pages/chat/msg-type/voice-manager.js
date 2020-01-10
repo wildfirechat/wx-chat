@@ -1,4 +1,3 @@
-import IMOperator from "../im-operator";
 import { downloadFile } from "../../../utils/tools";
 
 
@@ -25,7 +24,7 @@ export default class VoiceManager {
             this._stopVoice();
             if (isUpdateView) {
                 that.data.chatItems.forEach(item => {
-                    if (IMOperator.VoiceType === item.type) {
+                    if ('voice' === item.type) {
                         item.isPlaying = false
                     }
                 });
@@ -100,7 +99,7 @@ export default class VoiceManager {
         currentPlayItem.isPlaying = true;
         if (latestPlayVoicePath && latestPlayVoicePath !== currentPlayItem.content) {//如果重复点击同一个，则不将该isPlaying置为false
             for (let item of chatItems) {
-                if (IMOperator.VoiceType === item.type && latestPlayVoicePath === item.content) {
+                if ('voice' === item.type && latestPlayVoicePath === item.content) {
                     item.isPlaying = false;
                     break;
                 }

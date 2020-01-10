@@ -32,6 +32,8 @@
             <view class="voice-duration-style">{{voiceDuration}}"</view>
         </block>
 
+        <!-- todo 更多消息类型处理 -->
+
         <block wx:if="{{isMy}}">
             <template is="chat-send-status" data="{{sendStatus:sendStatus,index:index}}"/>
         </block>

@@ -1,7 +1,6 @@
 // pages/list/list.js
-import IMOperator from "./im-operator";
 import UI from "./ui";
-import MsgManager from "./msg-manager";
+import VoiceManager from './msg-type/voice-manager';
 import wfc from "../../wfc-bundle/client/wfc";
 import ConversationInfo from "../../wfc-bundle/model/conversationInfo";
 import TextMessageContent from "../../wfc-bundle/messages/textMessageContent";
@@ -10,7 +9,6 @@ import Conversation from "../../wfc-bundle/model/conversation";
 import ImageMessageContent from "../../wfc-bundle/messages/imageMessageContent";
 import SoundMessageContent from "../../wfc-bundle/messages/soundMessageContent";
 import MessageStatus from "../../wfc-bundle/messages/messageStatus";
-import VoiceManager from "./msg-type/voice-manager";
 import NotificationMessageContent from "../../wfc-bundle/messages/notification/notificationMessageContent";
 
 /**
@@ -217,6 +215,14 @@ Page({
         });
     },
 
+    imageClickEvent(e) {
+        let dataset = e.currentTarget.dataset;
+        wx.previewImage({
+            current: dataset.url, // 当前显示图片的http链接
+            urls: [dataset.url] // 需要预览的图片http链接列表
+        })
+    },
+
     chatVoiceItemClickEvent(e) {
         let dataset = e.currentTarget.dataset;
         console.log('点击的语音Item包含的信息', dataset);
@@ -246,27 +252,6 @@ Page({
 
     onUnload() {
         this.voiceManager.stopAllVoicePlay(true);
-    },
-
-    async sendMsg({ content, itemIndex }) {
-        try {
-            const { msg } = await this.imOperator.onSimulateSendMsg({ content })
-            this.UI.updateViewWhenSendSuccess(msg, itemIndex);
-            return { msg };
-        } catch (e) {
-            console.error(e);
-            this.UI.updateViewWhenSendFailed(itemIndex);
-        }
-    },
-    /**
-     * 重发消息
-     * @param e
-     */
-    resendMsgEvent(e) {
-        const itemIndex = parseInt(e.currentTarget.dataset.resendIndex);
-        const item = this.data.chatItems[itemIndex];
-        this.UI.updateDataWhenStartSending(item, false, false);
-        this.msgManager.resend({ ...item, itemIndex });
     },
 
     sendMessage(messageContent) {
@@ -338,8 +323,9 @@ Page({
                 item.type = 'notification';
                 item.notification = m.messageContent.formatNotification();
             } else {
-                // TODO more message content type
-
+                // TODO 更多消息类型处理
+                item.type = 'text';
+                item.content = '未知消息，请手机端查看';
             }
 
             m.ui = item;
