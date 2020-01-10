@@ -1,4 +1,4 @@
-import wfc from "../../wfc-bundle/client/wfc";
+import wfc from "../../wfc/client/wfc";
 import Config from '../../config'
 
 Page({

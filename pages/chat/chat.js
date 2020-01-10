@@ -1,15 +1,15 @@
 // pages/list/list.js
 import UI from "./ui";
 import VoiceManager from './msg-type/voice-manager';
-import wfc from "../../wfc-bundle/client/wfc";
-import ConversationInfo from "../../wfc-bundle/model/conversationInfo";
-import TextMessageContent from "../../wfc-bundle/messages/textMessageContent";
-import EventType from "../../wfc-bundle/client/wfcEvent";
-import Conversation from "../../wfc-bundle/model/conversation";
-import ImageMessageContent from "../../wfc-bundle/messages/imageMessageContent";
-import SoundMessageContent from "../../wfc-bundle/messages/soundMessageContent";
-import MessageStatus from "../../wfc-bundle/messages/messageStatus";
-import NotificationMessageContent from "../../wfc-bundle/messages/notification/notificationMessageContent";
+import wfc from "../../wfc/client/wfc";
+import ConversationInfo from "../../wfc/model/conversationInfo";
+import TextMessageContent from "../../wfc/messages/textMessageContent";
+import EventType from "../../wfc/client/wfcEvent";
+import Conversation from "../../wfc/model/conversation";
+import ImageMessageContent from "../../wfc/messages/imageMessageContent";
+import SoundMessageContent from "../../wfc/messages/soundMessageContent";
+import MessageStatus from "../../wfc/messages/messageStatus";
+import NotificationMessageContent from "../../wfc/messages/notification/notificationMessageContent";
 
 /**
  * 聊天页面

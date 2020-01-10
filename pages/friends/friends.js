@@ -1,9 +1,9 @@
 // pages/friends/friends.js
-import wfc from "../../wfc-bundle/client/wfc";
-import EventType from '../../wfc-bundle/client/wfcEvent.js';
-import ConversationInfo from "../../wfc-bundle/model/conversationInfo";
-import Conversation from "../../wfc-bundle/model/conversation";
-import ConversationType from "../../wfc-bundle/model/conversationType";
+import wfc from "../../wfc/client/wfc";
+import EventType from '../../wfc/client/wfcEvent.js';
+import ConversationInfo from "../../wfc/model/conversationInfo";
+import Conversation from "../../wfc/model/conversation";
+import ConversationType from "../../wfc/model/conversationType";
 
 /**
  * 获取好友列表
