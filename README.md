@@ -16,6 +16,8 @@
 
 
 ## 开发配置
+1. nodejs v10.16.3
+2. npm 6.9.0
 ![本地设置](/image/local_setting.png)
 ![项目配置](/image/project_setting.png)
 
