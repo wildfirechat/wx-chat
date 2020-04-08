@@ -9,7 +9,7 @@ export default class FileMessageContent extends MediaMessageContent {
 
     constructor(fileOrLocalPath, remotePath) {
         super(MessageContentType.File, MessageContentMediaType.File, fileOrLocalPath, remotePath);
-        if (fileOrLocalPath && typeof fileOrLocalPath !== 'string') {
+        if (fileOrLocalPath instanceof File) {
             this.name = fileOrLocalPath.name;
             this.size = fileOrLocalPath.size;
         }

@@ -21,7 +21,7 @@ export default class UserInfo {
     name = '';
     displayName = '';
     gender = 0;
-    protrait = '';
+    portrait = '';
     mobile = '';
     email = '';
     address = '';
@@ -30,7 +30,4 @@ export default class UserInfo {
     type = 0; //0 normal; 1 robot; 2 thing;
     updateDt = 1550652404513;
 
-    hello(){
-        console.log('userInfo hello', this.uid, this.name);
-    }
 }
