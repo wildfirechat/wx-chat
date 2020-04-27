@@ -72,6 +72,8 @@ Page({
      */
     onLoad(options) {
 
+        console.log('------------chat onLoad----------');
+
         const conversationJson = JSON.parse(options.conversation);
         this.setData({
             pageHeight: wx.getSystemInfoSync().windowHeight,
@@ -95,6 +97,9 @@ Page({
     },
 
     onUnload() {
+        console.log('----------chat onUnload--------------')
+        this.voiceManager.stopAllVoicePlay(true);
+
         wfc.eventEmitter.removeListener(EventType.ReceiveMessage, this.onReceiveMessage);
         wfc.eventEmitter.removeListener(EventType.SendMessage, this.onSendMessage);
         wfc.eventEmitter.removeListener(EventType.MessageStatusUpdate, this.onMessageStatusUpdate);
@@ -250,9 +255,6 @@ Page({
         this.chatInput.closeExtraView();
     },
 
-    onUnload() {
-        this.voiceManager.stopAllVoicePlay(true);
-    },
 
     sendMessage(messageContent) {
         wfc.sendConversationMessage(this.conversation, messageContent, null,

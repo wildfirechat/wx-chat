@@ -22,11 +22,11 @@ Page({
     },
 
     onLoad(options) {
-        wfc.eventEmitter.on(EventType.UserInfoUpdate, this.onUserInfoUpdate);
+        wfc.eventEmitter.on(EventType.UserInfosUpdate, this.onUserInfoUpdate);
     },
 
     onUnload(options) {
-        wfc.eventEmitter.removeListener(EventType.UserInfoUpdate, this.onUserInfoUpdate)
+        wfc.eventEmitter.removeListener(EventType.UserInfosUpdate, this.onUserInfoUpdate)
     },
     /**
      * 生命周期函数--监听页面显示
