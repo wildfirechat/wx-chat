@@ -108,6 +108,7 @@ Page({
 
 
     onShow() {
+        wfc.onForeground();
         this.showMessageList();
     },
     onReady() {

@@ -115,6 +115,8 @@ Page({
      * 生命周期函数--监听页面显示
      */
     async onShow() {
+        wfc.onForeground();
+
         if (wfc.getConnectionStatus() === ConnectionStatus.ConnectionStatusConnected) {
             this.showConversationList();
         }
