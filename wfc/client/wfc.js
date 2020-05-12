@@ -526,7 +526,7 @@ export class WfcManager {
      *  判断群是否保存到了通讯录
      * @param {string} groupId
      * @returns {boolean}
-     /
+     */
     isFavGroup(groupId) {
         return impl.isFavGroup(groupId);
     }
@@ -1139,9 +1139,14 @@ export class WfcManager {
      * 连接服务器
      * @param {string} userId 用户id
      * @param {string} token 用户token，生成token时，所使用的clientId，一定要通过{@link getClientId}获取
+     * @param {string} platformName  小程序平台名称，可选值为：ali、wx、qq、tt、bd，分别对应支付宝小程序、微信小程序、QQ小程序、今日头条小程序、百度小程序
      */
-    connect(userId, token) {
-        impl.connect(userId, token);
+    connect(userId, token, platformName) {
+        impl.connect(userId, token, platformName);
+    }
+
+    getVersion(){
+        return impl.getVersion();
     }
 
     /**
