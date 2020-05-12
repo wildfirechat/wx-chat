@@ -7,7 +7,7 @@
 | [android-chat](https://github.com/wildfirechat/android-chat) | 野火IM Android SDK源码和App源码                       |可以很方便地进行二次开发，或集成到现有应用当中      |
 | [ios-chat](https://github.com/wildfirechat/ios-chat)         | 野火IM iOS SDK源码和App源码                            |可以很方便地进行二次开发，或集成到现有应用当中      |
 | [pc-chat](https://github.com/wildfirechat/pc-chat)           | 基于[Electron](https://electronjs.org/)开发的PC平台应用 |      |
-| [wx-chat](https://github.com/wildfirechat/wx-chat)           | 野火IM微信小程序SDK源码和Demo源码 | 可很方便地集成到微信小程序中     |
+| [wx-chat](https://github.com/wildfirechat/wx-chat)           | 野火IM小程序SDK源码和微信小程序Demo源码 | 可很方便地集成到微信小程序中     |
 | [server](https://github.com/wildfirechat/server)             | IM server                                               |      |
 | [app server](https://github.com/wildfirechat/app_server)     | 应用服务端                                          |      |
 | [robot_server](https://github.com/wildfirechat/robot_server) | 机器人服务端                                        |      |
@@ -22,6 +22,7 @@
 ![项目配置](/image/project_setting.png)
 
 ## 开发
+> 一定要根据上面的开发配置进行配置，不然会出现编译不通过等问题。
 0. 特别说明，由于尚未添加获取登录验证码的功能，大家开发测试时，可以用过野火IM Android端或者iOS端获取验证码。
 1. npm install
 2. 微信开发者工具 --> 工具 --> 构建 npm
@@ -29,7 +30,7 @@
 
 ## 说明
 
-本工程为野火IM微信小程序SDK和Demo的源码，目前项目正在活跃开发中。如果遇到问题，特别是返回```errorCode = 22```，请微信联系：wfchat
+本工程为野火IM小程序SDK（支持微信小程序、支付宝小程序、今日头条小程序、百度小程序、QQ小程序）和微信小程序Demo的源码，目前项目正在活跃开发中。如果遇到问题，特别是返回```errorCode = 22```，请微信联系：wfchat
 
 
 ### 联系我们
