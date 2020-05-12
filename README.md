@@ -7,13 +7,22 @@
 | [android-chat](https://github.com/wildfirechat/android-chat) | 野火IM Android SDK源码和App源码                       |可以很方便地进行二次开发，或集成到现有应用当中      |
 | [ios-chat](https://github.com/wildfirechat/ios-chat)         | 野火IM iOS SDK源码和App源码                            |可以很方便地进行二次开发，或集成到现有应用当中      |
 | [pc-chat](https://github.com/wildfirechat/pc-chat)           | 基于[Electron](https://electronjs.org/)开发的PC平台应用 |      |
-| [wx-chat](https://github.com/wildfirechat/wx-chat)           | 野火IM小程序SDK源码和微信小程序Demo源码 | 可很方便地集成到微信小程序中     |
+| [wx-chat](https://github.com/wildfirechat/wx-chat)           | 野火IM小程序SDK和微信小程序Demo源码 | 可很方便地集成到微信小程序中     |
 | [server](https://github.com/wildfirechat/server)             | IM server                                               |      |
 | [app server](https://github.com/wildfirechat/app_server)     | 应用服务端                                          |      |
 | [robot_server](https://github.com/wildfirechat/robot_server) | 机器人服务端                                        |      |
 | [push_server](https://github.com/wildfirechat/push_server)   | 推送服务器                                              |      |
 | [docs](https://github.com/wildfirechat/docs)                 | 野火IM相关文档，包含设计、概念、开发、使用说明          |      | |
 
+## 说明
+野火IM小程序SDK目前支持以下小程序平台：
+1. wx，微信小程序
+2. qq，QQ小程序
+3. bd，百度小程序
+4. ali，支付宝小程序
+5. tt，今日头条小程序
+
+本仓库为基于野火IM小程序SDK的微信小程序Demo的源码，目前项目正在活跃开发中。如果遇到问题，特别是返回```errorCode = 22```，请微信联系：wfchat
 
 ## 开发配置
 1. nodejs v10.16.3
@@ -28,9 +37,6 @@
 2. 微信开发者工具 --> 工具 --> 构建 npm
 3. 微信开发者工具 --> 工具 --> 编译
 
-## 说明
-
-本工程为野火IM小程序SDK（支持微信小程序、支付宝小程序、今日头条小程序、百度小程序、QQ小程序）和微信小程序Demo的源码，目前项目正在活跃开发中。如果遇到问题，特别是返回```errorCode = 22```，请微信联系：wfchat
 
 
 ### 联系我们
