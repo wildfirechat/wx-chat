@@ -175,6 +175,7 @@ Page({
     },
 
     onVoiceRecordEvent(e) {
+        console.log('onVoiceRecordEvent', e);
         const { detail: { recordStatus, duration, tempFilePath, fileSize, } } = e;
         if (recordStatus === 2) {
             let voiceMsgContent = new SoundMessageContent(tempFilePath, null, Math.floor(duration / 1000))

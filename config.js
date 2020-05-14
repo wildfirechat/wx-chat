@@ -21,6 +21,10 @@ export default class Config {
   // 拉取最近2小时的消息
   static MESSAGE_ROAMING_HOUR_COUNT = 2;
 
+  // 小程序不能播放amr格式的音频，需要将amr格式转换为mp3格式
+  // 本服务传入amr音频文件的地址，将音频文件转换为mp3格式，并以application/octet-stream的格式返回
+  static AMR_TO_MP3_SERVER_ADDRESS = 'http://192.168.31.113/amr2mp3?path=';
+
   static getWFCPlatform() {
     return 6;
   }

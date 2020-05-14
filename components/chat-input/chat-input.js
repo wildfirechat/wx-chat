@@ -104,7 +104,7 @@ Component({
                     }, () => {
                         this._triggerVoiceRecordEvent({status: status.START});
                     });
-                    this.recorderManager.start({duration: 60000, format: this.data.format});
+                    this.recorderManager.start({duration: 60000, format: this.data.format, numberOfChannels: 2, sampleRate:8000, encodeBitRate: 16000});
                 }, (res) => {
                     //录音失败
                     console.error('录音拒绝授权');

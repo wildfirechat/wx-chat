@@ -1,4 +1,5 @@
 import { downloadFile } from "../../../utils/tools";
+import Config from "../../../config";
 
 
 export default class VoiceManager {
@@ -58,6 +59,9 @@ export default class VoiceManager {
                 console.log('成功读取了本地语音');
             } catch (e) {
                 console.log('读取本地语音文件失败，一般情况下是本地没有该文件，需要从服务器下载');
+                if(filePath.indexOf('.mp3') === -1 && filePath.indexOf(Config.AMR_TO_MP3_SERVER_ADDRESS) === -1){
+                    filePath = Config.AMR_TO_MP3_SERVER_ADDRESS + filePath;
+                }
                 await downloadFile({ url: filePath });
                 await this._myPlayVoice({ filePath });
             }
@@ -75,6 +79,9 @@ export default class VoiceManager {
      * @private
      */
     __playVoice({ filePath }) {
+        if(filePath.indexOf('.mp3') === -1 && filePath.indexOf(Config.AMR_TO_MP3_SERVER_ADDRESS) === -1){
+            filePath = Config.AMR_TO_MP3_SERVER_ADDRESS + filePath;
+        }
         console.log('to play', filePath);
         return new Promise((resolve, reject) => {
             this.innerAudioContext.src = filePath;
