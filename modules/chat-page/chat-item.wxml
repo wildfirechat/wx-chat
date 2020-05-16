@@ -2,7 +2,7 @@
 <import src="./notification.wxml"/>
 <import src="./word.wxml"/>
 <template name="chat-item">
-    <view bindlongtap="onMessageLongTap" data-item="{{item}}" style="width: 100%;display: flex;flex-direction: column;align-items: center">
+    <view bindlongtap="onMessageLongTap" data-item="{{item}}" style="width: 100%;flex-direction: column;align-items: center">
         <block wx:if="{{item.ui.type!=='notification'}}">
             <template is="chat-time" data="{{showTime:item.ui.showTime,time:item.ui.time}}"/>
             <template is="chat-word"
