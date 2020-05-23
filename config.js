@@ -2,7 +2,9 @@ export default class Config {
   // 如果需要支持音视频通话功能，必须全站使用https(包括app server和im server) + wss，
   // WebSockets over SSL/TLS
   static USE_WSS = false;
-  // WSS 的默认端口，其实是443
+  // WebSocket连接端口，需要和服务端对应，不能随意修改
+  static WS_PORT = 8083;
+  // Secure WebSocket连接端口，需要和服务端对应，不能随意修改
   static WSS_PORT = 8084;
 
   static STATIC_RESOURCE_PATH = 'https://static.wildfirechat.cn/'

@@ -1149,6 +1149,10 @@ export class WfcManager {
         return impl.getVersion();
     }
 
+    getAuthorizedMediaUrl(mediaType, mediaUrl, successCB, failCB){
+        impl.getAuthorizedMediaUrl(mediaType, mediaUrl, successCB, failCB)
+    }
+
     /**
      * 微信小程序切到前台时调用应用切到了前台
      *
@@ -1156,6 +1160,34 @@ export class WfcManager {
     onForeground(){
         impl.onForeground();
     }
+
+    /**
+     *
+     * 是否开启了已送达报告和已读报告功能
+     * @return {boolean}
+     */
+    isReceiptEnabled(){
+        return impl.isReceiptEnabled();
+    }
+
+    /**
+     *
+     * @param conversation
+     * @return {Map<string, Long>}
+     */
+    getConversationDelivery(conversation){
+        return impl.getConversationDelivery(conversation);
+    }
+
+    /**
+     *
+     * @param conversation
+     * @return {Map<string, Long>}
+     */
+    getConversationRead(conversation){
+        return impl.getConversationRead(conversation);
+    }
+
 
     _getStore() {
         return impl._getStore();
