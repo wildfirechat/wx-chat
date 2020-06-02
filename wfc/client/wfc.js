@@ -3,6 +3,7 @@ import { EventEmitter } from 'events';
 import MessageStatus from '../messages/messageStatus';
 import MessageContent from '../messages/messageContent';
 import {atob, btoa }from '../util/base64.min.js';
+import Long from 'long';
 
 import impl from '../proto/proto.min';
 import Config from "../../config";
@@ -242,7 +243,7 @@ export class WfcManager {
      * 从服务端加载好友请求，如果有更新，会通过{@link eventEmitter}通知
      */
     loadFriendRequestFromRemote() {
-        impl.loadFriendRequestFromRemote();
+        impl.loadFriendRequestFromRemote(Long.ZERO);
     }
 
     /**
@@ -854,6 +855,15 @@ export class WfcManager {
      */
     setConversationDraft(conversation, draft = '') {
         impl.setConversationDraft(conversation, draft);
+    }
+
+    /**
+     * 设置会话时间错，当会话不存在时，会创建一个新的会话。
+     * @param {Conversation} conversation
+     * @param {number} timestamp
+     */
+    setConversationTimestamp(conversation, timestamp){
+        impl.setConversationTimestamp(conversation, timestamp);
     }
 
     /**
