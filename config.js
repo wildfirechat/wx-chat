@@ -32,6 +32,7 @@ export default class Config {
     * 没有特殊需求，不建议修改
   */
   static KEEP_ALIVE_TIMEOUT = 200;
+  
 
   // 小程序不能播放amr格式的音频，需要将amr格式转换为mp3格式
   // 本服务传入amr音频文件的地址，将音频文件转换为mp3格式，并以application/octet-stream的格式返回
