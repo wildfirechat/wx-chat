@@ -9,6 +9,7 @@
         style="height:{{pageHeight}}px;width: 100%;display: flex;flex-direction: column;margin-top: 54rpx;"
         scroll-y="true"
         scroll-top="{{scrollTopVal}}"
+        bindscrolltoupper="loadOldMessages"
         bindtap="resetInputStatus">
     <block wx:for="{{chatItems}}" wx:key="{{index}}">
         <template is="chat-item"

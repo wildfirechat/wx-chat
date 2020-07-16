@@ -115,6 +115,23 @@ Page({
         this.chatInput = this.selectComponent('#chatInput');
     },
 
+    loadOldMessages() {
+        let messages = wfc.getMessages(this.conversation);
+        let beforeUid = messages.length > 0 ? messages[0].messageUid : 0;
+        wfc.loadRemoteConversationMessages(this.conversation, beforeUid, 20, (msgs) => {
+            if (msgs.length > 0) {
+                let convMsgs = wfc.getMessages(this.conversation);
+                let uiMsgs = this.messagesToUiMessages(convMsgs);
+                this.setData({
+                    chatItems: uiMsgs
+                });
+            }
+
+        }, (errorCode) => {
+            console.log('load remote message error', errorCode);
+        });
+    },
+
     onMessageLongTap(e) {
         let msg = e.currentTarget.dataset.item;
         let menuItems = ['删除', '复制'];
@@ -276,27 +293,21 @@ Page({
 
     showMessageList() {
         let messages = wfc.getMessages(this.conversation);
-        if(messages.length === 0){
-            wfc.loadRemoteConversationMessages(this.conversation, 0, 20, (msgs) => {
-                let uiMsgs = this.messagesToUiMessages(msgs);
-                this.setData({
-                    chatItems: uiMsgs
-            });
-
-            }, (errorCode) => {
-                console.log('load remote message error', errorCode);
-            });
-
-            return;
+        if (messages.length < 20) {
+            this.loadOldMessages();
+            if (messages.length === 0) {
+                return;
+            }
         }
 
         let uiMsgs = this.messagesToUiMessages(messages);
         this.setData({
-            chatItems: uiMsgs
+            chatItems: uiMsgs,
+            scrollTopVal: uiMsgs.length * 999
         });
     },
 
-    messagesToUiMessages(messages){
+    messagesToUiMessages(messages) {
         let uiMsgs = messages.map(m => {
             // time:item.time,
             // length:length,
