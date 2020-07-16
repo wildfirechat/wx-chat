@@ -21,6 +21,13 @@ Page({
         if (status === ConnectionStatus.ConnectionStatusConnected) {
             this.showConversationList();
         }
+        if(status === ConnectionStatus.ConnectionStatusLogout 
+            || status === ConnectionStatus.ConnectionStatusRejected
+            || status === ConnectionStatus.ConnectionStatusTokenIncorrect
+            || status === ConnectionStatus.ConnectionStatusSecretKeyMismatch
+            || status === ConnectionStatus.ConnectionStatusServerDown){
+                wx.clearStorage();
+        }
     },
 
     onUserInfosUpdate(userInfos) {

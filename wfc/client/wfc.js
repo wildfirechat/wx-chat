@@ -45,14 +45,20 @@ export class WfcManager {
 
     /**
      * 获取clientId，获取用户token时，一定要通过调用此方法获取clientId，否则会连接失败。
+     * @param {string} platformName  小程序平台名称，可选值为：ali、wx、qq、tt、bd，分别对应支付宝小程序、微信小程序、QQ小程序、今日头条小程序、百度小程序
      * @returns {string} clientId
      */
-    getClientId() {
-        return impl.getClientId();
+    getClientId(platformName) {
+        return impl.getClientId(platformName);
     }
 
-    getEncodedClientId(){
-        return impl.getEncodedClientId();
+    /**
+     * 获取编码后的clientId，获取用户token时，一定要通过调用此方法获取clientId，否则会连接失败。
+     * @param {string} platformName  小程序平台名称，可选值为：ali、wx、qq、tt、bd，分别对应支付宝小程序、微信小程序、QQ小程序、今日头条小程序、百度小程序
+     * @returns {string} clientId
+     */
+    getEncodedClientId(platformName){
+        return impl.getEncodedClientId(platformName);
     }
 
     /**
@@ -174,6 +180,17 @@ export class WfcManager {
             userInfo.portrait = Config.DEFAULT_PORTRAIT_URL;
         }
         return userInfo;
+    }
+
+    /**
+     * 获取用户信息
+     * @param {string} userId 用户ID
+     * @param {boolean} refresh 是否强制从服务器更新，如果本地没有或者强制，会从服务器刷新，然后发出通知UserInfosUpdate
+     * @param {function (UserInfo)} success 成功回调
+     * @param {function (number)} fail 失败回调
+     */
+    getUserInfoEx(userId, refresh, success, fail){
+        impl.getUserInfoEx(userId, refresh, success, fail);
     }
 
     /**
@@ -382,14 +399,24 @@ export class WfcManager {
 
     /**
      * 获取群信息
-     * @param groupId 群id
-     * @param refresh 是否刷新，如果刷新，且有更新的话，会通过{@link eventEmitter}通知
+     * @param {string} groupId 群id
+     * @param {boolean} refresh 是否刷新，如果刷新，且有更新的话，会通过{@link eventEmitter}通知
      * @returns {GroupInfo}
      */
     getGroupInfo(groupId, refresh = false) {
         return impl.getGroupInfo(groupId, refresh);
     }
 
+    /**
+     * 获取群信息
+     * @param {string} groupId 群id
+     * @param {boolean} refresh 是否刷新，如果刷新，且有更新的话，会通过{@link eventEmitter}通知
+     * @param {function (GroupInfo)} successCB 成功回调
+     * @param {function (number)} failCB 失败回调
+     */
+    getGroupInfoEx(groupId, refresh = false, successCB, failCB) {
+        impl.getGroupInfoEx(groupId, refresh, successCB, failCB);
+    }
 
     /**
      * 添加群成员
@@ -422,6 +449,17 @@ export class WfcManager {
      */
     getGroupMembers(groupId, fresh = false) {
         return impl.getGroupMembers(groupId, fresh);
+    }
+
+    /**
+     * 获取群成员信息
+     * @param {string} groupId 群id
+     * @param {boolean} fresh 是否强制从服务器更新，如果不刷新则从本地缓存中读取
+     * @param {function ([GroupMember])} successCB
+     * @param {function (number)} failCB
+     */
+    getGroupMembersEx(groupId, fresh = false, successCB, failCB) {
+        impl.getGroupMembersEx(groupId, fresh, successCB, failCB);
     }
 
     /**
@@ -863,7 +901,7 @@ export class WfcManager {
      * @param {number} timestamp
      */
     setConversationTimestamp(conversation, timestamp){
-        impl.setConversationTimestamp(conversation, timestamp);
+        impl.setConversationTimestamp(conversation, timestamp)
     }
 
     /**
@@ -1118,7 +1156,7 @@ export class WfcManager {
      * @param {Number} serverTime 服务器时间，精度到毫秒
      */
     insertMessage(conversation, messageContent, status, notify = false, serverTime = 0) {
-        impl.insertMessage(conversation, messageContent, status, notify, serverTime);
+        impl.insertMessage(conversation, messageContent, this.getUserId(), status, notify, serverTime);
     }
 
     /**
@@ -1132,7 +1170,7 @@ export class WfcManager {
     }
 
     /**
-     * 删除媒体文件
+     * 上传媒体文件
      * @param {string} fileName
      * @param {string} fileOrData base64格式的dataUri
      * @param {number} mediaType 媒体类型，可选值参考{@link MessageContentMediaType}
@@ -1178,6 +1216,24 @@ export class WfcManager {
      */
     isReceiptEnabled(){
         return impl.isReceiptEnabled();
+    }
+
+    /**
+     * 当前用户是否开启消息回执
+     * @return {boolean}
+     */
+    isUserReceiptEnabled(){
+        return impl.isUserReceiptEnabled();
+    }
+
+    /**
+     * 设置当前用户是否开启消息回执
+     * @param enable
+     * @param successCB
+     * @param failCB
+     */
+    setUserEnableReceipt(enable, successCB, failCB){
+        impl.setUserEnableReceipt(enable, successCB, failCB);
     }
 
     /**

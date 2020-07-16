@@ -7,6 +7,20 @@ Page({
     phone: '',
     code: ''
   },
+
+  onLoad: function () {
+    let userId = wx.getStorageSync('userId')
+    let token = wx.getStorageSync('token')
+    if(userId && token){
+      wfc.connect(userId, token);
+      wx.switchTab({
+        url: '../chat-list/chat-list', fail: (e) => {
+          console.log(e)
+        }
+      })
+    }
+  },
+
   bindPhoneInput: function (e) {
     this.setData({
       phone: e.detail.value
@@ -27,7 +41,7 @@ Page({
 
   login(phone, code) {
     let appServer = Config.APP_SERVER + '/login'
-    let clientId = wfc.getClientId()
+    let clientId = wfc.getClientId('wx')
     wx.request({
       url: appServer,
       data: {
@@ -47,6 +61,14 @@ Page({
             let userId = loginResult.result.userId;
             let token = loginResult.result.token;
             wfc.connect(userId, token, 'wx');
+            wx.setStorage({
+              key:"userId",
+              data:userId
+            })
+            wx.setStorage({
+              key:"token",
+              data:token
+            })
             wx.switchTab({
               url: '../chat-list/chat-list', fail: (e) => {
                 console.log(e)
