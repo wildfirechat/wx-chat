@@ -276,6 +276,27 @@ Page({
 
     showMessageList() {
         let messages = wfc.getMessages(this.conversation);
+        if(messages.length === 0){
+            wfc.loadRemoteConversationMessages(this.conversation, 0, 20, (msgs) => {
+                let uiMsgs = this.messagesToUiMessages(msgs);
+                this.setData({
+                    chatItems: uiMsgs
+            });
+
+            }, (errorCode) => {
+                console.log('load remote message error', errorCode);
+            });
+
+            return;
+        }
+
+        let uiMsgs = this.messagesToUiMessages(messages);
+        this.setData({
+            chatItems: uiMsgs
+        });
+    },
+
+    messagesToUiMessages(messages){
         let uiMsgs = messages.map(m => {
             // time:item.time,
             // length:length,
@@ -336,8 +357,6 @@ Page({
             return m;
         });
 
-        this.setData({
-            chatItems: uiMsgs
-        });
+        return uiMsgs;
     }
 });
