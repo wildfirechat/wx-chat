@@ -357,7 +357,7 @@ Page({
                 item.type = 'voice';
             } else if (m.messageContent instanceof NotificationMessageContent) {
                 item.type = 'notification';
-                item.notification = m.messageContent.formatNotification();
+                item.notification = m.messageContent.formatNotification(m);
             } else {
                 // TODO 更多消息类型处理
                 item.type = 'text';
