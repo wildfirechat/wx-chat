@@ -4,6 +4,7 @@ import ConnectionStatus from '../../wfc/client/connectionStatus.js';
 import MessageConfig from '../../wfc/client/messageConfig.js';
 import PersistFlag from '../../wfc/messages/persistFlag.js';
 import wfc from "../../wfc/client/wfc";
+import {timeFormat} from '../../utils/time'
 
 /**
  * 会话列表页面
@@ -141,7 +142,7 @@ Page({
             }
             if (item.lastMessage && item.lastMessage.messageContent) {
                 item.ui.lastMsgContent = item.lastMessage.messageContent.digest();
-                item.ui.time = 'todo msg time';
+                item.ui.time = timeFormat(item.lastMessage.timestamp);
             }
             return item;
         });
