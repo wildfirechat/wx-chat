@@ -85,7 +85,7 @@ export default class ConversationInfo {
         }
 
         // 其他的应当都会反应在timestamp上
-        return eq(info1.timestamp, info2.timestamp) && info1.draft === info2.draft;
+        return eq(info1.timestamp,info2.timestamp) && info1.draft === info2.draft;
 
     }
 }

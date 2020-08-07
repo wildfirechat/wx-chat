@@ -5,6 +5,7 @@ import Long from 'long'
 // 2. PC SDK，messageUid转换为long类型（可参考long.js)，其他所有时间相关的字段，都转换成number
 // 3. Web SDK，messageUid 以及所有时间相关的字段都转换为long类型
 // 4. 为了将UI层代码统一，对所有相关字段进行比较 、运算等操作时，都必须由本序列函数处理
+
 /**
  * 比较数值大小
  * @param {long | number | string} a

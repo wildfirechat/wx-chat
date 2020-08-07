@@ -20,6 +20,8 @@ export default class UserInfo {
     uid = '';
     name = '';
     displayName = '';
+    groupAlias = '';
+    friendAlias = '';
     gender = 0;
     portrait = '';
     mobile = '';
@@ -28,6 +30,9 @@ export default class UserInfo {
     social = '';
     extra = '';
     type = 0; //0 normal; 1 robot; 2 thing;
+    //0 normal; 1 deleted;
+    deleted = 0;
+
     updateDt = 1550652404513;
 
 }

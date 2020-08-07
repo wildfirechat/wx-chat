@@ -1,5 +1,4 @@
 import ChannelInfo from "./channelInfo";
-
 export default class NullChannelInfo extends ChannelInfo {
     constructor (channelId) {
         super()

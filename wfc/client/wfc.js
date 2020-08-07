@@ -452,6 +452,16 @@ export class WfcManager {
     }
 
     /**
+     * 根据群成员类型获取群成员列表
+     * @param {string} groupId
+     * @param {number} memberType，可选值参考{@link GroupMemberType}
+     * @return {[GroupMember]} 群成员列表
+     */
+    getGroupMembersByType(groupId, memberType){
+        return impl.getGroupMembersByType(groupId, memberType);
+    }
+
+    /**
      * 获取群成员信息
      * @param {string} groupId 群id
      * @param {boolean} fresh 是否强制从服务器更新，如果不刷新则从本地缓存中读取
@@ -483,6 +493,34 @@ export class WfcManager {
      */
     kickoffGroupMembers(groupId, memberIds, notifyLines, notifyMsg, successCB, failCB) {
         impl.kickoffGroupMembers(groupId, memberIds, notifyLines, notifyMsg, successCB, failCB);
+    }
+
+    /**
+     * 对群成员禁言
+     * @param {string} groupId 群id
+     * @param {boolean} isSet true，禁言；false，取消禁言
+     * @param {[string]} memberIds 群成员id列表
+     * @param {[number]} notifyLines 默认传[0]即可
+     * @param {MessageContent} notifyMsg 默认传null即可
+     * @param {function ()} successCB 成功回调
+     * @param {function (number)} failCB 失败回调
+     */
+    muteGroupMembers(groupId, isSet, memberIds= [], notifyLines = [], notifyMsg, successCB, failCB){
+        impl.muteOrAllowGroupMembers(groupId, isSet, false, memberIds, notifyLines, notifyMsg, successCB, failCB);
+    }
+
+    /**
+     * 群全局禁言之后，允许白名单成员发言
+     * @param {string} groupId 群id
+     * @param {boolean} isSet true，加入白名单，允许发言；false，移除白名单，禁止发言
+     * @param {[string]} memberIds 群成员id列表
+     * @param {[number]} notifyLines 默认传[0]即可
+     * @param {MessageContent} notifyMsg 默认传null即可
+     * @param {function ()} successCB 成功回调
+     * @param {function (number)} failCB 失败回调
+     */
+    allowGroupMembers(groupId, isSet, memberIds= [], notifyLines = [], notifyMsg, successCB, failCB){
+        impl.muteOrAllowGroupMembers(groupId, isSet, true, memberIds, notifyLines, notifyMsg, successCB, failCB);
     }
 
     /**
@@ -1197,8 +1235,8 @@ export class WfcManager {
         return impl.getVersion();
     }
 
-    getAuthorizedMediaUrl(mediaType, mediaUrl, successCB, failCB){
-        impl.getAuthorizedMediaUrl(mediaType, mediaUrl, successCB, failCB)
+    getAuthorizedMediaUrl(messageUid, mediaType, mediaPath, successCB, failCB){
+        impl.getAuthorizedMediaUrl(messageUid, mediaType, mediaPath, successCB, failCB)
     }
 
     /**
@@ -1226,6 +1264,9 @@ export class WfcManager {
         return impl.isUserReceiptEnabled();
     }
 
+    isCommercialServer() {
+        return true;
+    }
     /**
      * 设置当前用户是否开启消息回执
      * @param enable
@@ -1254,13 +1295,45 @@ export class WfcManager {
         return impl.getConversationRead(conversation);
     }
 
+    /**
+     * 获取会话中的文件记录
+     * @param {Conversation} conversation 会话
+     * @param {Long} beforeMessageUid 消息uid，表示获取此消息uid之前的文件记录
+     * @param {number} count 数量
+     * @param {function ([FileRecord])} successCB 成功回调
+     * @param {function (number)} failCB 失败回调
+     */
+    getConversationFileRecords(conversation, beforeMessageUid, count, successCB, failCB){
+        impl.getConversationFileRecords(conversation, beforeMessageUid, count, successCB, failCB);
+    }
+
+    /**
+     * 获取我发送的文件记录
+     * @param {Long} beforeMessageUid 消息uid，表示获取此消息uid之前的文件记录
+     * @param {number} count 数量
+     * @param {function ([FileRecord])} successCB 成功回调
+     * @param {function (number)} failCB 失败回调
+     */
+    getMyFileRecords(beforeMessageUid, count, successCB, failCB){
+        impl.getMyFileRecords(beforeMessageUid, count, successCB, failCB);
+    }
+
+    /**
+     * 删除文件记录
+     * @param {Long} messageUid 文件对应的消息的uid
+     * @param {function ()} successCB 成功回调
+     * @param {function (number)} failCB 失败回调
+     */
+    deleteFileRecord(messageUid, successCB, failCB){
+        impl.deleteFileRecord(messageUid, successCB, failCB);
+    }
 
     _getStore() {
         return impl._getStore();
     }
     /**
      * 初始化，请参考本demo的用法
-     * @param {[]} args 请参考本demo的用法，第一个参数必须为marswrapper.node导出的对象
+     * @param {[]} args，当采用script标签的方式引入，可传入Config配置对象，配置项，请参考{@link Config}
      */
     init(args = []) {
         impl.init(args);
