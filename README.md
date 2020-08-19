@@ -29,15 +29,14 @@
 ## 开发配置
 1. nodejs v10.16.3
 2. npm 6.9.0
-![本地设置](/image/local_setting.png)
-![项目配置](/image/project_setting.png)
+![本地设置](./image/local_setting.png)
+![项目配置](./image/project_setting.png)
 
 ## 开发
 > 一定要根据上面的开发配置进行配置，不然会出现编译不通过等问题。
 1. npm install
 2. 微信开发者工具 --> 工具 --> 构建 npm
 3. 微信开发者工具 --> 工具 --> 编译
-
 
 
 ### 联系我们
@@ -57,10 +56,16 @@
 
 > 强烈建议关注我们的公众号。我们有新版本发布或者有重大更新会通过公众号通知大家，另外我们也会不定期的发布一些关于野火IM的技术介绍。
 
+### 在线体验
+
+请用微信扫描下方小程序码，进行体验
+
+![野火IM 小程序码](./image/wx.jpg)
+
 ## 应用截图
 ![conversation_list](./image/conversation_list.png)
 ![conversation](./image/conversation.png)
-![friends](image/friends.png)
+![friends](./image/friends.png)
 
 ## 贡献
 欢迎提交pull request，一起打造一个更好的开源IM。
