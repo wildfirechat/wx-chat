@@ -1,11 +1,11 @@
 export default class Config {
   // 如果需要支持音视频通话功能，必须全站使用https(包括app server和im server) + wss，
-    // WebSockets over SSL/TLS
+  // WebSockets over SSL/TLS
   static USE_WSS = true;
-    // WebSocket连接端口，需要和服务端对应，不能随意修改
-    static WS_PORT = 8083;
-    // Secure WebSocket连接端口，需要和服务端对应，不能随意修改
-    static WSS_PORT = 8084;
+  // WebSocket连接端口，需要和服务端对应，不能随意修改
+  static WS_PORT = 8083;
+  // Secure WebSocket连接端口，需要和服务端对应，不能随意修改
+  static WSS_PORT = 8084;
 
   static STATIC_RESOURCE_PATH = 'https://static.wildfirechat.cn/'
   static APP_SERVER = 'https://app.wildfirechat.cn';
@@ -16,32 +16,36 @@ export default class Config {
   static ICE_USERNAME = 'wfchat';
   static ICE_PASSWORD = 'wfchat';
 
-    static WX_APP_ID = 'wx_12345678';
+  static WX_APP_ID = 'wx_12345678';
   static WX_APP_KEY = 'e7a9ad28474252f306c682ee78b31558cc0eca30';
 
-    static MESSAGE_ROAMING = 1;
-    // 拉取最近2小时的消息
-    static MESSAGE_ROAMING_HOUR_COUNT = 2;
+  static MESSAGE_ROAMING = 1;
+  // 拉取最近2小时的消息
+  static MESSAGE_ROAMING_HOUR_COUNT = 2;
 
-    // 向服务端发送ping的间隔，单位是秒。没有特殊需求，不建议修改
-    static KEEP_ALIVE_INTERNAL = 180;
+  // 向服务端发送ping的间隔，单位是秒。没有特殊需求，不建议修改
+  static KEEP_ALIVE_INTERNAL = 180;
 
-    /**
-     * 配合{@link wfc.onForeground}使用，切换到前台时，如果多少时间没有活动，将进行重连，单位是秒
-     * 需要大于{@link KEEP_ALIVE_INTERNAL}
-     * 没有特殊需求，不建议修改
-      */
-    static KEEP_ALIVE_TIMEOUT = 200;
+  /**
+   * 配合{@link wfc.onForeground}使用，切换到前台时，如果多少时间没有活动，将进行重连，单位是秒
+   * 需要大于{@link KEEP_ALIVE_INTERNAL}
+   * 没有特殊需求，不建议修改
+    */
+  static KEEP_ALIVE_TIMEOUT = 200;
 
 
   // 小程序不能播放amr格式的音频，需要将amr格式转换为mp3格式
   // 本服务传入amr音频文件的地址，将音频文件转换为mp3格式，并以application/octet-stream的格式返回
   static AMR_TO_MP3_SERVER_ADDRESS = 'https://app.wildfirechat.cn/amr2mp3?path=';
-  
-    // 发送消息超时时间，超时之后，认为当前连接已不可用，将进行重连，单位是秒。没有特殊需求不，不建议修改
-    static SEND_MESSAGE_TIMEOUT = 20;
 
-    static getWFCPlatform() {
+  // 发送消息超时时间，超时之后，认为当前连接已不可用，将进行重连，单位是秒。没有特殊需求不，不建议修改
+  static SEND_MESSAGE_TIMEOUT = 20;
+
+  static DEFAULT_USER_PORTRAIT = 'https://static.wildfirechat.cn/avatar_def.png';
+
+  static DEFAULT_GROUP_PORTRAIT = 'https://static.wildfirechat.cn/avatar_def.png';
+
+  static getWFCPlatform() {
     return 6;
-    }
+  }
 }

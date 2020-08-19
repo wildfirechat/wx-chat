@@ -5,6 +5,7 @@ import MessageConfig from '../../wfc/client/messageConfig.js';
 import PersistFlag from '../../wfc/messages/persistFlag.js';
 import wfc from "../../wfc/client/wfc";
 import {timeFormat} from '../../utils/time'
+import Config from '../../config.js';
 
 /**
  * 会话列表页面
@@ -135,7 +136,7 @@ Page({
         let clUi = conversations.map(item => {
             item.ui = {
                 title: item.title(),
-                portrait: item.portrait(),
+                portrait: item.portrait() ? item.portrait() : Config.DEFAULT_USER_PORTRAIT,
                 lastMsgContent: '',
                 unread: item.unreadCount.unread,
                 time: ''
@@ -150,5 +151,12 @@ Page({
         this.setData({
             conversations: clUi
         });
-    }
+    },
+
+    loadPortraitError(e){
+        if(e.type === 'error'){
+            // TODO
+            console.log('load conversation target portrait error', e);
+        }
+    },
 });

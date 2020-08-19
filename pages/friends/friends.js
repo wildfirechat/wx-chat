@@ -4,6 +4,7 @@ import EventType from '../../wfc/client/wfcEvent.js';
 import ConversationInfo from "../../wfc/model/conversationInfo";
 import Conversation from "../../wfc/model/conversation";
 import ConversationType from "../../wfc/model/conversationType";
+import Config from "../../config";
 
 /**
  * 获取好友列表
@@ -42,7 +43,7 @@ Page({
 
             return {
                 friendId: userInfo.uid,
-                friendHeadUrl: userInfo.portrait,
+                friendHeadUrl: userInfo.portrait ? userInfo.portrait : Config.DEFAULT_USER_PORTRAIT,
                 friendName: userInfo.displayName
             };
         });
@@ -55,6 +56,17 @@ Page({
             friendHeadUrl: item.myHeadUrl,
             friendName: item.nickName
         };
+    },
+
+    loadPortraitError(e){
+        if(e.type === 'error'){
+            let friendInfos = this.data.friends;
+            let index = friendInfos.findIndex(f => f.friendId === e.target.dataset.uid);
+            if(index >= 0){
+                friendInfos[index].friendHeadUrl = Config.DEFAULT_USER_PORTRAIT;
+                this.setData({friends: friendInfos});
+            }
+        }
     },
 
     chatTo(e) {
