@@ -74,7 +74,7 @@ function justSimpleDealTime(currentItemTimeStamp, ifShowTime) {
                     newtime = H + ':' + Min
                 } else {
                     // 一周内
-                    newtime = helper.weekFormat(W) + ' ' + H + ':' + Min
+                    newtime = ['星期一', '星期二', '星期三', '星期四', '星期五', '星期六','星期天'][W-1] + ' ' + H + ':' + Min
                 }
             } else {
                 // 一年内
