@@ -88,7 +88,7 @@ Page({
         this.UI = new UI(this);
         this.voiceManager = new VoiceManager(this);
 
-        this.UI.updateChatStatus('正在聊天中...');
+        // this.UI.updateChatStatus('正在聊天中...');
 
         wfc.eventEmitter.on(EventType.ReceiveMessage, this.onReceiveMessage);
         wfc.eventEmitter.on(EventType.SendMessage, this.onSendMessage);

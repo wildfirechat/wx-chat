@@ -2,11 +2,11 @@
 <import src="../../modules/chat-page/chat-item.wxml"/>
 <import src="../../modules/chat-page/chat-page-status.wxml"/>
 
-<template is="chat-page-status" data="{{chatStatue,chatStatusContent}}"/>
+<!-- <template is="chat-page-status" data="{{chatStatue,chatStatusContent}}"/> -->
 
 <scroll-view
         enable-flex="{{true}}"
-        style="height:{{pageHeight}}px;width: 100%;display: flex;flex-direction: column;margin-top: 54rpx;"
+        style="height:{{pageHeight}}px;width: 100%;display: flex;flex-direction: column;margin-top: 0rpx;"
         scroll-y="true"
         scroll-top="{{scrollTopVal}}"
         bindscrolltoupper="loadOldMessages"
