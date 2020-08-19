@@ -29,8 +29,8 @@
 ## 开发配置
 1. nodejs v10.16.3
 2. npm 6.9.0
-![本地设置](image/local_setting.png)
-![项目配置](image/project_setting.png)
+![本地设置](https://static.wildfirechat.cn/local_setting.png)
+![项目配置](https://static.wildfirechat.cn/project_setting.png)
 
 ## 开发
 > 一定要根据上面的开发配置进行配置，不然会出现编译不通过等问题。
@@ -60,12 +60,12 @@
 
 请用微信扫描下方小程序码，进行体验
 
-![野火IM 小程序码](image/wx.jpg)
+![野火IM 小程序码](https://static.wildfirechat.cn/wx.jpg)
 
 ## 应用截图
-![conversation_list](image/conversation_list.png)
-![conversation](image/conversation.png)
-![friends](image/friends.png)
+![conversation_list](https://static.wildfirechat.cn/conversation_list.png)
+![conversation](https://static.wildfirechat.cn/conversation.png)
+![friends](https://static.wildfirechat.cn/friends.png)
 
 ## 贡献
 欢迎提交pull request，一起打造一个更好的开源IM。
