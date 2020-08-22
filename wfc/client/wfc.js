@@ -1022,14 +1022,14 @@ export class WfcManager {
      * 获取消息
      * @param {[number]} conversationTypes 会话类型列表，可选值参考{@link  ConversationType}
      * @param {[number]} lines 会话线路列表
-     * @param {[number]} contentTypes 消息类型列表，可选值参考{@link MessageContentType}
      * @param {number} fromIndex 本参数暂时无效! messageId，表示从那一条消息开始获取
      * @param {boolean} before 本参数暂时无效! true, 获取fromIndex之前的消息，即更旧的消息；false，获取fromIndex之后的消息，即更新的消息。都不包含fromIndex对应的消息
      * @param {number} count 本参数暂时无效! 获取多少条消息
      * @param {string} withUser 只有会话类型为{@link ConversationType#Channel}时生效, channel主用来查询和某个用户的所有消息
+     * @param {[number]} contentTypes 消息类型列表，可选值参考{@link MessageContentType}
      * @return {[Message]} 会话消息列表，参考{@link Message}
      */
-    getMessagesEx(conversationTypes, lines, contentTypes, fromIndex= 0, before= true, count = 20, withUser = '') {
+    getMessagesEx(conversationTypes, lines, fromIndex= 0, before= true, count = 20, withUser = '', contentTypes =[]) {
         return impl.getMessagesEx(conversationTypes, lines, contentTypes, fromIndex, before, count, withUser);
     }
 
@@ -1046,6 +1046,33 @@ export class WfcManager {
      */
     getMessagesEx2(conversationTypes, lines, messageStatus, fromIndex= 0, before= true, count= 20, withUser= '') {
         return impl.getMessagesEx2(conversationTypes, lines, messageStatus, fromIndex, before, count, withUser);
+    }
+    /**
+     * 获取用户会话消息
+     * @param {string} userId 用户id
+     * @param {Conversation} conversation 目标会话
+     * @param {number} fromIndex 本参数暂时无效！ messageId，表示从那一条消息开始获取
+     * @param {boolean} before 本参数暂时无效！ true, 获取fromIndex之前的消息，即更旧的消息；false，获取fromIndex之后的消息，即更新的消息。都不包含fromIndex对应的消息
+     * @param {number} count 本参数暂时无效! 获取多少条消息
+     * @return
+     */
+    getUserMessages(userId, conversation, fromIndex, before = true, count = 20) {
+        return impl.getUserMessages(userId, conversation, fromIndex, before, count);
+    }
+
+    /**
+     * 获取用户消息
+     * @param {string} userId 用户id
+     * @param {[number]} conversationTypes 想获取的会话类型，可选值参考{@link ConversationType}
+     * @param {[0]} lines 想获取哪些会话线路的会话，默认传[0]即可
+     * @param {number} fromIndex 本参数暂时无效！ messageId，表示从那一条消息开始获取
+     * @param {boolean} before 本参数暂时无效！ true, 获取fromIndex之前的消息，即更旧的消息；false，获取fromIndex之后的消息，即更新的消息。都不包含fromIndex对应的消息
+     * @param {number} count 本参数暂时无效！ 获取多少条消息
+     * @param {[number]} contentTypes 消息类型，可选值参考{@link MessageContentType}
+     * @return
+     */
+    getUserMessagesEx(userId, conversationTypes, lines, fromIndex, before = true, count = 20, contentTypes = []) {
+        return impl.getUserMessagesEx(userId, conversationTypes, lines, fromIndex, before, count, contentTypes);
     }
 
     /**
