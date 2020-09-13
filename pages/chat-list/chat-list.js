@@ -142,7 +142,9 @@ Page({
                 time: ''
             }
             if (item.lastMessage && item.lastMessage.messageContent) {
-                item.ui.lastMsgContent = item.lastMessage.messageContent.digest();
+                let digest = item.lastMessage.messageContent.digest();
+                digest = digest.replace(/\n/g, ' ');
+                item.ui.lastMsgContent = digest;
                 item.ui.time = timeFormat(item.lastMessage.timestamp);
             }
             return item;

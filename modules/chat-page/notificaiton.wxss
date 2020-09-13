@@ -1,4 +1,4 @@
-.chat-list-time-style {
+.chat-list-notification-style {
     margin-top: 30rpx;
     background-color: #cccccc;
     color: white;

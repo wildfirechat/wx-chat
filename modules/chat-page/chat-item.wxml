@@ -9,7 +9,9 @@
                       data="{{length:length,index:index,headUrl:item.ui.headUrl,isMy:item.ui.isMy,showTime:item.ui.showTime,time:item.ui.time,content:item.ui.content,type:item.ui.type,voiceDuration:item.ui.voiceDuration,isPlaying:item.ui.isPlaying,sendStatus:item.ui.sendStatus}}"/>
         </block>
         <block wx:else>
-            <template is="chat-notification" data="{{notification:item.ui.notification}}"/>
+            <view style="width: 100%;display: flex; flex-direction: column;align-items: center">
+                <template is="chat-notification" data="{{notification:item.ui.notification}}"/>
+            </view>
         </block>
     </view>
 </template>
