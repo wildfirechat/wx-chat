@@ -10,6 +10,8 @@ import ImageMessageContent from "../../wfc/messages/imageMessageContent";
 import SoundMessageContent from "../../wfc/messages/soundMessageContent";
 import MessageStatus from "../../wfc/messages/messageStatus";
 import NotificationMessageContent from "../../wfc/messages/notification/notificationMessageContent";
+import { numberValue } from "../../wfc/util/longUtil";
+import {timeFormat} from '../../utils/time'
 
 /**
  * 聊天页面
@@ -308,6 +310,7 @@ Page({
     },
 
     messagesToUiMessages(messages) {
+        let lastTimestamp = 0;
         let uiMsgs = messages.map(m => {
             // time:item.time,
             // length:length,
@@ -324,12 +327,13 @@ Page({
 
             // TODO item.ui.xx
             let item = {
-                showTime: false,
-                time: 'to do time',
+                showTime: numberValue(m.timestamp) - lastTimestamp > 2 * 60 * 1000,
+                time: timeFormat(m.timestamp),
                 headUrl: wfc.getUserInfo(m.from).portrait,
                 isMy: m.direction === 0,
                 isPlaying: false,
             };
+            lastTimestamp = numberValue(m.timestamp);
 
             switch (m.status) {
                 case MessageStatus.Sending:
