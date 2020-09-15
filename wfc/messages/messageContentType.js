@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2020 WildFireChat. All rights reserved.
+ */
+
 export default class MessageContentType {
     // 基本消息类型
     static Unknown = 0;
