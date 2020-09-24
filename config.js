@@ -8,6 +8,9 @@ export default class Config {
   static WSS_PORT = 8084;
 
   static STATIC_RESOURCE_PATH = 'https://static.wildfirechat.cn/'
+
+  // IM SERVER的HOST，是域名或者ip，没有http等前缀!
+  static IM_SERVER_HOST = 'wildfirechat.cn';
   static APP_SERVER = 'https://app.wildfirechat.cn';
   // 用于本地打包验证
   // static APP_SERVER = 'http://localhost:8888';
