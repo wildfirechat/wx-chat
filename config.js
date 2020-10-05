@@ -1,6 +1,7 @@
 export default class Config {
   // 如果需要支持音视频通话功能，必须全站使用https(包括app server和im server) + wss，
   // WebSockets over SSL/TLS
+  // 置为true时，请确保 IM SERVER 支持https访问。IM SERVER本身不能处理https请求，一般是通过在IM SERVER前面加上nginx之类的负载均衡器来实现https支持
   static USE_WSS = true;
   // WebSocket连接端口，需要和服务端对应，不能随意修改
   static WS_PORT = 8083;
@@ -11,6 +12,9 @@ export default class Config {
 
   // IM SERVER的HOST，是域名或者ip，没有http等前缀!
   static IM_SERVER_HOST = 'wildfirechat.cn';
+
+  //默认demo应用服务的端口是8888，地址配置为 http://${应用服务器地址}:8888 上线需要切换成https的地址。
+  //static APP_SERVER = 'http://wildfirechat.cn:8888';
   static APP_SERVER = 'https://app.wildfirechat.cn';
   // 用于本地打包验证
   // static APP_SERVER = 'http://localhost:8888';
