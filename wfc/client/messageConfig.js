@@ -155,6 +155,12 @@ export default class MessageConfig {
             type: MessageContentType.ImageText,
         },
         {
+            name: 'userCard',
+            flag: PersistFlag.Persist_And_Count,
+            type: MessageContentType.UserCard,
+            contentClazz: CardMessageContent,
+        },
+        {
             name: 'tip',
             flag: PersistFlag.Persist,
             type: MessageContentType.Tip_Notification,

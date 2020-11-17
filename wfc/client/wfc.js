@@ -11,6 +11,7 @@ import Long from 'long';
 
 import impl from '../proto/proto.min';
 import Config from "../../config";
+import ConversationType from "../model/conversationType";
 
 export class WfcManager {
 
@@ -888,11 +889,11 @@ export class WfcManager {
     /**
      * 搜索会话
      * @param {string} keyword 关键字
-     * @param {[ConversationType]} types 从哪些类型的会话中进行搜索，可选值可参考{@link ConversationType}
+     * @param {[number]} types 从哪些类型的会话中进行搜索，可选值可参考{@link ConversationType}
      * @param {[number]} lines 从哪些会话线路进行搜索，默认传[0]即可
      * @returns {[ConversationInfo]}
      */
-    searchConversation(keyword, types = [], lines = []) {
+    searchConversation(keyword, types = [0, 1, 2], lines = [0, 1]) {
         return impl.searchConversation(keyword, types, lines);
     }
 
@@ -943,7 +944,7 @@ export class WfcManager {
      * @param {number} timestamp
      */
     setConversationTimestamp(conversation, timestamp){
-        impl.setConversationTimestamp(conversation, timestamp)
+        impl.setConversationTimestamp(conversation, timestamp);
     }
 
     /**
@@ -997,6 +998,34 @@ export class WfcManager {
         return impl.isMyFriend(userId);
     }
 
+    /**
+     * 获取星标用户id列表
+     * @returns {[string]}
+     */
+    getFavUsers() {
+        return impl.getFavUsers();
+    }
+
+    /**
+     *  判断用户是否是星标用户
+     * @param {string} userId
+     * @returns {boolean}
+     */
+     isFavUser(userId) {
+        return impl.isFavUser(userId);
+    }
+
+     /**
+     * 设置或取消星标用户
+     * @param {string} userId 用户id
+     * @param {boolean} fav true，保存到通讯录；false，从通讯录移除
+     * @param {function ()} successCB
+     * @param {function (number)} failCB
+     * @returns {Promise<void>}
+     */
+    async setFavUser(userId, fav, successCB, failCB) {
+        impl.setFavUser(userId, fav, successCB, failCB);
+    }
     /**
      * 发送好友请求
      * @param {string} userId 目标用户id
@@ -1142,6 +1171,19 @@ export class WfcManager {
      */
     searchMessage(conversation, keyword) {
         return impl.searchMessage(conversation, keyword);
+    }
+
+    /**
+     * 搜索消息
+     * @param {Conversation} conversation 目标会话，如果为空搜索所有会话
+     * @param {string} keyword 关键字
+     * @param {boolean} desc 逆序排列
+     * @param {int} limit 返回数量
+     * @param {int} offset 偏移
+     * @returns {[Message]}
+     */
+    searchMessageEx(conversation, keyword, desc, limit, offset) {
+        return impl.searchMessageEx(conversation, keyword, desc, limit, offset);
     }
 
     /**
