@@ -1,6 +1,6 @@
 export default class Config {
   // 如果需要支持音视频通话功能，必须全站使用https(包括app server和im server) + wss，
-  // WebSockets over SSL/TLS
+    // WebSockets over SSL/TLS，启用https时，一定要配置为true；不启用https，一定要为false
   // 置为true时，请确保 IM SERVER 支持https访问。IM SERVER本身不能处理https请求，一般是通过在IM SERVER前面加上nginx之类的负载均衡器来实现https支持
   static USE_WSS = true;
   // WebSocket连接端口，需要和服务端对应，不能随意修改
@@ -48,7 +48,8 @@ export default class Config {
   // 发送消息超时时间，超时之后，认为当前连接已不可用，将进行重连，单位是秒。没有特殊需求不，不建议修改
   static SEND_MESSAGE_TIMEOUT = 20;
 
-  static DEFAULT_USER_PORTRAIT = 'https://static.wildfirechat.cn/avatar_def.png';
+    // 会话过期时间，表示一个会话，自己不再参与之后，多久会过期。会话列表不展示已过期的会话；单位是天
+    static CONVERSATION_EXPIRE_TIME = 30;
 
   static DEFAULT_GROUP_PORTRAIT = 'https://static.wildfirechat.cn/avatar_def.png';
 
