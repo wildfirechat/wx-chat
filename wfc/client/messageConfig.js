@@ -36,6 +36,7 @@ import GroupPrivateChatNotificationContent from "../messages/notification/groupP
 import LocationMessageContent from "../messages/locationMessageContent";
 import MuteGroupMemberNotification from '../messages/notification/muteGroupMemberNotification'
 import AllowGroupMemberNotification from '../messages/notification/allowGroupMemberNotification'
+import CardMessageContent from '../messages/cardMessageContent'
 export default class MessageConfig {
     static getMessageContentClazz(type) {
         for (const content of MessageConfig.MessageContents) {
