@@ -9,7 +9,5 @@
     "long": "^4.0.0",
     "wechat-mini-programs-apis": "^1.6.2"
   },
-  "devDependencies": {
-    "gulp": "^3.9.1"
-  }
+  "devDependencies": {}
 }
