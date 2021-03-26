@@ -7,17 +7,20 @@
       </view>
     </view>
   </view>
-
-    <view class="page-section">
+  <view class="page-section">
     <view class="weui-cells__title">请输入验证码</view>
     <view class="weui-cells weui-cells_after-title">
       <view class="weui-cell weui-cell_input">
-        <input class="weui-input" bindinput="bindCodeInput"  type="number" placeholder="验证码" />
+        <input class="weui-input" bindinput="bindCodeInput" type="number" placeholder="验证码" />
       </view>
     </view>
   </view>
-
-<button bindtap="bindLoginTap">登录</button>
-<button bindtap="bindAuthCodeTap">获取验证码</button>
-  
+  <button bindtap="bindLoginTap">登录</button>
+  <button bindtap="bindAuthCodeTap">获取验证码</button>
+  <view>
+    <view class="desc-section" />
+    <view class="desc">本小程序用于演示野火IM小程序的基本功能</view>
+    <view class="page-section" />
+    <view class="desc">仅限野火IM开发者使用</view>
+  </view>
 </view>

@@ -7,6 +7,15 @@
   margin-top: 20rpx;
 }
 
+.desc-section{
+  margin-top: 40rpx;
+}
+
+.desc {
+  font-size: 13px;
+  text-align: center;
+}
+
 button {margin: 10px;}
 .other-button-hover {
   background-color: blue;
