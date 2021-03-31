@@ -63,7 +63,7 @@ Page({
             let friendInfos = this.data.friends;
             let index = friendInfos.findIndex(f => f.friendId === e.target.dataset.uid);
             if(index >= 0){
-                friendInfos[index].friendHeadUrl = Config.DEFAULT_USER_PORTRAIT;
+                friendInfos[index].friendHeadUrl = Config.DEFAULT_PORTRAIT_URL;
                 this.setData({friends: friendInfos});
             }
         }
