@@ -169,6 +169,9 @@ export class WfcManager {
         return userInfo.groupAlias ? userInfo.groupAlias : (userInfo.friendAlias ? userInfo.friendAlias : (userInfo.displayName ? userInfo.displayName : '<' + userId + '>'))
     }
 
+    getUserDisplayNameEx(userInfo) {
+        return userInfo.friendAlias ? userInfo.friendAlias : (userInfo.displayName ? userInfo.displayName : '<' + userInfo.uid + '>');
+    }
     getGroupMemberDisplayNameEx(userInfo) {
         return userInfo.groupAlias ? userInfo.groupAlias : (userInfo.friendAlias ? userInfo.friendAlias : (userInfo.displayName ? userInfo.displayName : '<' + userInfo.uid + '>'))
     }
@@ -259,6 +262,16 @@ export class WfcManager {
      */
     getOutgoingFriendRequest() {
         return impl.getOutgoingFriendRequest();
+    }
+
+    /**
+     * 获取单条好友请求
+     * @param {string} userId 对方的用户id
+     * @param {boolean} incoming 是否是收到的好友请求
+     * @return {FriendRequest|null}
+     */
+    getOneFriendRequest(userId, incoming = true){
+        return impl.getOneFriendRequest(userId, incoming);
     }
 
     /**
@@ -1109,6 +1122,15 @@ export class WfcManager {
     }
 
     /**
+     * 获取会话第一条未读消息的消息id
+     * @param {Conversation} conversation
+     * @return {number}
+     */
+    getFirstUnreadMessageId(conversation){
+        return impl.getFirstUnreadMessageId(conversation);
+    }
+
+    /**
      * 已废弃，请使用{@link loadRemoteConversationMessages}
      * 获取会还的远程历史消息
      * @param {Conversation} conversation 目标会话
@@ -1126,7 +1148,7 @@ export class WfcManager {
      * @param {Conversation} conversation 目标会话
      * @param {number | Long} beforeUid 消息uid，表示拉取本条消息之前的消息
      * @param {number} count
-     * @param {function (Message)} successCB
+     * @param {function ([Message])} successCB
      * @param failCB
      */
      loadRemoteConversationMessages(conversation, beforeUid, count, successCB, failCB) {
@@ -1138,7 +1160,7 @@ export class WfcManager {
      * @param {number} line 会话线路
      * @param {number | Long} beforeUid 消息uid，表示拉取本条消息之前的消息
      * @param {number} count
-     * @param {function (Message)} successCB
+     * @param {function ([Message])} successCB
      * @param failCB
      */
     loadRemoteLineMessages(line, beforeUid, count, successCB, failCB){
@@ -1267,7 +1289,7 @@ export class WfcManager {
      * @param {Number} serverTime 服务器时间，精度到毫秒
      */
     insertMessage(conversation, messageContent, status, notify = false, serverTime = 0) {
-        impl.insertMessage(conversation, messageContent, this.getUserId(), status, notify, serverTime);
+        impl.insertMessage(conversation, messageContent, status, notify, serverTime);
     }
 
     /**
@@ -1308,8 +1330,25 @@ export class WfcManager {
         return impl.getVersion();
     }
 
+    /**
+     * 获取经过认证的下载地址。
+     */
     getAuthorizedMediaUrl(messageUid, mediaType, mediaPath, successCB, failCB){
         impl.getAuthorizedMediaUrl(messageUid, mediaType, mediaPath, successCB, failCB)
+    }
+
+    /**
+     * 是否支持上传大文件上传。只有专业版才支持此功能。当支持大文件上传时，调用getUploadMediaUrl获取上传url，然后在应用层上传
+     */
+    isSupportBigFilesUpload() {
+        return impl.isSupportBigFilesUpload();
+    }
+
+    /**
+     * 获取上传链接。一般用户大文件上传。
+     */
+    getUploadMediaUrl(fileName, mediaType, successCB, failCB) {
+        impl.getUploadMediaUrl(fileName, mediaType, successCB, failCB);
     }
 
     /**
@@ -1371,13 +1410,14 @@ export class WfcManager {
     /**
      * 获取会话中的文件记录
      * @param {Conversation} conversation 会话
+     * @param {String} fromUser 来源用户
      * @param {Long} beforeMessageUid 消息uid，表示获取此消息uid之前的文件记录
      * @param {number} count 数量
      * @param {function ([FileRecord])} successCB 成功回调
      * @param {function (number)} failCB 失败回调
      */
-    getConversationFileRecords(conversation, beforeMessageUid, count, successCB, failCB){
-        impl.getConversationFileRecords(conversation, beforeMessageUid, count, successCB, failCB);
+    getConversationFileRecords(conversation, fromUser, beforeMessageUid, count, successCB, failCB){
+        impl.getConversationFileRecords(conversation, fromUser, beforeMessageUid, count, successCB, failCB);
     }
 
     /**

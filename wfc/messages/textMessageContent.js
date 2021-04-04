@@ -26,6 +26,7 @@ export default class TextMessageContent extends MessageContent {
             let obj = {
                 "quote": this.quoteInfo.encode()
             }
+            // JSON.parse 和 JSON.stringify 不能处理java long
             let orgStr = JSON.stringify(obj);
             let str= orgStr.replace(/"u":"([0-9]+)"/, "\"u\":$1");
 
@@ -38,7 +39,12 @@ export default class TextMessageContent extends MessageContent {
         super.decode(payload);
         this.content = payload.searchableContent;
         if(payload.binaryContent && payload.binaryContent.length > 0){
-            let obj = JSON.parse(wfc.b64_to_utf8(payload.binaryContent)).quote;
+            // JSON.parse 和 JSON.stringify 不能处理java long
+            let quoteInfoStr = wfc.b64_to_utf8(payload.binaryContent)
+            // FIXME node 环境，decodeURIComponent 方法，有时候会在最后添加上@字符，目前尚未找到原因，先规避
+            quoteInfoStr = quoteInfoStr.substring(0, quoteInfoStr.lastIndexOf('}') + 1)
+            quoteInfoStr = quoteInfoStr.replace(/"u":([0-9]+),/, '"u":"$1",')
+            let obj = JSON.parse(quoteInfoStr).quote
 
             this.quoteInfo = new QuoteInfo();
             this.quoteInfo.decode(obj);

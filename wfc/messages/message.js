@@ -45,6 +45,8 @@ import { encode } from 'base64-arraybuffer';
 import Config from '../../config.js';
 
 import Long from 'long'
+import UnsupportMessageContent from "../../wfc/messages/unsupportMessageConten";
+import RecallMessageNotification from "../../wfc/messages/notification/recallMessageNotification";
 
 export default class Message {
     conversation = {};
@@ -167,5 +169,25 @@ export default class Message {
             return msg;
         }
 
+    }
+
+    static messageContentFromMessagePayload(payload, from) {
+        let contentClazz = MessageConfig.getMessageContentClazz(payload.type);
+        contentClazz = contentClazz ? contentClazz : UnsupportMessageContent;
+        let content = new contentClazz();
+        content.decode(payload);
+
+        let selfUid = wfc.getUserId();
+        if (content instanceof NotificationMessageContent) {
+            if (content instanceof RecallMessageNotification) {
+                if (content.operatorId === selfUid) {
+                    content.fromSelf = true;
+                }
+            } else if (from === selfUid) {
+                content.fromSelf = true;
+            }
+        }
+
+        return content;
     }
 }
