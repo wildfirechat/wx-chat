@@ -12,6 +12,7 @@ import Long from 'long';
 import impl from '../proto/proto.min';
 import Config from "../../config";
 import ConversationType from "../model/conversationType";
+import UserSettingScope from "./userSettingScope";
 
 export class WfcManager {
 
@@ -988,6 +989,14 @@ export class WfcManager {
     }
 
     /**
+     * 清除单条消息的未读状态
+     * @param messageId
+     */
+    clearMessageUnreadStatus(messageId){
+        impl.clearMessageUnreadStatus(messageId);
+    }
+
+    /**
      * 清楚所有消息的未读状态
      */
     clearAllUnreadStatus() {
@@ -1281,6 +1290,17 @@ export class WfcManager {
     }
 
     /**
+     * 清除远程会话消息
+     * @param {Conversation} conversation
+     * @param {function ()} successCB
+     * @param {function (error)} failCB
+     * @return {Promise<void>}
+     */
+    async clearRemoteConversationMessages(conversation, successCB, failCB){
+        impl.clearRemoteConversationMessages(conversation, successCB, failCB);
+    }
+
+    /**
      * 插入消息
      * @param {Conversation} conversation 目标会话
      * @param {MessageContent} messageContent 具体的消息内容，一定要求是{@link MessageContent} 的子类，不能是普通的object
@@ -1300,6 +1320,15 @@ export class WfcManager {
      */
     async updateMessageContent(messageId, messageContent) {
         impl.updateMessageContent(messageId, messageContent);
+    }
+
+    /**
+     * 更新消息状态
+     * @param {number} messageId 消息id
+     * @param {MessageStatus} 消息状态，可选值参考{@link MessageStatus}
+     */
+    async updateMessageStatus(messageId, status) {
+        impl.updateMessageStatus(messageId, status);
     }
 
     /**
@@ -1376,8 +1405,33 @@ export class WfcManager {
         return impl.isUserReceiptEnabled();
     }
 
+    /**
+    * 判断是否是专业版IM服务
+    * @return {boolean}
+    */
     isCommercialServer() {
         return true;
+    }
+    /**
+    * 判断是否应用禁止草稿同步
+    * @return {boolean}
+    */
+    isGlobalDisableSyncDraft() {
+        return impl.isGlobalDisableSyncDraft();
+    }
+
+    /**
+     *
+     * @param disable
+     * @param successCB
+     * @param failCB
+     */
+    setDisableSyncDraft(disable, successCB, failCB){
+        impl.setDisableSyncDraft(disable, successCB, failCB)
+    }
+
+    isDisableSyncDraft(){
+        return impl.isDisableSyncDraft();
     }
     /**
      * 设置当前用户是否开启消息回执

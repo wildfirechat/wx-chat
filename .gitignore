@@ -1,6 +1,7 @@
 # Created by .ignore support plugin (hsz.mobi)
 /project.config.json
 /.idea/
+.vscode/
 /node_modules/
 /miniprogram_npm
 proto.min.js.map

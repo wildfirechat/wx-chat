@@ -5,12 +5,13 @@
 export default class EventType {
     // function (message) {}
     static SendMessage = 'sendMsg';
-    // function (message) {}
+    // function (message, hasMore) {}
     static ReceiveMessage = 'receiveMsg';
     // function (Map(userId, receiveTime)) {}
     static MessageReceived = 'msgReceived';
     // function ([readEntry]) {}
     static MessageRead = 'msgRead';
+    // 主动调用recallMessage时，也会触发
     // function (operator, messageUid) {}
     static RecallMessage = 'recallMsg';
     // 远程删除消息时触发
@@ -31,7 +32,7 @@ export default class EventType {
     static GroupInfosUpdate = 'groupInfosUpdate';
     // function (updatedFriendIds) {}
     static FriendListUpdate = 'friendListUpdate';
-    // function () {}
+    // function ([newFriendRequests]) {}
     static FriendRequestUpdate = 'friendRequestUpdate';
     // function (conversationInfo) {}
     static ConversationInfoUpdate = 'conversationInfoUpdate';
