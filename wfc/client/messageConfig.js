@@ -38,6 +38,7 @@ import MuteGroupMemberNotification from '../messages/notification/muteGroupMembe
 import AllowGroupMemberNotification from '../messages/notification/allowGroupMemberNotification'
 import CardMessageContent from '../messages/cardMessageContent'
 import CompositeMessageContent from "../messages/compositeMessageContent";
+
 export default class MessageConfig {
     static getMessageContentClazz(type) {
         for (const content of MessageConfig.MessageContents) {
@@ -131,7 +132,7 @@ export default class MessageConfig {
             name: 'location',
             flag: PersistFlag.Persist_And_Count,
             type: MessageContentType.Location,
-            contentClazz:LocationMessageContent,
+            contentClazz: LocationMessageContent,
         },
         {
             name: 'file',

@@ -2,17 +2,13 @@
  * Copyright (c) 2020 WildFireChat. All rights reserved.
  */
 
-import Conversation from '../model/conversation';
-import { EventEmitter } from 'events';
-import MessageStatus from '../messages/messageStatus';
-import MessageContent from '../messages/messageContent';
-import {atob, btoa }from '../util/base64.min.js';
+import {EventEmitter} from 'events';
+import {atob, btoa} from '../util/base64.min.js';
 import Long from 'long';
 
 import impl from '../proto/proto.min';
 import Config from "../../config";
-import ConversationType from "../model/conversationType";
-import UserSettingScope from "./userSettingScope";
+
 
 export class WfcManager {
 
@@ -45,26 +41,20 @@ export class WfcManager {
     /**
      * 获取host
      */
-    getHost(){
+    getHost() {
         return impl.getHost();
     }
 
     /**
      * 获取clientId，获取用户token时，一定要通过调用此方法获取clientId，否则会连接失败。
-     * @param {string} platformName  小程序平台名称，可选值为：ali、wx、qq、tt、bd，分别对应支付宝小程序、微信小程序、QQ小程序、今日头条小程序、百度小程序
      * @returns {string} clientId
      */
-    getClientId(platformName) {
-        return impl.getClientId(platformName);
+    getClientId() {
+        return impl.getClientId();
     }
 
-    /**
-     * 获取编码后的clientId，获取用户token时，一定要通过调用此方法获取clientId，否则会连接失败。
-     * @param {string} platformName  小程序平台名称，可选值为：ali、wx、qq、tt、bd，分别对应支付宝小程序、微信小程序、QQ小程序、今日头条小程序、百度小程序
-     * @returns {string} clientId
-     */
-    getEncodedClientId(platformName){
-        return impl.getEncodedClientId(platformName);
+    getEncodedClientId() {
+        return impl.getEncodedClientId();
     }
 
     /**
@@ -72,7 +62,7 @@ export class WfcManager {
      * @param {string} data 将要编码的数据
      * @returns {string} 编码结果，base64格式
      */
-    encodeData(data){
+    encodeData(data) {
         return impl.encodeData(data);
     }
 
@@ -81,7 +71,7 @@ export class WfcManager {
      * @param {string} encodedData 将要解码的数据，base64格式
      * @returns {null | string} 解码之后的数据
      */
-    decodeData(encodedData){
+    decodeData(encodedData) {
         return impl.decodeData(encodedData);
     }
 
@@ -125,6 +115,25 @@ export class WfcManager {
         return impl.getConnectionStatus();
     }
 
+
+    /**
+     * 设置网络策略，仅专业版支持
+     * @param {int} strategy 网络策略。0 是自动选择；1 选择主网络；2选择备用网络
+     *
+     */
+    setBackupAddressStrategy(strategy) {
+        impl.setBackupAddressStrategy(strategy);
+    }
+
+    /**
+     * 设置备选网络信息，仅专业版支持
+     * @param {String} backupHost 备选网络主机地址
+     * @param {int} backupPort 备选网络主机端口
+     */
+    setBackupAddress(backupHost, backupPort) {
+        impl.setBackupAddress(backupHost, backupPort);
+    }
+
     /**
      * 已废弃，请使用{@link getFavGroupList}
      * 获取我保存到通讯录的群组信息列表
@@ -138,7 +147,7 @@ export class WfcManager {
      * 获取我保存到通讯录的群组信息列表
      * @returns {[GroupInfo]} 参考{@link GroupInfo}
      */
-    getFavGroupList(){
+    getFavGroupList() {
         return impl.getMyGroupList();
     }
 
@@ -173,9 +182,11 @@ export class WfcManager {
     getUserDisplayNameEx(userInfo) {
         return userInfo.friendAlias ? userInfo.friendAlias : (userInfo.displayName ? userInfo.displayName : '<' + userInfo.uid + '>');
     }
+
     getGroupMemberDisplayNameEx(userInfo) {
         return userInfo.groupAlias ? userInfo.groupAlias : (userInfo.friendAlias ? userInfo.friendAlias : (userInfo.displayName ? userInfo.displayName : '<' + userInfo.uid + '>'))
     }
+
     /**
      * 获取用户信息
      * @param {string} userId 用户id
@@ -198,7 +209,7 @@ export class WfcManager {
      * @param {function (UserInfo)} success 成功回调
      * @param {function (number)} fail 失败回调
      */
-    getUserInfoEx(userId, refresh, success, fail){
+    getUserInfoEx(userId, refresh, success, fail) {
         impl.getUserInfoEx(userId, refresh, success, fail);
     }
 
@@ -210,8 +221,8 @@ export class WfcManager {
      */
     getUserInfos(userIds, groupId) {
         let userInfos = impl.getUserInfos(userIds, groupId);
-        userInfos.forEach((u)=>{
-            if(!u.portrait){
+        userInfos.forEach((u) => {
+            if (!u.portrait) {
                 u.portrait = Config.DEFAULT_PORTRAIT_URL;
             }
         });
@@ -271,7 +282,7 @@ export class WfcManager {
      * @param {boolean} incoming 是否是收到的好友请求
      * @return {FriendRequest|null}
      */
-    getOneFriendRequest(userId, incoming = true){
+    getOneFriendRequest(userId, incoming = true) {
         return impl.getOneFriendRequest(userId, incoming);
     }
 
@@ -359,6 +370,14 @@ export class WfcManager {
     }
 
     /**
+     * 好友列表
+     * @returns {[Friend]}
+     */
+    getFriendList(fresh = false) {
+        return impl.getFriendList(fresh);
+    }
+
+    /**
      * 获取好友别名
      * @param {string} userId
      * @returns {string}
@@ -390,15 +409,17 @@ export class WfcManager {
      * @param {number} groupType 群类型，可参考 {@link GroupType }
      * @param {string} name 群名称
      * @param {string} portrait 群头像的链接
+     * @param {string} groupExtra 群组扩展信息
      * @param {[string]} memberIds 群成员id
+     * @param {string} memberExtra 群组成员扩展信息
      * @param {[number]} lines 会话线路，默认传[0]即可
      * @param {CreateGroupNotification} notifyContent 通知信息，默认传null，服务端会生成默认通知
      * @param {function (string)} successCB 回调通知群id
      * @param {function (number)} failCB
      * @returns {Promise<void>}
      */
-    async createGroup(groupId, groupType, name, portrait, memberIds = [], lines = [0], notifyContent, successCB, failCB) {
-        impl.createGroup(groupId, groupType, name, portrait, memberIds, lines, notifyContent, successCB, failCB);
+    async createGroup(groupId, groupType, name, portrait, groupExtra, memberIds = [], memberExtra = '', lines = [0], notifyContent, successCB, failCB) {
+        impl.createGroup(groupId, groupType, name, portrait, groupExtra, memberIds, memberExtra, lines, notifyContent, successCB, failCB);
     }
 
     /**
@@ -441,13 +462,14 @@ export class WfcManager {
      * 添加群成员
      * @param  {string} groupId 群组id
      * @param {[string]} memberIds 新添加的群成员id
+     * @param  {string} extra 群成员扩展信息
      * @param {[number]} notifyLines
      * @param {AddGroupMemberNotification} notifyMessageContent
      * @param successCB
      * @param failCB
      */
-    addGroupMembers(groupId, memberIds, notifyLines, notifyMessageContent, successCB, failCB) {
-        impl.addGroupMembers(groupId, memberIds, notifyLines, notifyMessageContent, successCB, failCB);
+    addGroupMembers(groupId, memberIds, extra, notifyLines, notifyMessageContent, successCB, failCB) {
+        impl.addGroupMembers(groupId, memberIds, extra, notifyLines, notifyMessageContent, successCB, failCB);
     }
 
     /**
@@ -476,7 +498,7 @@ export class WfcManager {
      * @param {number} memberType，可选值参考{@link GroupMemberType}
      * @return {[GroupMember]} 群成员列表
      */
-    getGroupMembersByType(groupId, memberType){
+    getGroupMembersByType(groupId, memberType) {
         return impl.getGroupMembersByType(groupId, memberType);
     }
 
@@ -524,7 +546,7 @@ export class WfcManager {
      * @param {function ()} successCB 成功回调
      * @param {function (number)} failCB 失败回调
      */
-    muteGroupMembers(groupId, isSet, memberIds= [], notifyLines = [], notifyMsg, successCB, failCB){
+    muteGroupMembers(groupId, isSet, memberIds = [], notifyLines = [], notifyMsg, successCB, failCB) {
         impl.muteOrAllowGroupMembers(groupId, isSet, false, memberIds, notifyLines, notifyMsg, successCB, failCB);
     }
 
@@ -538,7 +560,7 @@ export class WfcManager {
      * @param {function ()} successCB 成功回调
      * @param {function (number)} failCB 失败回调
      */
-    allowGroupMembers(groupId, isSet, memberIds= [], notifyLines = [], notifyMsg, successCB, failCB){
+    allowGroupMembers(groupId, isSet, memberIds = [], notifyLines = [], notifyMsg, successCB, failCB) {
         impl.muteOrAllowGroupMembers(groupId, isSet, true, memberIds, notifyLines, notifyMsg, successCB, failCB);
     }
 
@@ -627,7 +649,7 @@ export class WfcManager {
         return impl.isFavGroup(groupId);
     }
 
-     /**
+    /**
      * 将群保存到通讯录或移除通讯录
      * @param {string} groupId 群id
      * @param {boolean} fav true，保存到通讯录；false，从通讯录移除
@@ -907,7 +929,7 @@ export class WfcManager {
      * @param {[number]} lines 从哪些会话线路进行搜索，默认传[0]即可
      * @returns {[ConversationInfo]}
      */
-    searchConversation(keyword, types = [0, 1, 2], lines = [0, 1]) {
+    searchConversation(keyword, types = [0, 1, 2], lines = [0, 1, 2]) {
         return impl.searchConversation(keyword, types, lines);
     }
 
@@ -957,7 +979,7 @@ export class WfcManager {
      * @param {Conversation} conversation
      * @param {number} timestamp
      */
-    setConversationTimestamp(conversation, timestamp){
+    setConversationTimestamp(conversation, timestamp) {
         impl.setConversationTimestamp(conversation, timestamp);
     }
 
@@ -992,7 +1014,7 @@ export class WfcManager {
      * 清除单条消息的未读状态
      * @param messageId
      */
-    clearMessageUnreadStatus(messageId){
+    clearMessageUnreadStatus(messageId) {
         impl.clearMessageUnreadStatus(messageId);
     }
 
@@ -1033,11 +1055,11 @@ export class WfcManager {
      * @param {string} userId
      * @returns {boolean}
      */
-     isFavUser(userId) {
+    isFavUser(userId) {
         return impl.isFavUser(userId);
     }
 
-     /**
+    /**
      * 设置或取消星标用户
      * @param {string} userId 用户id
      * @param {boolean} fav true，保存到通讯录；false，从通讯录移除
@@ -1048,16 +1070,18 @@ export class WfcManager {
     async setFavUser(userId, fav, successCB, failCB) {
         impl.setFavUser(userId, fav, successCB, failCB);
     }
+
     /**
      * 发送好友请求
      * @param {string} userId 目标用户id
      * @param {string} reason 发送好友请求的原因
+     * @param {string} extra 请求的扩展信息
      * @param {function ()} successCB
      * @param {function (number)} failCB
      * @returns {Promise<void>}
      */
-    async sendFriendRequest(userId, reason, successCB, failCB) {
-        impl.sendFriendRequest(userId, reason, successCB, failCB);
+    async sendFriendRequest(userId, reason, extra, successCB, failCB) {
+        impl.sendFriendRequest(userId, reason, extra, successCB, failCB);
     }
 
     /**
@@ -1069,7 +1093,7 @@ export class WfcManager {
      * @param {string} withUser 只有会话类型为{@link ConversationType#Channel}时生效, channel主用来查询和某个用户的所有消息
      * @return {[Message]} 会话消息列表，参考{@link Message}
      */
-    getMessages(conversation, fromIndex= 0, before = true, count = 20, withUser = '') {
+    getMessages(conversation, fromIndex = 0, before = true, count = 20, withUser = '') {
         return impl.getMessages(conversation, fromIndex, before, count, withUser);
     }
 
@@ -1084,7 +1108,7 @@ export class WfcManager {
      * @param {[number]} contentTypes 消息类型列表，可选值参考{@link MessageContentType}
      * @return {[Message]} 会话消息列表，参考{@link Message}
      */
-    getMessagesEx(conversationTypes, lines, fromIndex= 0, before= true, count = 20, withUser = '', contentTypes =[]) {
+    getMessagesEx(conversationTypes, lines, fromIndex = 0, before = true, count = 20, withUser = '', contentTypes = []) {
         return impl.getMessagesEx(conversationTypes, lines, contentTypes, fromIndex, before, count, withUser);
     }
 
@@ -1099,9 +1123,10 @@ export class WfcManager {
      * @param {string} withUser 只有会话类型为{@link ConversationType#Channel}时生效, channel主用来查询和某个用户的所有消息
      * @return {[Message]} 会话消息列表，参考{@link Message}
      */
-    getMessagesEx2(conversationTypes, lines, messageStatus, fromIndex= 0, before= true, count= 20, withUser= '') {
+    getMessagesEx2(conversationTypes, lines, messageStatus, fromIndex = 0, before = true, count = 20, withUser = '') {
         return impl.getMessagesEx2(conversationTypes, lines, messageStatus, fromIndex, before, count, withUser);
     }
+
     /**
      * 获取用户会话消息
      * @param {string} userId 用户id
@@ -1135,7 +1160,7 @@ export class WfcManager {
      * @param {Conversation} conversation
      * @return {number}
      */
-    getFirstUnreadMessageId(conversation){
+    getFirstUnreadMessageId(conversation) {
         return impl.getFirstUnreadMessageId(conversation);
     }
 
@@ -1160,7 +1185,7 @@ export class WfcManager {
      * @param {function ([Message])} successCB
      * @param failCB
      */
-     loadRemoteConversationMessages(conversation, beforeUid, count, successCB, failCB) {
+    loadRemoteConversationMessages(conversation, beforeUid, count, successCB, failCB) {
         impl.loadRemoteMessages(conversation, beforeUid, count, successCB, failCB);
     }
 
@@ -1172,7 +1197,7 @@ export class WfcManager {
      * @param {function ([Message])} successCB
      * @param failCB
      */
-    loadRemoteLineMessages(line, beforeUid, count, successCB, failCB){
+    loadRemoteLineMessages(line, beforeUid, count, successCB, failCB) {
         impl.loadRemoteLineMessages(line, beforeUid, count, successCB, failCB)
     }
 
@@ -1296,7 +1321,7 @@ export class WfcManager {
      * @param {function (error)} failCB
      * @return {Promise<void>}
      */
-    async clearRemoteConversationMessages(conversation, successCB, failCB){
+    async clearRemoteConversationMessages(conversation, successCB, failCB) {
         impl.clearRemoteConversationMessages(conversation, successCB, failCB);
     }
 
@@ -1307,9 +1332,11 @@ export class WfcManager {
      * @param {number} status 消息状态，可选值参考{@link MessageStatus}
      * @param {boolean} notify 是否触发onReceiveMessage
      * @param {Number} serverTime 服务器时间，精度到毫秒
+     *
+     * @return {Message} 插入的消息
      */
     insertMessage(conversation, messageContent, status, notify = false, serverTime = 0) {
-        impl.insertMessage(conversation, messageContent, status, notify, serverTime);
+        return impl.insertMessage(conversation, messageContent, status, notify, serverTime);
     }
 
     /**
@@ -1349,20 +1376,28 @@ export class WfcManager {
      * 连接服务器
      * @param {string} userId 用户id
      * @param {string} token 用户token，生成token时，所使用的clientId，一定要通过{@link getClientId}获取
-     * @param {string} platformName  小程序平台名称，可选值为：ali、wx、qq、tt、bd，分别对应支付宝小程序、微信小程序、QQ小程序、今日头条小程序、百度小程序
      */
-    connect(userId, token, platformName) {
-        impl.connect(userId, token, platformName);
+    connect(userId, token) {
+        impl.connect(userId, token);
     }
 
-    getVersion(){
+    /**
+     * 设置第三方推送设备token
+     * @param {number} pushType 推送类型，0-5 移动端已经使用了。
+     * @param {String} token 设备token
+     */
+    setDeviceToken(pushType, token) {
+        impl.setDeviceToken(pushType, token);
+    }
+
+    getVersion() {
         return impl.getVersion();
     }
 
     /**
      * 获取经过认证的下载地址。
      */
-    getAuthorizedMediaUrl(messageUid, mediaType, mediaPath, successCB, failCB){
+    getAuthorizedMediaUrl(messageUid, mediaType, mediaPath, successCB, failCB) {
         impl.getAuthorizedMediaUrl(messageUid, mediaType, mediaPath, successCB, failCB)
     }
 
@@ -1384,7 +1419,7 @@ export class WfcManager {
      * 微信小程序切到前台时调用应用切到了前台
      *
      */
-    onForeground(){
+    onForeground() {
         impl.onForeground();
     }
 
@@ -1393,7 +1428,7 @@ export class WfcManager {
      * 是否开启了已送达报告和已读报告功能
      * @return {boolean}
      */
-    isReceiptEnabled(){
+    isReceiptEnabled() {
         return impl.isReceiptEnabled();
     }
 
@@ -1401,21 +1436,22 @@ export class WfcManager {
      * 当前用户是否开启消息回执
      * @return {boolean}
      */
-    isUserReceiptEnabled(){
+    isUserReceiptEnabled() {
         return impl.isUserReceiptEnabled();
     }
 
     /**
-    * 判断是否是专业版IM服务
-    * @return {boolean}
-    */
+     * 判断是否是专业版IM服务
+     * @return {boolean}
+     */
     isCommercialServer() {
         return true;
     }
+
     /**
-    * 判断是否应用禁止草稿同步
-    * @return {boolean}
-    */
+     * 判断是否应用禁止草稿同步
+     * @return {boolean}
+     */
     isGlobalDisableSyncDraft() {
         return impl.isGlobalDisableSyncDraft();
     }
@@ -1426,20 +1462,21 @@ export class WfcManager {
      * @param successCB
      * @param failCB
      */
-    setDisableSyncDraft(disable, successCB, failCB){
+    setDisableSyncDraft(disable, successCB, failCB) {
         impl.setDisableSyncDraft(disable, successCB, failCB)
     }
 
-    isDisableSyncDraft(){
+    isDisableSyncDraft() {
         return impl.isDisableSyncDraft();
     }
+
     /**
      * 设置当前用户是否开启消息回执
      * @param enable
      * @param successCB
      * @param failCB
      */
-    setUserEnableReceipt(enable, successCB, failCB){
+    setUserEnableReceipt(enable, successCB, failCB) {
         impl.setUserEnableReceipt(enable, successCB, failCB);
     }
 
@@ -1448,7 +1485,7 @@ export class WfcManager {
      * @param conversation
      * @return {Map<string, Long>}
      */
-    getConversationDelivery(conversation){
+    getConversationDelivery(conversation) {
         return impl.getConversationDelivery(conversation);
     }
 
@@ -1457,7 +1494,7 @@ export class WfcManager {
      * @param conversation
      * @return {Map<string, Long>}
      */
-    getConversationRead(conversation){
+    getConversationRead(conversation) {
         return impl.getConversationRead(conversation);
     }
 
@@ -1470,7 +1507,7 @@ export class WfcManager {
      * @param {function ([FileRecord])} successCB 成功回调
      * @param {function (number)} failCB 失败回调
      */
-    getConversationFileRecords(conversation, fromUser, beforeMessageUid, count, successCB, failCB){
+    getConversationFileRecords(conversation, fromUser, beforeMessageUid, count, successCB, failCB) {
         impl.getConversationFileRecords(conversation, fromUser, beforeMessageUid, count, successCB, failCB);
     }
 
@@ -1481,7 +1518,7 @@ export class WfcManager {
      * @param {function ([FileRecord])} successCB 成功回调
      * @param {function (number)} failCB 失败回调
      */
-    getMyFileRecords(beforeMessageUid, count, successCB, failCB){
+    getMyFileRecords(beforeMessageUid, count, successCB, failCB) {
         impl.getMyFileRecords(beforeMessageUid, count, successCB, failCB);
     }
 
@@ -1491,13 +1528,56 @@ export class WfcManager {
      * @param {function ()} successCB 成功回调
      * @param {function (number)} failCB 失败回调
      */
-    deleteFileRecord(messageUid, successCB, failCB){
+    deleteFileRecord(messageUid, successCB, failCB) {
         impl.deleteFileRecord(messageUid, successCB, failCB);
+    }
+
+    /**
+     * 搜索远程文件记录
+     * @param {string} keyword
+     * @param {Conversation} conversation 会话，如果为空则获取当前用户所有收到和发出的文件记录
+     * @param {string} fromUser 文件发送用户，如果为空则获取该用户发出的文件记录
+     * @param {Long | string} beforeMessageId 起始消息的消息id
+     * @param {number} count
+     * @param {function ([fileRecord])} successCB
+     * @param {function (number)} failCB
+     */
+    searchFiles(keyword, conversation, fromUser, beforeMessageId, count, successCB, failCB) {
+        impl.searchFiles(keyword, conversation, fromUser, beforeMessageId, count, successCB, failCB)
+    }
+
+    /**
+     * 搜索我自己的远程文件记录
+     * @param keyword
+     * @param beforeMessageUid
+     * @param count
+     * @param successCB
+     * @param failCB
+     */
+    searchMyFiles(keyword, beforeMessageUid, count, successCB, failCB) {
+        impl.searchMyFiles(keyword, beforeMessageUid, count, successCB, failCB);
+    }
+
+    /**
+     * 发送会议相关请求
+     * @param sessionId
+     * @param roomId
+     * @param request
+     * @param data
+     * @param callback
+     */
+    sendConferenceRequest(sessionId, roomId, request, data, callback) {
+        this.sendConferenceRequestEx(sessionId, roomId, request, data, false, callback)
+    }
+
+    sendConferenceRequestEx(sessionId, roomId, request, data, advance, callback) {
+        impl.sendConferenceRequest(sessionId, roomId, request, data, advance, callback);
     }
 
     _getStore() {
         return impl._getStore();
     }
+
     /**
      * 初始化，请参考本demo的用法
      * @param {[]} args，当采用script标签的方式引入，可传入Config配置对象，配置项，请参考{@link Config}
@@ -1505,6 +1585,7 @@ export class WfcManager {
     init(args = []) {
         impl.init(args);
     }
+
     /**
      * utf8转base64
      * @param {string} str
@@ -1523,6 +1604,7 @@ export class WfcManager {
         return decodeURIComponent(escape(atob(str)));
     }
 }
+
 const self = new WfcManager();
 export default self;
 

@@ -3,33 +3,33 @@
  */
 
 /**
- * 
-    message in json format
-    {
+ *
+ message in json format
+ {
         "conversation":{
-            "conversationType": 0, 
-            "target": "UZUWUWuu", 
-            "line": 0, 
+            "conversationType": 0,
+            "target": "UZUWUWuu",
+            "line": 0,
         }
-        "from": "UZUWUWuu", 
+        "from": "UZUWUWuu",
         "content": {
-            "type": 1, 
-            "searchableContent": "1234", 
-            "pushContent": "", 
-            "content": "", 
-            "binaryContent": "", 
-            "localContent": "", 
-            "mediaType": 0, 
-            "remoteMediaUrl": "", 
-            "localMediaPath": "", 
-            "mentionedType": 0, 
+            "type": 1,
+            "searchableContent": "1234",
+            "pushContent": "",
+            "content": "",
+            "binaryContent": "",
+            "localContent": "",
+            "mediaType": 0,
+            "remoteMediaUrl": "",
+            "localMediaPath": "",
+            "mentionedType": 0,
             "mentionedTargets": [ ]
-        }, 
-        "messageId": 52, 
-        "direction": 1, 
-        "status": 5, 
-        "messageUid": 75735276990792720, 
-        "timestamp": 1550849394256, 
+        },
+        "messageId": 52,
+        "direction": 1,
+        "status": 5,
+        "messageUid": 75735276990792720,
+        "timestamp": 1550849394256,
         "to": ""
     }
  */
@@ -41,7 +41,7 @@ import UnknownMessageContent from './unknownMessageContent';
 import PersistFlag from './persistFlag';
 import MessageStatus from './messageStatus';
 import ConversationType from '../model/conversationType';
-import { encode } from 'base64-arraybuffer';
+import {encode} from 'base64-arraybuffer';
 import Config from '../../config.js';
 
 import Long from 'long'
@@ -189,5 +189,11 @@ export default class Message {
         }
 
         return content;
+    }
+
+    static toMessagePayload(message) {
+
+        // TODO
+        return null;
     }
 }

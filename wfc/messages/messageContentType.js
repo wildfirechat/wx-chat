@@ -20,6 +20,7 @@ export default class MessageContentType {
     static UserCard = 10;
     static Composite_Message = 11;
 
+
     // 提醒消息
     static RecallMessage_Notification = 80;
     static DeleteMessage_Notification = 81; //不存储的
@@ -36,7 +37,6 @@ export default class MessageContentType {
     static ChangeGroupName_Notification = 110;
     static ModifyGroupAlias_Notification = 111;
     static ChangeGroupPortrait_Notification = 112;
-
     static MuteGroup_Notification = 113;
     static ChangeJoinType_Notification = 114;
     static ChangePrivateChat_Notification = 115;
@@ -53,6 +53,16 @@ export default class MessageContentType {
 
     static ChangeExtra_Notification = 122;
 
+
+    static VOIP_CONTENT_TYPE_START = 400;
+    static VOIP_CONTENT_TYPE_END = 402;
+    static VOIP_CONTENT_TYPE_ACCEPT = 401;
+    static VOIP_CONTENT_TYPE_SIGNAL = 403;
+    static VOIP_CONTENT_TYPE_MODIFY = 404;
+    static VOIP_CONTENT_TYPE_ACCEPT_T = 405;
+    static VOIP_CONTENT_TYPE_ADD_PARTICIPANT = 406;
+    static VOIP_CONTENT_TYPE_MUTE_VIDEO = 407;
+    static CONTENT_TYPE_CONFERENCE_INVITE = 408;
 
     static MESSAGE_CONTENT_TYPE_FEED = 501;
     static MESSAGE_CONTENT_TYPE_COMMENT = 502;
