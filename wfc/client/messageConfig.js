@@ -14,12 +14,16 @@ import UnknownMessageContent from '../messages/unknownMessageContent';
 import UnsupportMessageContent from '../messages/unsupportMessageConten';
 import ChangeGroupNameNotification from '../messages/notification/changeGroupNameNotification';
 import KickoffGroupMemberNotification from '../messages/notification/kickoffGroupMemberNotification';
+import KickoffGroupMemberVisiableNotification from '../messages/notification/kickoffGroupMemberVisiableNotification';
 import AddGroupMemberNotification from '../messages/notification/addGroupMemberNotification';
 import ChangeGroupPortraitNotification from '../messages/notification/changeGroupPortraitNotification';
 import CreateGroupNotification from '../messages/notification/createGroupNotification';
 import DismissGroupNotification from '../messages/notification/dismissGroupNotification';
 import ModifyGroupAliasNotification from '../messages/notification/modifyGroupAliasNotification';
+import ModifyGroupExtraNotification from '../messages/notification/modifyGroupExtraNotification';
+import ModifyGroupMemberExtraNotification from '../messages/notification/modifyGroupMemberExtraNotification';
 import QuitGroupNotification from '../messages/notification/quitGroupNotification';
+import QuitGroupVisiableNotification from '../messages/notification/quitGroupVisiableNotification';
 import TransferGroupOwnerNotification from '../messages/notification/transferGroupOwnerNotification';
 import FileMessageContent from '../messages/fileMessageContent';
 import VideoMessageContent from '../messages/videoMessageContent';
@@ -38,6 +42,7 @@ import MuteGroupMemberNotification from '../messages/notification/muteGroupMembe
 import AllowGroupMemberNotification from '../messages/notification/allowGroupMemberNotification'
 import CardMessageContent from '../messages/cardMessageContent'
 import CompositeMessageContent from "../messages/compositeMessageContent";
+import MarkUnreadMessageContent from "../messages/markUnreadMessageContent";
 
 export default class MessageConfig {
     static getMessageContentClazz(type) {
@@ -70,7 +75,7 @@ export default class MessageConfig {
                 return content.flag;
             }
         }
-        return 0;
+        return -1;
     }
 
     static getMessageContentType(messageContent) {
@@ -153,9 +158,9 @@ export default class MessageConfig {
             contentClazz: StickerMessageContent,
         },
         {
-            name: 'imageText',
+            name: 'link',
             flag: PersistFlag.Persist_And_Count,
-            type: MessageContentType.ImageText,
+            type: MessageContentType.Link,
         },
         {
             name: 'userCard',
@@ -218,16 +223,40 @@ export default class MessageConfig {
             contentClazz: KickoffGroupMemberNotification,
         },
         {
+            name: 'kickoffGroupMemberVisiableNotification',
+            flag: PersistFlag.Persist,
+            type: MessageContentType.KickOffGroupMember_Visible_Notification,
+            contentClazz: KickoffGroupMemberVisiableNotification,
+        },
+        {
             name: 'modifyGroupAliasNotification',
             flag: PersistFlag.Persist,
             type: MessageContentType.ModifyGroupAlias_Notification,
             contentClazz: ModifyGroupAliasNotification,
         },
         {
+            name: 'modifyGroupExtraNotification',
+            flag: PersistFlag.Persist,
+            type: MessageContentType.ModifyGroupExtra_Notification,
+            contentClazz: ModifyGroupExtraNotification,
+        },
+        {
+            name: 'modifyGroupMemberExtraNotification',
+            flag: PersistFlag.Persist,
+            type: MessageContentType.ModifyGroupMemberExtra_Notification,
+            contentClazz: ModifyGroupMemberExtraNotification,
+        },
+        {
             name: 'quitGroupNotification',
             flag: PersistFlag.Persist,
             type: MessageContentType.QuitGroup_Notification,
             contentClazz: QuitGroupNotification,
+        },
+        {
+            name: 'quitGroupVisiableNotification',
+            flag: PersistFlag.Persist,
+            type: MessageContentType.QuitGroup_Visible_Notification,
+            contentClazz: QuitGroupVisiableNotification,
         },
         {
             name: 'transferGroupOwnerNotification',
@@ -283,5 +312,11 @@ export default class MessageConfig {
             type: MessageContentType.DeleteMessage_Notification,
             contentClazz: DeleteMessageContent,
         },
+        {
+            name: 'markUnreadMessage',
+            flag: PersistFlag.No_Persist,
+            type: MessageContentType.Mark_Unread_Sync,
+            contentClazz: MarkUnreadMessageContent,
+        }
     ];
 }

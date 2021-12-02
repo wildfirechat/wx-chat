@@ -120,7 +120,7 @@ Page({
     loadOldMessages() {
         let messages = wfc.getMessages(this.conversation);
         let beforeUid = messages.length > 0 ? messages[0].messageUid : 0;
-        wfc.loadRemoteConversationMessages(this.conversation, beforeUid, 20, (msgs) => {
+        wfc.loadRemoteConversationMessages(this.conversation, [], beforeUid, 20, (msgs) => {
             if (msgs.length > 0) {
                 let convMsgs = wfc.getMessages(this.conversation);
                 let uiMsgs = this.messagesToUiMessages(convMsgs);

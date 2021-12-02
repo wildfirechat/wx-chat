@@ -39,7 +39,7 @@ export default class CompositeMessageContent extends MessageContent {
                 tos: msg.to,
                 direction: msg.direction,
                 status: msg.status,
-                serverTime: msg.serverTime,
+                serverTime: msg.timestamp,
                 ctype: msgPayload.type,
                 csc: msgPayload.searchableContent,
                 cpc: msgPayload.pushContent,
@@ -80,6 +80,8 @@ export default class CompositeMessageContent extends MessageContent {
 
         this.title = payload.content;
         let str = wfc.b64_to_utf8(payload.binaryContent);
+        // FIXME node 环境，decodeURIComponent 方法，有时候会在最后添加上@字符，目前尚未找到原因，先规避
+        str = str.substring(0, str.lastIndexOf('}') + 1);
         str = str.replace(/"uid":([0-9]+)/g, "\"uid\":\"$1\"");
         let obj = JSON.parse(str);
         obj.ms.forEach(o => {
@@ -91,7 +93,7 @@ export default class CompositeMessageContent extends MessageContent {
             msg.to = o.tos;
             msg.direction = o.direction;
             msg.status = o.status;
-            msg.serverTime = o.serverTime;
+            msg.timestamp = o.serverTime;
 
             let payload = new MessagePayload();
             payload.type = o.ctype;

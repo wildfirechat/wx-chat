@@ -15,11 +15,12 @@ export default class MessageContentType {
     static File = 5;
     static Video = 6;
     static Sticker = 7;
-    static ImageText = 8;
+    static Link = 8;
     static P_Text = 9;
     static UserCard = 10;
     static Composite_Message = 11;
 
+    static Mark_Unread_Sync = 31;
 
     // 提醒消息
     static RecallMessage_Notification = 80;
@@ -47,11 +48,12 @@ export default class MessageContentType {
     // 全局禁言之后，允许群成员发言的通知消息
     static AllowGroupMember_Notification = 119;
     //踢出群成员的可见通知消息
-    //#define MESSAGE_CONTENT_TYPE_KICKOF_GROUP_MEMBER_VISIBLE_NOTIFICATION 120
+    static KickOffGroupMember_Visible_Notification = 120;
     //退群的可见通知消息
-    //#define MESSAGE_CONTENT_TYPE_QUIT_GROUP_VISIBLE_NOTIFICATION 121
+    static QuitGroup_Visible_Notification = 121;
 
-    static ChangeExtra_Notification = 122;
+    static ModifyGroupExtra_Notification = 122;
+    static ModifyGroupMemberExtra_Notification = 123;
 
 
     static VOIP_CONTENT_TYPE_START = 400;
@@ -62,7 +64,9 @@ export default class MessageContentType {
     static VOIP_CONTENT_TYPE_ACCEPT_T = 405;
     static VOIP_CONTENT_TYPE_ADD_PARTICIPANT = 406;
     static VOIP_CONTENT_TYPE_MUTE_VIDEO = 407;
-    static CONTENT_TYPE_CONFERENCE_INVITE = 408;
+    static CONFERENCE_CONTENT_TYPE_INVITE = 408;
+    static CONFERENCE_CONTENT_TYPE_CHANGE_MODE = 410;
+    static CONFERENCE_CONTENT_TYPE_KICKOFF_MEMBER = 411;
 
     static MESSAGE_CONTENT_TYPE_FEED = 501;
     static MESSAGE_CONTENT_TYPE_COMMENT = 502;

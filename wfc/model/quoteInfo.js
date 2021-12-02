@@ -1,5 +1,5 @@
 import wfc from "../client/wfc";
-import { stringValue } from "../util/longUtil";
+import {stringValue} from "../util/longUtil";
 import Long from "long";
 
 export default class QuoteInfo {
@@ -34,9 +34,17 @@ export default class QuoteInfo {
     }
 
     decode(obj) {
-        this.messageUid = Long.fromValue(obj.u);
-        this.userId = obj.i;
-        this.userDisplayName = obj.n;
-        this.messageDigest = obj.d;
+        if (obj.messageUid) {
+            this.messageUid = Long.fromValue(obj.messageUid);
+            this.userId = obj.userId;
+            this.userDisplayName = obj.userDisplayName;
+            this.messageDigest = obj.messageDigest;
+
+        } else {
+            this.messageUid = Long.fromValue(obj.u || obj.messageUid);
+            this.userId = obj.i;
+            this.userDisplayName = obj.n;
+            this.messageDigest = obj.d;
+        }
     }
 }

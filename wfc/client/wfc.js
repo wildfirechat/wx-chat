@@ -23,6 +23,15 @@ export class WfcManager {
     }
 
     /**
+     * 初始化，请参考本demo的用法
+     * 只可以在主窗口调用，其他窗口调用之后，会导致主窗口通知失效。
+     * 如果其他窗口想调用wfc里面的非通知方法，可以参考{@link attach}
+     * @param {[]} args，当采用script标签的方式引入，可传入Config配置对象，配置项，请参考{@link Config}
+     */
+    init(args = []) {
+        impl.init(args);
+    }
+    /**
      * 注册新的自定义消息
      *
      * @param {string} name
@@ -34,45 +43,55 @@ export class WfcManager {
         impl.registerMessageContent(name, flag, type, clazz);
     }
 
+
+    /**
+     * 获取clientId，获取用户token时，一定要通过调用此方法获取clientId，否则会连接失败。
+     * @param {string} platformName  小程序平台名称，可选值为：ali、wx、qq、tt、bd，分别对应支付宝小程序、微信小程序、QQ小程序、今日头条小程序、百度小程序
+     * @returns {string} clientId
+     */
+    getClientId(platformName) {
+        return impl.getClientId(platformName);
+    }
+
+    /**
+     * 获取编码后的clientId，获取用户token时，一定要通过调用此方法获取clientId，否则会连接失败。
+     * @param {string} platformName  小程序平台名称，可选值为：ali、wx、qq、tt、bd，分别对应支付宝小程序、微信小程序、QQ小程序、今日头条小程序、百度小程序
+     * @returns {string} clientId
+     */
+    getEncodedClientId(platformName) {
+        return impl.getEncodedClientId(platformName);
+    }
+    /*
+     * 启用国密加密。注意需要服务器端同步开启国密配置
+     */
+    useSM4() {
+      impl.useSM4();
+    }
+
+    /**
+     * 连接服务器
+     * @param {string} userId 用户id
+     * @param {string} token 用户token，生成token时，所使用的clientId，一定要通过{@link getClientId}获取
+     * @param {string} platformName  小程序平台名称，可选值为：ali、wx、qq、tt、bd、uni，分别对应支付宝小程序、微信小程序、QQ小程序、今日头条小程序、百度小程序、uni-app
+     */
+    connect(userId, token, platformName) {
+        impl.connect(userId, token, platformName);
+    }
+
+    /**
+     * 设置第三方推送设备token
+     * @param {number} pushType 推送类型，0-5 移动端已经使用了。
+     * @param {String} token 设备token
+     */
+    setDeviceToken(pushType, token) {
+        impl.setDeviceToken(pushType, token);
+    }
     disconnect() {
         impl.disconnect();
     }
 
-    /**
-     * 获取host
-     */
-    getHost() {
-        return impl.getHost();
-    }
-
-    /**
-     * 获取clientId，获取用户token时，一定要通过调用此方法获取clientId，否则会连接失败。
-     * @returns {string} clientId
-     */
-    getClientId() {
-        return impl.getClientId();
-    }
-
-    getEncodedClientId() {
-        return impl.getEncodedClientId();
-    }
-
-    /**
-     *
-     * @param {string} data 将要编码的数据
-     * @returns {string} 编码结果，base64格式
-     */
-    encodeData(data) {
-        return impl.encodeData(data);
-    }
-
-    /**
-     *
-     * @param {string} encodedData 将要解码的数据，base64格式
-     * @returns {null | string} 解码之后的数据
-     */
-    decodeData(encodedData) {
-        return impl.decodeData(encodedData);
+    setPackageName(packageName) {
+        impl.setPackageName(packageName);
     }
 
     /**
@@ -410,7 +429,7 @@ export class WfcManager {
      * @param {string} name 群名称
      * @param {string} portrait 群头像的链接
      * @param {string} groupExtra 群组扩展信息
-     * @param {[string]} memberIds 群成员id
+     * @param {[string]} memberIds 群成员id列表
      * @param {string} memberExtra 群组成员扩展信息
      * @param {[number]} lines 会话线路，默认传[0]即可
      * @param {CreateGroupNotification} notifyContent 通知信息，默认传null，服务端会生成默认通知
@@ -419,7 +438,7 @@ export class WfcManager {
      * @returns {Promise<void>}
      */
     async createGroup(groupId, groupType, name, portrait, groupExtra, memberIds = [], memberExtra = '', lines = [0], notifyContent, successCB, failCB) {
-        impl.createGroup(groupId, groupType, name, portrait, groupExtra, memberIds, memberExtra, lines, notifyContent, successCB, failCB);
+        impl.createGroup(groupId, groupType, name, portrait == null ? "" : portrait, groupExtra, memberIds, memberExtra, lines, notifyContent, successCB, failCB);
     }
 
     /**
@@ -620,6 +639,36 @@ export class WfcManager {
     }
 
     /**
+     * 修改群成员在群组的别名
+     * @param {string} groupId 群id
+     * @param {string} memberId 群成员id
+     * @param {string} alias 别名
+     * @param lines
+     * @param notifyMessageContent
+     * @param successCB
+     * @param failCB
+     * @returns {Promise<void>}
+     */
+    async modifyGroupMemberAlias(groupId, memberId, alias, lines, notifyMessageContent, successCB, failCB) {
+        impl.modifyGroupMemberAlias(groupId, memberId, alias, lines, notifyMessageContent, successCB, failCB);
+    }
+
+    /**
+     * 修改群成员在群组的附加信息
+     * @param {string} groupId 群id
+     * @param {string} memberId 群成员id
+     * @param {string} extra 群成员附加信息
+     * @param lines
+     * @param notifyMessageContent
+     * @param successCB
+     * @param failCB
+     * @returns {Promise<void>}
+     */
+    async modifyGroupMemberExtra(groupId, memberId, extra, lines, notifyMessageContent, successCB, failCB) {
+        impl.modifyGroupMemberExtra(groupId, memberId, extra, lines, notifyMessageContent, successCB, failCB);
+    }
+
+    /**
      * 转移群主
      * @param {string} groupId 群id
      * @param {string} newOwner 新群主的id
@@ -811,14 +860,13 @@ export class WfcManager {
      * 创建频道
      * @param {string} name 频道名称
      * @param {string} portrait 频道头像的链接地址
-     * @param {number} status 频道的状态，可选值参考{@link ChannelStatus}
      * @param {string} desc 描述
      * @param {string} extra 额外信息
      * @param {function (string)} successCB 创建成功，会回调通知channelId
      * @param {function (number)} failCB
      */
-    createChannel(name, portrait, status, desc, extra, successCB, failCB) {
-        impl.createChannel(name, portrait, status, desc, extra, successCB, failCB);
+    createChannel(name, portrait,  desc, extra, successCB, failCB) {
+        impl.createChannel(name, portrait, desc, extra, successCB, failCB);
     }
 
     /**
@@ -1011,6 +1059,16 @@ export class WfcManager {
     }
 
     /**
+     * 将会话最后一条消息置为未读
+     * @param {Conversation} conversation 会话
+     * @param {boolean} syncToOtherClient 是否同步给其他端
+     * @return {boolean} 是否操作成功
+     */
+    markConversationAsUnread(conversation, syncToOtherClient) {
+        return impl.markConversationAsUnread(conversation, syncToOtherClient);
+    }
+
+    /**
      * 清除单条消息的未读状态
      * @param messageId
      */
@@ -1031,6 +1089,15 @@ export class WfcManager {
      */
     setMediaMessagePlayed(messageId) {
         impl.setMediaMessagePlayed(messageId);
+    }
+
+    /**
+     * 设置消息本地扩展信息
+     * @param {number} messageId 消息id，不是消息uid!
+     * @param {string} extra 扩展信息
+     */
+    setMessageLocalExtra(messageId, extra) {
+        impl.setMessageLocalExtra(messageId, extra);
     }
 
     /**
@@ -1087,9 +1154,9 @@ export class WfcManager {
     /**
      * 获取会话消息
      * @param {Conversation} conversation 目标会话
-     * @param {number} fromIndex 本参数暂时无效! messageId，表示从那一条消息开始获取
-     * @param {boolean} before 本参数暂时无效! true, 获取fromIndex之前的消息，即更旧的消息；false，获取fromIndex之后的消息，即更新的消息。都不包含fromIndex对应的消息
-     * @param {number} count 本参数暂时无效! 获取多少条消息
+     * @param {number} fromIndex messageId，表示从那一条消息开始获取
+     * @param {boolean} before true, 获取fromIndex之前的消息，即更旧的消息；false，获取fromIndex之后的消息，即更新的消息。都不包含fromIndex对应的消息
+     * @param {number} count 获取多少条消息
      * @param {string} withUser 只有会话类型为{@link ConversationType#Channel}时生效, channel主用来查询和某个用户的所有消息
      * @return {[Message]} 会话消息列表，参考{@link Message}
      */
@@ -1168,37 +1235,40 @@ export class WfcManager {
      * 已废弃，请使用{@link loadRemoteConversationMessages}
      * 获取会还的远程历史消息
      * @param {Conversation} conversation 目标会话
+     * @param {[number]} contentTypes 消息类型列表，可选值参考{@link MessageContentType}
      * @param {number | Long} beforeUid 消息uid，表示拉取本条消息之前的消息
      * @param {number} count
      * @param {function (Message)} successCB
      * @param failCB
      */
-    loadRemoteMessages(conversation, beforeUid, count, successCB, failCB) {
-        impl.loadRemoteMessages(conversation, beforeUid, count, successCB, failCB);
+    loadRemoteMessages(conversation, contentTypes, beforeUid, count, successCB, failCB) {
+        impl.loadRemoteMessages(conversation, contentTypes, beforeUid, count, successCB, failCB);
     }
 
     /**
      * 获取会话的远程历史消息
      * @param {Conversation} conversation 目标会话
+     * @param {[number]} contentTypes 消息类型列表，可选值参考{@link MessageContentType}
      * @param {number | Long} beforeUid 消息uid，表示拉取本条消息之前的消息
      * @param {number} count
      * @param {function ([Message])} successCB
      * @param failCB
      */
-    loadRemoteConversationMessages(conversation, beforeUid, count, successCB, failCB) {
-        impl.loadRemoteMessages(conversation, beforeUid, count, successCB, failCB);
+    loadRemoteConversationMessages(conversation, contentTypes, beforeUid, count, successCB, failCB) {
+        impl.loadRemoteMessages(conversation, contentTypes, beforeUid, count, successCB, failCB, contentTypes);
     }
 
     /**
      * 根据会话线路，获取远程历史消息
      * @param {number} line 会话线路
      * @param {number | Long} beforeUid 消息uid，表示拉取本条消息之前的消息
+     * @param {[number]} contentTypes 消息类型列表，可选值参考{@link MessageContentType}
      * @param {number} count
      * @param {function ([Message])} successCB
      * @param failCB
      */
-    loadRemoteLineMessages(line, beforeUid, count, successCB, failCB) {
-        impl.loadRemoteLineMessages(line, beforeUid, count, successCB, failCB)
+    loadRemoteLineMessages(line,contentTypes, beforeUid, count, successCB, failCB){
+        impl.loadRemoteLineMessages(line, contentTypes, beforeUid, count, successCB, failCB)
     }
 
     /**
@@ -1372,23 +1442,6 @@ export class WfcManager {
         impl.uploadMedia(fileName, fileOrData, mediaType, successCB, failCB, progressCB);
     }
 
-    /**
-     * 连接服务器
-     * @param {string} userId 用户id
-     * @param {string} token 用户token，生成token时，所使用的clientId，一定要通过{@link getClientId}获取
-     */
-    connect(userId, token) {
-        impl.connect(userId, token);
-    }
-
-    /**
-     * 设置第三方推送设备token
-     * @param {number} pushType 推送类型，0-5 移动端已经使用了。
-     * @param {String} token 设备token
-     */
-    setDeviceToken(pushType, token) {
-        impl.setDeviceToken(pushType, token);
-    }
 
     getVersion() {
         return impl.getVersion();
@@ -1559,6 +1612,36 @@ export class WfcManager {
     }
 
     /**
+     * 获取host
+     */
+    getHost() {
+        return impl.getHost();
+    }
+
+
+    getEncodedClientId() {
+        return impl.getEncodedClientId();
+    }
+
+    /**
+     *
+     * @param {string} data 将要编码的数据
+     * @returns {string} 编码结果，base64格式
+     */
+    encodeData(data) {
+        return impl.encodeData(data);
+    }
+
+    /**
+     *
+     * @param {string} encodedData 将要解码的数据，base64格式
+     * @returns {null | string} 解码之后的数据
+     */
+    decodeData(encodedData) {
+        return impl.decodeData(encodedData);
+    }
+
+    /**
      * 发送会议相关请求
      * @param sessionId
      * @param roomId
@@ -1578,13 +1661,6 @@ export class WfcManager {
         return impl._getStore();
     }
 
-    /**
-     * 初始化，请参考本demo的用法
-     * @param {[]} args，当采用script标签的方式引入，可传入Config配置对象，配置项，请参考{@link Config}
-     */
-    init(args = []) {
-        impl.init(args);
-    }
 
     /**
      * utf8转base64
