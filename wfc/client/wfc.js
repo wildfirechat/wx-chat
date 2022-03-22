@@ -1255,7 +1255,21 @@ export class WfcManager {
      * @param failCB
      */
     loadRemoteConversationMessages(conversation, contentTypes, beforeUid, count, successCB, failCB) {
-        impl.loadRemoteMessages(conversation, contentTypes, beforeUid, count, successCB, failCB, contentTypes);
+        impl.loadRemoteMessages(conversation, contentTypes, beforeUid, count, successCB, failCB);
+    }
+
+    /**
+     * 获取会话的远程历史消息，仅 web 有效
+     * @param {Conversation} conversation 目标会话
+     * @param {[number]} contentTypes 消息类型列表，可选值参考{@link MessageContentType}
+     * @param {number | Long} beforeUid 消息uid，表示拉取本条消息之前的消息
+     * @param {number} count
+     * @param {boolean} filterLocalMessage 是否过滤本地已经存在的消息
+     * @param {function ([Message])} successCB
+     * @param failCB
+     */
+    loadRemoteConversationMessagesEx(conversation, contentTypes, beforeUid, count, filterLocalMessage, successCB, failCB){
+        impl.loadRemoteMessages(conversation, contentTypes, beforeUid, count, successCB, failCB, filterLocalMessage);
     }
 
     /**
@@ -1269,6 +1283,30 @@ export class WfcManager {
      */
     loadRemoteLineMessages(line,contentTypes, beforeUid, count, successCB, failCB){
         impl.loadRemoteLineMessages(line, contentTypes, beforeUid, count, successCB, failCB)
+    }
+
+    /**
+     * 根据会话线路，获取远程历史消息，仅 web 端有效
+     * @param {number} line 会话线路
+     * @param {number | Long} beforeUid 消息uid，表示拉取本条消息之前的消息
+     * @param {[number]} contentTypes 消息类型列表，可选值参考{@link MessageContentType}
+     * @param {number} count
+     * @param {boolean} filterLocalMessage 是否过滤本地已经存在的消息
+     * @param {function ([Message])} successCB
+     * @param failCB
+     */
+    loadRemoteLineMessages(line,contentTypes, beforeUid, count, filterLocalMessage, successCB, failCB){
+        impl.loadRemoteLineMessages(line, contentTypes, beforeUid, count, successCB, failCB, filterLocalMessage)
+    }
+
+    /**
+     * 根据消息 uid，获取远程消息
+     * @param {Long} messageUid 消息uid
+     * @param {function ([Message])} successCB
+     * @param failCB
+     */
+    loadRemoteMessage(messageUid, successCB, failCB){
+        impl.loadRemoteMessage(messageUid, successCB, failCB);
     }
 
     /**
@@ -1376,6 +1414,16 @@ export class WfcManager {
     }
 
     /**
+     * 删除远程消息
+     * @param {Long | string} msgUid 消息uid
+     * @param {function ()} successCB
+     * @param {function (number)} failCB
+     */
+    deleteRemoteMessageByUid(msgUid, successCB, failCB){
+        impl.deleteRemoteMessage(msgUid, successCB, failCB);
+    }
+
+    /**
      * 清除会话消息
      * @param {Conversation} conversation 目标会话
      * @returns {Promise<void>}
@@ -1418,6 +1466,19 @@ export class WfcManager {
     async updateMessageContent(messageId, messageContent) {
         impl.updateMessageContent(messageId, messageContent);
     }
+
+    /**
+   * 更新远程消息消息内容，只有专业版支持。客户端仅能更新自己发送的消息，更新的消息类型不能变，更新的消息类型是服务配置允许更新的内容。Server API更新则没有限制。
+   * @param {Long | string} msgUid 消息uid
+   * @param {MessageContent} messageContent 具体的消息内容，一定要求是{@link MessageContent} 的子类，不能是普通的object
+   * @param {boolean} distribute 是否重新分发给其他客户端
+   * @param {boolean} updateLocal 是否更新本地消息内容
+   * @param {function ()} successCB
+   * @param {function (number)} failCB
+   */
+  updateRemoteMessageContent(msgUid, messageContent, distribute, updateLocal, successCB, failCB){
+    impl.updateRemoteMessageContent(msgUid, messageContent, distribute, updateLocal, successCB, failCB);
+  }
 
     /**
      * 更新消息状态
@@ -1463,9 +1524,14 @@ export class WfcManager {
 
     /**
      * 获取上传链接。一般用户大文件上传。
+     * @param {string} fileName
+     * @param {number} mediaType 媒体类型，可选值参考{@link MessageContentMediaType}
+     * @param {string} contentType HTTP请求的ContentType header，为空时默认为"application/octet-stream"
+     * @param {function (string)} successCB 回调通知上传成功之后的url
+     * @param {function (number)} failCB
      */
-    getUploadMediaUrl(fileName, mediaType, successCB, failCB) {
-        impl.getUploadMediaUrl(fileName, mediaType, successCB, failCB);
+    getUploadMediaUrl(fileName, mediaType, contentType, successCB, failCB) {
+        impl.getUploadMediaUrl(fileName, mediaType, contentType, successCB, failCB);
     }
 
     /**

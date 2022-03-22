@@ -58,6 +58,7 @@ export default class Config {
 
   static DEFAULT_GROUP_PORTRAIT = 'https://static.wildfirechat.net/avatar_def.png';
 
+  static ENABLE_INFO_PERSISTENCE = false;
   static getWFCPlatform() {
     return 6;
   }
