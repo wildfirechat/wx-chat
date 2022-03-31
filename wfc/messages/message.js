@@ -56,7 +56,7 @@ export default class Message {
     messageId = 0;
     direction = 0;
     status = 0;
-    messageUid = 0;
+    messageUid = -1;
     timestamp = 0;
     to = '';
     localExtra = '';
@@ -67,6 +67,9 @@ export default class Message {
     }
 
     static fromProtoMessage(obj) {
+        if (!obj.conversation.target) {
+            return null;
+        }
         // osx or windows
         if (Config.getWFCPlatform() === 3 || Config.getWFCPlatform() === 4) {
             let msg = Object.assign(new Message(), obj);

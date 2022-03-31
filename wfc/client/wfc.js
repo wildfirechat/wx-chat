@@ -1723,6 +1723,21 @@ export class WfcManager {
         impl.sendConferenceRequest(sessionId, roomId, request, data, advance, callback);
     }
 
+    isUserOnlineStateEnabled(){
+        return impl.isUserOnlineStateEnabled();
+    }
+
+    watchOnlineState(conversationType, targets, duration, successCB, failCB){
+        impl.watchOnlineState(conversationType, targets, duration, successCB, failCB);
+    }
+
+    unwatchOnlineState(conversationType, targets, successCB, failCB){
+        impl.unwatchOnlineState(conversationType, targets, successCB, failCB);
+    }
+
+    setMyCustomState(customState, customText, successCB, failCB){
+        impl.setMyCustomState(customState, customText, successCB, failCB)
+    }
     _getStore() {
         return impl._getStore();
     }

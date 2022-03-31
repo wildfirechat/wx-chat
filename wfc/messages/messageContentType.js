@@ -5,6 +5,7 @@
 /*
  * Copyright (c) 2020 WildFireChat. All rights reserved.
  */
+
 export default class MessageContentType {
     // 基本消息类型
     static Unknown = 0;
@@ -21,12 +22,21 @@ export default class MessageContentType {
     static Composite_Message = 11;
 
     static Mark_Unread_Sync = 31;
-
     // 提醒消息
     static RecallMessage_Notification = 80;
     static DeleteMessage_Notification = 81; //不存储的
     static Tip_Notification = 90;
     static Typing = 91;
+  // //以上是打招呼的内容
+  // int ContentType_Friend_Greeting = 92;
+  // //您已经添加XXX为好友了，可以愉快地聊天了
+  // int ContentType_Friend_Added = 93;
+  //
+  // int ContentType_PC_LOGIN_REQUSET = 94;
+
+    static Friend_Greeting = 92;
+    static Friend_Added = 93;
+    static PC_Login_Request = 94;
 
     // 群相关消息
     static CreateGroup_Notification = 104;
@@ -38,6 +48,7 @@ export default class MessageContentType {
     static ChangeGroupName_Notification = 110;
     static ModifyGroupAlias_Notification = 111;
     static ChangeGroupPortrait_Notification = 112;
+
     static MuteGroup_Notification = 113;
     static ChangeJoinType_Notification = 114;
     static ChangePrivateChat_Notification = 115;
@@ -47,6 +58,7 @@ export default class MessageContentType {
     static MuteGroupMember_Notification = 118;
     // 全局禁言之后，允许群成员发言的通知消息
     static AllowGroupMember_Notification = 119;
+
     //踢出群成员的可见通知消息
     static KickOffGroupMember_Visible_Notification = 120;
     //退群的可见通知消息
@@ -54,6 +66,7 @@ export default class MessageContentType {
 
     static ModifyGroupExtra_Notification = 122;
     static ModifyGroupMemberExtra_Notification = 123;
+
 
 
     static VOIP_CONTENT_TYPE_START = 400;

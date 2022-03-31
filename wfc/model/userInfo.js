@@ -37,6 +37,6 @@ export default class UserInfo {
     //0 normal; 1 deleted;
     deleted = 0;
 
-    updateDt = 1550652404513;
+    updateDt = 0;
 
 }
