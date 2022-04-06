@@ -47,7 +47,8 @@ Page({
       data: {
         mobile: phone,
         code: code,
-        clientId: clientId
+        clientId: clientId,
+        platform:6,
       },
       header: {
         'content-type': 'application/json', // 默认值
