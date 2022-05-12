@@ -209,7 +209,7 @@ export class WfcManager {
     /**
      * 获取用户信息
      * @param {string} userId 用户id
-     * @param {boolean} refresh 是否刷新用户信息，如果刷新的话，且用户信息有更新，会通过{@link eventEmitter}通知
+     * @param {boolean} refresh 是否刷新用户信息，如果刷新的话，且用户信息有更新，会通过{@link eventEmitter}进行通知，事件的名字是{@link EventType.UserInfosUpdate }
      * @param {string} groupId
      * @returns {UserInfo}
      */
@@ -224,8 +224,8 @@ export class WfcManager {
     /**
      * 获取用户信息
      * @param {string} userId 用户ID
-     * @param {boolean} refresh 是否强制从服务器更新，如果本地没有或者强制，会从服务器刷新，然后发出通知UserInfosUpdate
-     * @param {function (UserInfo)} success 成功回调
+     * @param {boolean} refresh 是否强制从服务器更新，如果本地没有或者强制，会从服务器刷新
+     * @param {function (UserInfo)} success 成功回调，如果本地有该用户信息，则通过回调返回本地的用户信息；如果本地没有，则从服务端拉取该用户信息，并通过回调返回
      * @param {function (number)} fail 失败回调
      */
     getUserInfoEx(userId, refresh, success, fail) {
@@ -744,7 +744,7 @@ export class WfcManager {
 
     /**
      * 修改个人信息
-     * @param {[ModifyMyInfoEntry]} modifyMyInfoEntries 需要修改的信息列表
+     * @param {[ModifyMyInfoEntry]} modifyMyInfoEntries 需要修改的信息列表，pc端，一次只允许修改一个项。
      * @param successCB
      * @param failCB
      */
@@ -873,7 +873,7 @@ export class WfcManager {
      * 获取频道信息
      * @param {string} channelId 频道id
      * @param {boolean} refresh 是否强制刷新
-     * @returns {ChannelInfo|null}
+     * @returns {ChannelInfo|NullChannelInfo}
      */
     getChannelInfo(channelId, refresh) {
         return impl.getChannelInfo(channelId, refresh);
@@ -933,12 +933,24 @@ export class WfcManager {
     }
 
     /**
+     * @deprecated 已废弃，请使用{@link getRemoteListenedChannels}
      * 获取所收听的频道id列表
      * @returns {[string]}
      */
     getListenedChannels() {
         return impl.getListenedChannels();
     }
+
+    /**
+     * 从服务端获取所收听的频道id列表
+     * @param {function([String])} successCB
+     * @param {function(number)} failCB
+     *
+     */
+    getRemoteListenedChannels(successCB, failCB) {
+        return impl.getRemoteListenedChannels(successCB, failCB);
+    }
+
 
     /**
      * 销毁频道
@@ -1344,10 +1356,39 @@ export class WfcManager {
      * @param {boolean} desc 逆序排列
      * @param {int} limit 返回数量
      * @param {int} offset 偏移
-     * @returns {[Message]}
+     * @returns {Message[]}
      */
     searchMessageEx(conversation, keyword, desc, limit, offset) {
         return impl.searchMessageEx(conversation, keyword, desc, limit, offset);
+    }
+
+    /**
+     * 搜索消息
+     * @param {Conversation} conversation 目标会话，如果为空搜索所有会话
+     * @param {string} keyword 关键字
+     * @param {[number]} contentTypes 消息类型列表，可选值参考{@link MessageContentType}
+     * @param {boolean} desc 逆序排列
+     * @param {int} limit 返回数量
+     * @param {int} offset 偏移
+     * @returns {Message[]}
+     */
+    searchMessageByTypes(conversation, keyword, contentTypes, desc, limit, offset) {
+        return impl.searchMessageByTypes(conversation, keyword, contentTypes, desc, limit, offset);
+    }
+
+    /**
+     * 搜索消息
+     * @param {[number]} conversationTypes 会话类型列表，可选值参考{@link  ConversationType}
+     * @param {[number]} lines 会话线路列表
+     * @param {[number]} contentTypes 消息类型列表，可选值参考{@link MessageContentType}
+     * @param {string} keyword 关键字
+     * @param {number} fromIndex messageId，表示从那一条消息开始获取
+     * @param {boolean} desc 逆序排列
+     * @param {number} count 最大数量
+     * @returns {[Message]}
+     */
+    searchMessageEx2(conversationTypes, lines, contentTypes, keyword, fromIndex, desc, count) {
+        return impl.searchMessageEx2(conversationTypes, lines, contentTypes, keyword, fromIndex, desc, count);
     }
 
     /**
@@ -1424,6 +1465,19 @@ export class WfcManager {
     }
 
     /**
+    * 更新远程消息消息内容，只有专业版支持。客户端仅能更新自己发送的消息，更新的消息类型不能变，更新的消息类型是服务配置允许更新的内容。Server API更新则没有限制。
+     * @param {Long | string} msgUid 消息uid
+     * @param {MessageContent} messageContent 具体的消息内容，一定要求是{@link MessageContent} 的子类，不能是普通的object
+     * @param {boolean} distribute 是否重新分发给其他客户端
+     * @param {boolean} updateLocal 是否更新本地消息内容
+     * @param {function ()} successCB
+     * @param {function (number)} failCB
+     */
+    updateRemoteMessageContent(msgUid, messageContent, distribute, updateLocal, successCB, failCB){
+        impl.updateRemoteMessageContent(msgUid, messageContent, distribute, updateLocal, successCB, failCB);
+    }
+
+    /**
      * 清除会话消息
      * @param {Conversation} conversation 目标会话
      * @returns {Promise<void>}
@@ -1468,22 +1522,9 @@ export class WfcManager {
     }
 
     /**
-   * 更新远程消息消息内容，只有专业版支持。客户端仅能更新自己发送的消息，更新的消息类型不能变，更新的消息类型是服务配置允许更新的内容。Server API更新则没有限制。
-   * @param {Long | string} msgUid 消息uid
-   * @param {MessageContent} messageContent 具体的消息内容，一定要求是{@link MessageContent} 的子类，不能是普通的object
-   * @param {boolean} distribute 是否重新分发给其他客户端
-   * @param {boolean} updateLocal 是否更新本地消息内容
-   * @param {function ()} successCB
-   * @param {function (number)} failCB
-   */
-  updateRemoteMessageContent(msgUid, messageContent, distribute, updateLocal, successCB, failCB){
-    impl.updateRemoteMessageContent(msgUid, messageContent, distribute, updateLocal, successCB, failCB);
-  }
-
-    /**
      * 更新消息状态
      * @param {number} messageId 消息id
-     * @param {MessageStatus} 消息状态，可选值参考{@link MessageStatus}
+     * @param {MessageStatus} status 消息状态，可选值参考{@link MessageStatus}
      */
     async updateMessageStatus(messageId, status) {
         impl.updateMessageStatus(messageId, status);
@@ -1527,7 +1568,7 @@ export class WfcManager {
      * @param {string} fileName
      * @param {number} mediaType 媒体类型，可选值参考{@link MessageContentMediaType}
      * @param {string} contentType HTTP请求的ContentType header，为空时默认为"application/octet-stream"
-     * @param {function (string)} successCB 回调通知上传成功之后的url
+    * @param {function (string, string)} successCB 回调通知上传成功之后的url
      * @param {function (number)} failCB
      */
     getUploadMediaUrl(fileName, mediaType, contentType, successCB, failCB) {
@@ -1622,23 +1663,25 @@ export class WfcManager {
      * @param {Conversation} conversation 会话
      * @param {String} fromUser 来源用户
      * @param {Long} beforeMessageUid 消息uid，表示获取此消息uid之前的文件记录
+     * @param {int} order 排序。0 按照时间逆序；1 按照时间顺序；2 按照大小逆序；3 按照大小顺序。
      * @param {number} count 数量
-     * @param {function ([FileRecord])} successCB 成功回调
+     * @param {function (FileRecord[])} successCB 成功回调
      * @param {function (number)} failCB 失败回调
      */
-    getConversationFileRecords(conversation, fromUser, beforeMessageUid, count, successCB, failCB) {
-        impl.getConversationFileRecords(conversation, fromUser, beforeMessageUid, count, successCB, failCB);
+    getConversationFileRecords(conversation, fromUser, beforeMessageUid, order, count, successCB, failCB) {
+        impl.getConversationFileRecords(conversation, fromUser, beforeMessageUid, order, count, successCB, failCB);
     }
 
     /**
      * 获取我发送的文件记录
      * @param {Long} beforeMessageUid 消息uid，表示获取此消息uid之前的文件记录
+     * @param {int} order 排序。0 按照时间逆序；1 按照时间顺序；2 按照大小逆序；3 按照大小顺序。
      * @param {number} count 数量
-     * @param {function ([FileRecord])} successCB 成功回调
+     * @param {function (FileRecord[])} successCB 成功回调
      * @param {function (number)} failCB 失败回调
      */
-    getMyFileRecords(beforeMessageUid, count, successCB, failCB) {
-        impl.getMyFileRecords(beforeMessageUid, count, successCB, failCB);
+    getMyFileRecords(beforeMessageUid, order, count, successCB, failCB) {
+        impl.getMyFileRecords(beforeMessageUid, order, count, successCB, failCB);
     }
 
     /**
@@ -1657,24 +1700,26 @@ export class WfcManager {
      * @param {Conversation} conversation 会话，如果为空则获取当前用户所有收到和发出的文件记录
      * @param {string} fromUser 文件发送用户，如果为空则获取该用户发出的文件记录
      * @param {Long | string} beforeMessageId 起始消息的消息id
+     * @param {int} order 排序。0 按照时间逆序；1 按照时间顺序；2 按照大小逆序；3 按照大小顺序。
      * @param {number} count
-     * @param {function ([fileRecord])} successCB
+     * @param {function (FileRecord[])} successCB
      * @param {function (number)} failCB
      */
-    searchFiles(keyword, conversation, fromUser, beforeMessageId, count, successCB, failCB) {
-        impl.searchFiles(keyword, conversation, fromUser, beforeMessageId, count, successCB, failCB)
+    searchFiles(keyword, conversation, fromUser, beforeMessageId, order, count, successCB, failCB) {
+        impl.searchFiles(keyword, conversation, fromUser, beforeMessageId, order, count, successCB, failCB)
     }
 
     /**
      * 搜索我自己的远程文件记录
      * @param keyword
      * @param beforeMessageUid
+     * @param {int} order 排序。0 按照时间逆序；1 按照时间顺序；2 按照大小逆序；3 按照大小顺序。
      * @param count
      * @param successCB
      * @param failCB
      */
-    searchMyFiles(keyword, beforeMessageUid, count, successCB, failCB) {
-        impl.searchMyFiles(keyword, beforeMessageUid, count, successCB, failCB);
+    searchMyFiles(keyword, beforeMessageUid, order, count, successCB, failCB) {
+        impl.searchMyFiles(keyword, beforeMessageUid, order, count, successCB, failCB);
     }
 
     /**
@@ -1727,12 +1772,20 @@ export class WfcManager {
         return impl.isUserOnlineStateEnabled();
     }
 
-    watchOnlineState(conversationType, targets, duration, successCB, failCB){
-        impl.watchOnlineState(conversationType, targets, duration, successCB, failCB);
+    /**
+     *
+     * @param {number} type 会话类型， 支持{@link ConversationType.Single}和{@link ConversationType.Group}
+     * @param {string[]} targets 会话类型为单聊时，是用户 id列表；会话类型为群组时，是群组 id 列表
+     * @param {number} duration 关注时间长度，单位是秒
+     * @param {function(UserOnlineState[])} successCB
+     * @param {function(number)} failCB
+     */
+    watchOnlineState(type, targets, duration, successCB, failCB){
+        impl.watchOnlineState(type, targets, duration, successCB, failCB);
     }
 
-    unwatchOnlineState(conversationType, targets, successCB, failCB){
-        impl.unwatchOnlineState(conversationType, targets, successCB, failCB);
+    unwatchOnlineState(type, targets, successCB, failCB){
+        impl.unwatchOnlineState(type, targets, successCB, failCB);
     }
 
     setMyCustomState(customState, customText, successCB, failCB){
@@ -1759,6 +1812,18 @@ export class WfcManager {
      */
     b64_to_utf8(str) {
         return decodeURIComponent(escape(atob(str)));
+    }
+
+    unescape (str) {
+        return (str + '==='.slice((str.length + 3) % 4))
+            .replace(/-/g, '+')
+            .replace(/_/g, '/')
+    }
+
+    escape (str) {
+        return str.replace(/\+/g, '-')
+            .replace(/\//g, '_')
+            .replace(/=/g, '')
     }
 }
 

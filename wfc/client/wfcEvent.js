@@ -40,11 +40,17 @@ export default class EventType {
     static ConversationInfoUpdate = 'conversationInfoUpdate';
     // function () {}
     static SettingUpdate = 'settingUpdate';
-    // function (groupId) {}
+    // function (groupId, GroupMember[]) {}
     static GroupMembersUpdate = 'groupMembersUpdate';
 
     // function (event) {}
     static ConferenceEvent = 'conferenceEvent';
     // function (UserOnlineState[]) {}
     static UserOnlineEvent = 'onlineEvent';
+    // function (targetId, playedMessageId) {}
+    static SecretChatStartBurn = 'secretChatStartBurn';
+    // function ([messageId]) {}
+    static SecretChatMessageBurned = 'secretChatMessageBurned';
+    // function (targetId) {}
+    static SecretChatStateChange = 'secretChatStateChange';
 }
