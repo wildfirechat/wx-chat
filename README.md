@@ -20,6 +20,8 @@
 | [docs](https://github.com/wildfirechat/docs)                 | [docs](https://gitee.com/wfchat/docs)                 | 野火IM相关文档，包含设计、概念、开发、使用说明，[在线查看](https://docs.wildfirechat.cn/) |                                                |
 
 
+## 分支特别说明
+本分支是用来测试小程序分包功能，将 im 相关的代码，都放到一个分包里面，以便减小主包的大小。
 
 ## 说明
 野火IM小程序SDK目前支持以下小程序平台：
