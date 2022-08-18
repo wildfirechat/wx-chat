@@ -1,0 +1,3 @@
+<view class="page-body">
+  <button bindtap="bindStartIMTap">启动IM</button>
+</view>

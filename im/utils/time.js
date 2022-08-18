@@ -1,4 +1,4 @@
-import {numberValue} from '../../wfc/util/longUtil'
+import {numberValue} from '../wfc/util/longUtil'
 let now = new Date();
 let year = now.getFullYear();
 let month = now.getMonth();//真实的月份需要再加上1
@@ -87,5 +87,5 @@ function justSimpleDealTime(currentItemTimeStamp, ifShowTime) {
 module.exports = {
     dealChatTime,
     timeFormat
-
+    
 };

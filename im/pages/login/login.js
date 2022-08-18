@@ -13,7 +13,7 @@ Page({
     let token = wx.getStorageSync('token')
     if(userId && token){
       wfc.connect(userId, token);
-      wx.switchTab({
+      wx.redirectTo({
         url: '../chat-list/chat-list', fail: (e) => {
           console.log(e)
         }

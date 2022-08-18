@@ -1,34 +1,23 @@
 {
-  "pages": [
-    "pages/login/login",
-    "pages/chat-list/chat-list",
-    "pages/chat/chat",
-    "pages/chat-input/chat-input",
-    "pages/friends/friends"
-  ],
-  "window": {
-    "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "WeChat",
-    "navigationBarTextStyle": "black"
-  },
-  "tabBar": {
-    "selectedColor": "#35c8fb",
-    "color": "#7f8389",
-    "list": [
-      {
-        "pagePath": "pages/chat-list/chat-list",
-        "text": "会话列表",
-        "iconPath": "image/tabbar/chat_list_unselected.png",
-        "selectedIconPath": "image/tabbar/chat_list.png"
-      },
-      {
-        "pagePath": "pages/friends/friends",
-        "text": "好友列表",
-        "iconPath": "image/tabbar/friend_unselected.png",
-        "selectedIconPath": "image/tabbar/friend.png"
-      }
-    ]
-  },
-  "sitemapLocation": "sitemap.json"
+    "pages": [
+        "pages/main/login"
+    ],
+    "subpackages": [{
+        "root": "im",
+        "pages": [
+            "pages/login/login",
+            "pages/chat-list/chat-list",
+            "pages/chat/chat",
+            "pages/chat-input/chat-input",
+            "pages/friends/friends"
+        ]
+    }],
+
+    "window": {
+        "backgroundTextStyle": "light",
+        "navigationBarBackgroundColor": "#fff",
+        "navigationBarTitleText": "WeChat",
+        "navigationBarTextStyle": "black"
+    },
+    "sitemapLocation": "sitemap.json"
 }
