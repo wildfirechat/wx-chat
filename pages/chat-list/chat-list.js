@@ -29,8 +29,12 @@ Page({
             || status === ConnectionStatus.ConnectionStatusTokenIncorrect
             || status === ConnectionStatus.ConnectionStatusSecretKeyMismatch
             || status === ConnectionStatus.ConnectionStatusServerDown){
+
+                console.log('reLaunch login page, connectionStatus', status);
                 wx.clearStorage();
-                // TODO navigator to login page
+                wx.reLaunch({
+                  url: '../login/login',
+                })
         }
     },
 
