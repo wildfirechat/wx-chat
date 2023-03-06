@@ -5,7 +5,6 @@
 /*
  * Copyright (c) 2020 WildFireChat. All rights reserved.
  */
-
 export default class MessageContentType {
     // 基本消息类型
     static Unknown = 0;
@@ -20,9 +19,18 @@ export default class MessageContentType {
     static P_Text = 9;
     static UserCard = 10;
     static Composite_Message = 11;
+    static Rich_Notification = 12;
+    static Articles = 13;
 
     static Mark_Unread_Sync = 31;
+
     static StartSecretChat_Notification = 40;
+
+    //频道进出消息
+    static Enter_Channel_Chat = 71;
+    static Leave_Channel_Chat = 72;
+    static Channel_Menu_Event = 73
+
     // 提醒消息
     static RecallMessage_Notification = 80;
     static DeleteMessage_Notification = 81; //不存储的
@@ -49,7 +57,6 @@ export default class MessageContentType {
     static ChangeGroupName_Notification = 110;
     static ModifyGroupAlias_Notification = 111;
     static ChangeGroupPortrait_Notification = 112;
-
     static MuteGroup_Notification = 113;
     static ChangeJoinType_Notification = 114;
     static ChangePrivateChat_Notification = 115;
@@ -59,7 +66,6 @@ export default class MessageContentType {
     static MuteGroupMember_Notification = 118;
     // 全局禁言之后，允许群成员发言的通知消息
     static AllowGroupMember_Notification = 119;
-
     //踢出群成员的可见通知消息
     static KickOffGroupMember_Visible_Notification = 120;
     //退群的可见通知消息
@@ -67,7 +73,6 @@ export default class MessageContentType {
 
     static ModifyGroupExtra_Notification = 122;
     static ModifyGroupMemberExtra_Notification = 123;
-
 
 
     static VOIP_CONTENT_TYPE_START = 400;
@@ -81,6 +86,10 @@ export default class MessageContentType {
     static CONFERENCE_CONTENT_TYPE_INVITE = 408;
     static CONFERENCE_CONTENT_TYPE_CHANGE_MODE = 410;
     static CONFERENCE_CONTENT_TYPE_KICKOFF_MEMBER = 411;
+    static CONFERENCE_CONTENT_TYPE_COMMAND = 412;
+
+    static VOIP_Multi_Call_Ongoing = 416;
+    static VOIP_Join_Call_Request = 417;
 
     static MESSAGE_CONTENT_TYPE_FEED = 501;
     static MESSAGE_CONTENT_TYPE_COMMENT = 502;

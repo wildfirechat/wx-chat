@@ -23,8 +23,10 @@ export default class GroupInfo {
     type = GroupType.Normal;
     memberCount = 0;
     extra = '';
+    remark = '';
     updateDt = 0;
     memberUpdateDt = 0;
+
     //0 正常；1 全局禁言
     mute = 0;
 

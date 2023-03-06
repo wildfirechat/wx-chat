@@ -5,11 +5,11 @@
 import ConversationType from "./conversationType";
 
 /**
- * 
-        "conversation":{
-            "conversationType": 0, 
-            "target": "UZUWUWuu", 
-            "line": 0, 
+ *
+ "conversation":{
+            "conversationType": 0,
+            "target": "UZUWUWuu",
+            "line": 0,
         }
  */
 export default class Conversation {
@@ -18,7 +18,7 @@ export default class Conversation {
     target = '';
     line = 0;
 
-    constructor(type, target, line) {
+    constructor(type, target, line = 0) {
         this.type = type;
         this.conversationType = type;
         this.target = target;
@@ -26,7 +26,7 @@ export default class Conversation {
     }
 
     equal(conversation) {
-        if(!conversation){
+        if (!conversation) {
             return false;
         }
         return this.type === conversation.type

@@ -47,6 +47,11 @@ import MarkUnreadMessageContent from "../messages/markUnreadMessageContent";
 import LinkMessageContent from "../messages/linkMessageContent";
 import FriendAddedNotification from "../messages/notification/friendAddedNotification";
 import FriendGreetingNotification from "../messages/notification/friendGreetingNotification";
+import RichNotificationMessageContent from "../messages/notification/richNotificationMessageContent";
+import ArticlesMessageContent from "../messages/articlesMessageContent";
+import ChannelMenuEventMessageContent from "../messages/channelMenuEventMessageContent";
+import EnterChannelChatMessageContent from "../messages/enterChannelChatMessageContent";
+import LeaveChannelChatMessageContent from "../messages/leaveChannelChatMessageContent";
 export default class MessageConfig {
     static getMessageContentClazz(type) {
         for (const content of MessageConfig.MessageContents) {
@@ -58,7 +63,7 @@ export default class MessageConfig {
                 }
             }
         }
-        console.log(`message type ${type} is unknown`);
+        console.error(`message type ${type} is unknown`);
         return UnknownMessageContent;
     }
 
@@ -333,6 +338,36 @@ export default class MessageConfig {
             flag: PersistFlag.No_Persist,
             type: MessageContentType.Mark_Unread_Sync,
             contentClazz: MarkUnreadMessageContent,
+        },
+        {
+            name: 'richNotification',
+            flag: PersistFlag.Persist_And_Count,
+            type: MessageContentType.Rich_Notification,
+            contentClazz: RichNotificationMessageContent,
+        },
+        {
+            name: 'articlesMessageContent',
+            flag: PersistFlag.Persist_And_Count,
+            type: MessageContentType.Articles,
+            contentClazz: ArticlesMessageContent,
+        },
+        {
+            name: 'channelMenuEventMessageContent',
+            flag: PersistFlag.Transparent,
+            type: MessageContentType.Channel_Menu_Event,
+            contentClazz: ChannelMenuEventMessageContent,
+        },
+        {
+            name: 'enterChannelChatMessageContent',
+            flag: PersistFlag.Transparent,
+            type: MessageContentType.Enter_Channel_Chat,
+            contentClazz: EnterChannelChatMessageContent,
+        },
+        {
+            name: 'leaveChannelChatMessageContent',
+            flag: PersistFlag.Transparent,
+            type: MessageContentType.Leave_Channel_Chat,
+            contentClazz: LeaveChannelChatMessageContent,
         }
     ];
 }

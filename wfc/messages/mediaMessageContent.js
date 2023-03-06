@@ -29,7 +29,7 @@ export default class MediaMessageContent extends MessageContent {
             this.remotePath = remotePath;
         } else {
             this.file = fileOrLocalPath;
-            if (fileOrLocalPath && fileOrLocalPath.path !== undefined) {
+            if (fileOrLocalPath && fileOrLocalPath.path) {
                 this.localPath = fileOrLocalPath.path;
                 // attention: 粘贴的时候，path是空字符串，故采用了这个trick
                 if (this.localPath.indexOf(fileOrLocalPath.name) < 0) {
@@ -43,7 +43,7 @@ export default class MediaMessageContent extends MessageContent {
     encode() {
         let payload = super.encode();
         payload.localMediaPath = this.localPath;
-        payload.remoteMediaUrl = this.remotePath;
+        payload.remoteMediaUrl = this.remotePath ? this.remotePath : '';
         payload.mediaType = this.mediaType;
         return payload;
     }
@@ -54,7 +54,7 @@ export default class MediaMessageContent extends MessageContent {
         this.remotePath = payload.remoteMediaUrl;
         if (Config.urlRedirect){
             this.remotePath = Config.urlRedirect(payload.remoteMediaUrl);
-        }
+    }
         this.mediaType = payload.mediaType;
     }
 }

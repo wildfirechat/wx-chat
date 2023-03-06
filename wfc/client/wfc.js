@@ -29,6 +29,7 @@ export class WfcManager {
      * @param {[]} args，当采用script标签的方式引入，可传入Config配置对象，配置项，请参考{@link Config}
      */
     init(args = []) {
+        console.log('wfc init');
         impl.init(args);
     }
     /**
@@ -60,6 +61,12 @@ export class WfcManager {
      */
     getEncodedClientId(platformName) {
         return impl.getEncodedClientId(platformName);
+    }
+    /**
+    * 获取协议栈版本号
+    */
+    getProtoRevision() {
+        return impl.getProtoRevision();
     }
     /*
      * 启用国密加密。注意需要服务器端同步开启国密配置
@@ -271,9 +278,10 @@ export class WfcManager {
     }
 
     /**
+     * web 端，只匹配群名称和群备注名
      * 本地搜索群组
      * @param keyword 搜索关键字
-     * @returns {[GroupInfo]}
+     * @returns {[GroupSearchResult]}
      */
     searchGroups(keyword) {
         return impl.searchGroups(keyword);
@@ -442,12 +450,12 @@ export class WfcManager {
     }
 
     /**
-     * 设置全管理员
+     * 设置群管理员
      * @param {string} groupId 群id
      * @param {boolean} isSet true，设置；false，取消设置
      * @param {[string]} memberIds 将被设置为管理或取消管理远的群成员的用户id
      * @param {[number]} lines 默认传[0]即可
-     * @param {TODO } notifyContent 默认传null即可
+     * @param {Object} notifyContent 默认传null即可
      * @param {function ()} successCB
      * @param {function (number)} failCB
      * @returns {Promise<void>}
@@ -466,6 +474,15 @@ export class WfcManager {
         return impl.getGroupInfo(groupId, refresh);
     }
 
+    /**
+     * 批量获取群信息
+     * @param {[string]} groupIds 群id
+     * @param {boolean} refresh 是否刷新，如果刷新，且有更新的话，会通过{@link eventEmitter}通知
+     * @returns {[GroupInfo]}
+     */
+    getGroupInfos(groupIds, refresh = false) {
+        return impl.getGroupInfos(groupIds, refresh);
+    }
     /**
      * 获取群信息
      * @param {string} groupId 群id
@@ -682,6 +699,25 @@ export class WfcManager {
     }
 
     /**
+     * 设置群备注
+     * @param {string} groupId 群id
+     * @param {string} remark 群备注
+     * @param successCB
+     * @param failCB
+     */
+    async setGroupRemark(groupId, remark, successCB, failCB) {
+        impl.setGroupRemark(groupId, remark, successCB, failCB);
+    }
+
+    /**
+     *  获取群备注
+     * @param {string} groupId 群id
+     * @return 群备注
+     */
+    getGroupRemark(groupId) {
+        return impl.setGroupRemark(groupId);
+    }
+    /**
      * 获取保存到通讯录的群id列表
      * @returns {[string]}
      */
@@ -710,6 +746,15 @@ export class WfcManager {
         impl.setFavGroup(groupId, fav, successCB, failCB);
     }
 
+    /**
+     * 获取当前用户所有群组ID，此方法消耗资源较大，不建议高频使用。
+     *
+     * @param {function ([string])} successCB
+     * @param {function (number)} failCB
+     */
+    async getMyGroups(successCB, failCB){
+        impl.getMyGroups(successCB, failCB);
+    }
     /**
      * 获取用户设置，保存格式可以理解为：scope + key => value
      * @param {number} scope 命名空间，可选值参考{@link UserSettingScope}
@@ -948,7 +993,7 @@ export class WfcManager {
      *
      */
     getRemoteListenedChannels(successCB, failCB) {
-        return impl.getRemoteListenedChannels(successCB, failCB);
+        impl.getRemoteListenedChannels(successCB, failCB);
     }
 
 
@@ -987,7 +1032,7 @@ export class WfcManager {
      * @param {string} keyword 关键字
      * @param {[number]} types 从哪些类型的会话中进行搜索，可选值可参考{@link ConversationType}
      * @param {[number]} lines 从哪些会话线路进行搜索，默认传[0]即可
-     * @returns {[ConversationInfo]}
+     * @returns {[ConversationSearchResult]}
      */
     searchConversation(keyword, types = [0, 1, 2], lines = [0, 1, 2]) {
         return impl.searchConversation(keyword, types, lines);
@@ -1006,7 +1051,7 @@ export class WfcManager {
     /**
      * 会话置顶或取消置顶
      * @param {Conversation} conversation 需要置顶或取消置顶的会话
-     * @param {boolean} top true，置顶；false，取消置顶
+     * @param {number} top > 0, 置顶，可以根据这个值进行置顶排序；0，取消置顶
      * @param {function ()} successCB
      * @param {function (number)} failCB
      */
@@ -1089,7 +1134,10 @@ export class WfcManager {
     }
 
     /**
-     * 清楚所有消息的未读状态
+     * 清除所有消息的未读状态
+     *
+     * 特别注意1：本方法只清除了底层数据库中的未读状态，并未清理 UI 层会话列表中的未读状态，UI 层会话列表中的未读状态，需要手动重置。
+     * 特别注意2：本方法不会触发{@link ConversationInfoUpdate} 事件
      */
     clearAllUnreadStatus() {
         impl.clearAllUnreadStatus();
@@ -1433,6 +1481,25 @@ export class WfcManager {
         impl.sendMessageEx(message, toUsers, preparedCB, progressCB, successCB, failCB);
     }
 
+    /**
+     * 发送已经保存的消息，参考{@link sendMessage}
+     * @param message
+     * @param expireDuration
+     * @param successCB
+     * @param failCB
+     * @returns {Promise<void>}
+     */
+    async sendSavedMessage(message, expireDuration, successCB, failCB) {
+        impl.sendSavedMessage(message, expireDuration, successCB, failCB);
+    }
+    /**
+    * 取消发送消息，仅媒体类消息可以取消
+    * @param messageId 消息ID
+    * @returns 是否取消成功
+    */
+    cancelSendingMessage(messageId) {
+        return impl.cancelSendingMessage(messageId);
+    }
     // 更新了原始消息的内容
     /**
      * 撤回消息
@@ -1791,6 +1858,16 @@ export class WfcManager {
     setMyCustomState(customState, customText, successCB, failCB){
         impl.setMyCustomState(customState, customText, successCB, failCB)
     }
+    getAuthCode(appId, appType, host, successCB, failCB){
+        impl.getAuthCode(appId, appType, host, successCB, failCB);
+    }
+    requireLock(lockId, duration, successCB, failCB){
+        impl.requireLock(lockId, duration, successCB, failCB);
+    }
+
+    releaseLock(lockId, successCB, failCB){
+        impl.releaseLock(lockId, successCB, failCB);
+    }
     _getStore() {
         return impl._getStore();
     }
@@ -1814,6 +1891,19 @@ export class WfcManager {
         return decodeURIComponent(escape(atob(str)));
     }
 
+    b64_to_arrayBuffer(str) {
+        let binary_string = atob(str);
+        let len = binary_string.length;
+        let bytes = new Uint8Array(len);
+        for (let i = 0; i < len; i++) {
+            bytes[i] = binary_string.charCodeAt(i);
+        }
+        return bytes.buffer;
+    }
+
+    arrayBuffer_to_b64(data){
+        return Buffer.from(data).toString('base64');
+    }
     unescape (str) {
         return (str + '==='.slice((str.length + 3) % 4))
             .replace(/-/g, '+')

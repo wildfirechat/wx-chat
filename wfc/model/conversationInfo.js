@@ -5,7 +5,7 @@
 import Conversation from "./conversation";
 import Message from "../messages/message";
 import wfc from '../client/wfc'
-import {eq} from '../util/longUtil'
+import {eq, gt} from '../util/longUtil'
 
 import ConversationType from "./conversationType";
 
@@ -15,7 +15,7 @@ export default class ConversationInfo {
     timestamp = 0;
     draft = '';
     unreadCount = {};
-    isTop = false;
+    top = 0;
     isSilent = false;
 
     // TODO cache, maybe userInfo, groupInfo
@@ -23,8 +23,20 @@ export default class ConversationInfo {
 
     static protoConversationToConversationInfo(obj) {
         let conversationInfo = Object.assign(new ConversationInfo(), obj);
-        conversationInfo.conversation = new Conversation(obj.conversationType, obj.target, obj.line);
+        conversationInfo.top = obj.isTop;
+        delete conversationInfo.isTop;
+        if (obj.conversation) {
+            conversationInfo.conversation = new Conversation(obj.conversation.type, obj.conversation.target, obj.conversation.line);
+        } else {
+            conversationInfo.conversation = new Conversation(obj.conversationType, obj.target, obj.line);
+        }
         conversationInfo.lastMessage = Message.fromProtoMessage(obj.lastMessage);
+        if (conversationInfo.draft && conversationInfo.lastMessage && gt(conversationInfo.lastMessage.timestamp, 0)) {
+            conversationInfo.timestamp = conversationInfo.lastMessage.timestamp;
+        }
+        if (!conversationInfo.timestamp){
+            conversationInfo.timestamp = 0;
+        }
         return conversationInfo;
     }
 
@@ -69,7 +81,6 @@ export default class ConversationInfo {
         }
 
         return targetName;
-
     }
 
     static equals(info1, info2) {
@@ -88,16 +99,15 @@ export default class ConversationInfo {
             return false;
         }
 
-        if((info1.lastMessage && !info2.lastMessage) || (!info1.lastMessage && info2.lastMessage)){
+        if ((info1.lastMessage && !info2.lastMessage) || (!info1.lastMessage && info2.lastMessage)) {
             return false;
         }
 
-        if(info1.lastMessage && info2.lastMessage && info1.lastMessage.messageId !== info2.lastMessage.messageId){
+        if (info1.lastMessage && info2.lastMessage && info1.lastMessage.messageId !== info2.lastMessage.messageId) {
             return false;
         }
-
         // 其他的应当都会反应在timestamp上
-        return eq(info1.timestamp,info2.timestamp) && info1.draft === info2.draft;
+        return eq(info1.timestamp, info2.timestamp) && info1.draft === info2.draft;
 
     }
 }

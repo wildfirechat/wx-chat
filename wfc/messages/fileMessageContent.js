@@ -15,7 +15,7 @@ export default class FileMessageContent extends MediaMessageContent {
         if (fileOrLocalPath && fileOrLocalPath.name) {
             this.name = fileOrLocalPath.name;
             this.size = fileOrLocalPath.size;
-        }else if (remotePath){
+        } else if (remotePath) {
             this.name = name ? name : remotePath.substring(remotePath.lastIndexOf('/') + 1)
             this.size = size ? size : 0;
         }
@@ -34,13 +34,9 @@ export default class FileMessageContent extends MediaMessageContent {
 
     decode(payload) {
         super.decode(payload);
-        if(payload.searchableContent){
-            if(payload.searchableContent.indexOf(FileMessageContent.FILE_NAME_PREFIX) === 0){
-                this.name = payload.searchableContent.substring(payload.searchableContent.indexOf(FileMessageContent.FILE_NAME_PREFIX) + FileMessageContent.FILE_NAME_PREFIX.length);
-            }else {
-        this.name = payload.searchableContent;
-            }
-        this.size = Number(payload.content);
+        if (payload.searchableContent) {
+            this.name = payload.searchableContent;
+            this.size = Number(payload.content);
         }
     }
 
