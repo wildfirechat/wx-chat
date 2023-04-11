@@ -7,7 +7,7 @@ export default class Config {
   static WS_PORT = 8083;
   // Secure WebSocket连接端口，需要和服务端对应，不能随意修改
   static WSS_PORT = 8084;
-  
+
   // ROUTE请求端口，默认是80；配置https时，请修改为其他端口，如443等
   static ROUTE_PORT = 443;
 
@@ -58,7 +58,12 @@ export default class Config {
 
   static DEFAULT_GROUP_PORTRAIT = 'https://static.wildfirechat.net/avatar_def.png';
 
+  // 是否将用户信息、群组信息、频道信息、聊天室信息持久化
   static ENABLE_INFO_PERSISTENCE = false;
+
+  // 登录时，每个会话最多加载多少条未读消息
+  static MAX_TO_LOAD_UNREAD_COUNT_PER_CONVERSATION = 99;
+
   static getWFCPlatform() {
     return 6;
   }
