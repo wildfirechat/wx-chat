@@ -57,6 +57,10 @@ Page({
         this.showConversationList();
     },
 
+    onConversationInfoUpdate(){
+        this.showConversationList();
+    },
+
     /**
      * 生命周期函数--监听页面加载
      */
@@ -66,6 +70,7 @@ Page({
         wfc.eventEmitter.on(EventType.GroupInfosUpdate, this.onGroupInfosUpdate);
         wfc.eventEmitter.on(EventType.ReceiveMessage, this.onReceiveMessage);
         wfc.eventEmitter.on(EventType.SettingUpdate, this.onSettingUpdate);
+        wfc.eventEmitter.on(EventType.ConversationInfoUpdate, this.onConversationInfoUpdate);
     },
 
     onUnload(options) {
