@@ -118,20 +118,33 @@ Page({
     },
 
     loadOldMessages() {
-        let messages = wfc.getMessages(this.conversation);
+        let messages = this.data.chatItems;
         let beforeUid = messages.length > 0 ? messages[0].messageUid : 0;
-        wfc.loadRemoteConversationMessages(this.conversation, [], beforeUid, 20, (msgs) => {
+        let beforeId = messages.length > 0 ? messages[0].messageId : 0;
+        wfc.getMessagesV2(this.conversation, beforeId, true, 20, '', msgs => {
             if (msgs.length > 0) {
-                let convMsgs = wfc.getMessages(this.conversation);
-                let uiMsgs = this.messagesToUiMessages(convMsgs);
+                let uiMsgs = this.messagesToUiMessages(msgs);
+                uiMsgs = uiMsgs.concat(messages);
                 this.setData({
                     chatItems: uiMsgs
                 });
-            }
+            } else {
+                wfc.loadRemoteConversationMessages(this.conversation, [], beforeUid, 50, (msgs) => {
+                    if (msgs.length > 0) {
+                        let uiMsgs = this.messagesToUiMessages(msgs);
+                        uiMsgs = uiMsgs.concat(messages);
+                        this.setData({
+                            chatItems: uiMsgs
+                        });
+                    }
 
-        }, (errorCode) => {
-            console.log('load remote message error', errorCode);
-        });
+                }, (errorCode) => {
+                    console.log('load remote message error', errorCode);
+                });
+            }
+        }, err => {
+
+        })
     },
 
     onMessageLongTap(e) {
@@ -195,7 +208,14 @@ Page({
 
     onVoiceRecordEvent(e) {
         console.log('onVoiceRecordEvent', e);
-        const { detail: { recordStatus, duration, tempFilePath, fileSize, } } = e;
+        const {
+            detail: {
+                recordStatus,
+                duration,
+                tempFilePath,
+                fileSize,
+            }
+        } = e;
         if (recordStatus === 2) {
             let voiceMsgContent = new SoundMessageContent(tempFilePath, null, Math.floor(duration / 1000))
             this.sendMessage(voiceMsgContent);
@@ -232,11 +252,17 @@ Page({
         console.log(e);
     },
     //模拟上传文件，注意这里的cbOk回调函数传入的参数应该是上传文件成功时返回的文件url，这里因为模拟，我直接用的savedFilePath
-    simulateUploadFile({ savedFilePath, duration, itemIndex }) {
+    simulateUploadFile({
+        savedFilePath,
+        duration,
+        itemIndex
+    }) {
         return new Promise((resolve, reject) => {
             setTimeout(() => {
                 let urlFromServerWhenUploadSuccess = savedFilePath;
-                resolve({ url: urlFromServerWhenUploadSuccess });
+                resolve({
+                    url: urlFromServerWhenUploadSuccess
+                });
             }, 1000);
         });
     },
@@ -252,7 +278,9 @@ Page({
     chatVoiceItemClickEvent(e) {
         let dataset = e.currentTarget.dataset;
         console.log('点击的语音Item包含的信息', dataset);
-        this.voiceManager._playVoice({ dataset })
+        this.voiceManager._playVoice({
+            dataset
+        })
     },
 
     /**
@@ -266,7 +294,9 @@ Page({
             showCancel: true,
             success: (res) => {
                 if (res.confirm) {
-                    this.msgManager.sendMsg({ type: IMOperator.CustomType })
+                    this.msgManager.sendMsg({
+                        type: IMOperator.CustomType
+                    })
                 }
             }
         })
@@ -294,18 +324,22 @@ Page({
     },
 
     showMessageList() {
-        let messages = wfc.getMessages(this.conversation);
-        if (messages.length < 20) {
-            this.loadOldMessages();
-            if (messages.length === 0) {
-                return;
+        wfc.getMessagesV2(this.conversation, 0, true, 20, '', messages => {
+            if (messages.length < 20) {
+                this.loadOldMessages();
+                if (messages.length === 0) {
+                    return;
+                }
             }
-        }
 
-        let uiMsgs = this.messagesToUiMessages(messages);
-        this.setData({
-            chatItems: uiMsgs,
-            scrollTopVal: uiMsgs.length * 999
+            let uiMsgs = this.messagesToUiMessages(messages);
+            this.setData({
+                chatItems: uiMsgs,
+                scrollTopVal: uiMsgs.length * 999
+            });
+        }, err => {
+            console.error('getMessagesV2 error', this.conversation, err);
+
         });
     },
 
