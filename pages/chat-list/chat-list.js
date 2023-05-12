@@ -153,7 +153,7 @@ Page({
                 time: ''
             }
             if (item.lastMessage && item.lastMessage.messageContent) {
-                let digest = item.lastMessage.messageContent.digest();
+                let digest = item.lastMessage.messageContent.digest(item.lastMessage);
                 digest = digest.replace(/\n/g, ' ');
                 item.ui.lastMsgContent = digest;
                 item.ui.time = timeFormat(item.lastMessage.timestamp);
