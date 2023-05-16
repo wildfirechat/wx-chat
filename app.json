@@ -4,7 +4,8 @@
     "pages/chat-list/chat-list",
     "pages/chat/chat",
     "pages/chat-input/chat-input",
-    "pages/friends/friends"
+    "pages/friends/friends",
+    "pages/voip/voip"
   ],
   "window": {
     "backgroundTextStyle": "light",

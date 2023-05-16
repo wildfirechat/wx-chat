@@ -70,6 +70,10 @@ Page({
               key:"token",
               data:token
             })
+            wx.setStorage({
+                key:'authToken',
+                data: res.header['authToken']
+            })
             wx.switchTab({
               url: '../chat-list/chat-list', fail: (e) => {
                 console.log(e)

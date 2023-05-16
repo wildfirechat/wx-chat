@@ -45,8 +45,8 @@ import {encode} from 'base64-arraybuffer';
 import Config from '../../config.js';
 
 import Long from 'long'
-import UnsupportMessageContent from "../messages/unsupportMessageConten";
-import RecallMessageNotification from "../messages/notification/recallMessageNotification";
+import UnsupportMessageContent from "./unsupportMessageConten";
+import RecallMessageNotification from "./notification/recallMessageNotification";
 
 export default class Message {
     conversation = {};
@@ -67,7 +67,7 @@ export default class Message {
     }
 
     static fromProtoMessage(obj) {
-        if (!obj) {
+        if(!obj){
             return null;
         }
         if (!obj.conversation.target) {
@@ -83,11 +83,16 @@ export default class Message {
             }
 
             msg.messageUid = Long.fromValue(msg.messageUid);
-            msg.timestamp = Long.fromValue(msg.timestamp).toNumber();
-            msg.localExtra = obj.localExtra;
-            if (!msg.from) {
+            if (msg.timestamp){
+                msg.timestamp = Long.fromValue(msg.timestamp).toNumber();
+            } else {
                 // 移动端
-                msg.from = obj.sender;
+                msg.timestamp = Long.fromValue(msg.serverTime).toNumber();
+            }
+            msg.localExtra = obj.localExtra;
+            if (!msg.from){
+                // 移动端
+            	msg.from = obj.sender;
             }
             msg.conversation = new Conversation(obj.conversation.conversationType !== undefined ? obj.conversation.conversationType : obj.conversation.type, obj.conversation.target, obj.conversation.line);
             let contentClazz = MessageConfig.getMessageContentClazz(msg.content.type !== undefined ? msg.content.type : msg.content.messageContentType);
@@ -108,7 +113,7 @@ export default class Message {
                     }
                 }
                 msg.messageContent = content;
-                if (content instanceof UnknownMessageContent) {
+                if (content instanceof UnknownMessageContent){
                     console.log('unknownMessage Content', obj)
                 }
 
@@ -128,32 +133,26 @@ export default class Message {
             let contentClazz = MessageConfig.getMessageContentClazz(obj.content.type);
             if (contentClazz) {
                 let content = new contentClazz();
-                if (obj.content.__notLoaded) {
-                    content.__notLoaded = true;
-                    content.type = obj.content.type;
-                } else {
-                    try {
-                        if (obj.content.data && obj.content.data.length > 0) {
-                            obj.content.binaryContent = encode(obj.content.data);
-                        }
-                        content.decode(obj.content);
-                        content.extra = obj.content.extra;
-                        if (content instanceof NotificationMessageContent) {
-                            content.fromSelf = msg.from === wfc.getUserId();
-                        }
-                    } catch (error) {
-                        console.error('decode message payload failed, fallback to unkownMessage', obj.content, error);
-                        let flag = MessageConfig.getMessageContentPersitFlag(obj.content.type);
-                        if (PersistFlag.Persist === flag || PersistFlag.Persist_And_Count === flag) {
-                            content = new UnknownMessageContent(obj.content);
-                        } else {
-                            return null;
-                        }
+                try {
+                    if (obj.content.data && obj.content.data.length > 0) {
+                        obj.content.binaryContent = encode(obj.content.data);
+                    }
+                    content.decode(obj.content);
+                    content.extra = obj.content.extra;
+                    if (content instanceof NotificationMessageContent) {
+                        content.fromSelf = msg.from === wfc.getUserId();
+                    }
+                } catch (error) {
+                    console.error('decode message payload failed, fallback to unkownMessage', obj.content, error);
+                    let flag = MessageConfig.getMessageContentPersitFlag(obj.content.type);
+                    if (PersistFlag.Persist === flag || PersistFlag.Persist_And_Count === flag) {
+                        content = new UnknownMessageContent(obj.content);
+                    } else {
+                        return null;
                     }
                 }
                 msg.messageContent = content;
-
-                if (content instanceof UnknownMessageContent) {
+                if (content instanceof UnknownMessageContent){
                     console.log('unknownMessage Content', obj)
                 }
             } else {

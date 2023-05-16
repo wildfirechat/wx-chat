@@ -3,20 +3,20 @@
  */
 
 /**
- * 
-        "content": {
-            "type": 1, 
-            "searchableContent": "1234", 
-            "pushContent": "", 
-            "content": "", 
-            "binaryContent": "", 
-            "localContent": "", 
-            "mediaType": 0, 
-            "remoteMediaUrl": "", 
-            "localMediaPath": "", 
-            "mentionedType": 0, 
+ *
+ "content": {
+            "type": 1,
+            "searchableContent": "1234",
+            "pushContent": "",
+            "content": "",
+            "binaryContent": "",
+            "localContent": "",
+            "mediaType": 0,
+            "remoteMediaUrl": "",
+            "localMediaPath": "",
+            "mentionedType": 0,
             "mentionedTargets": [ ]
-        }, 
+        },
  */
 export default class MessagePayload {
     type;
@@ -32,5 +32,4 @@ export default class MessagePayload {
     mentionedType = 0;
     mentionedTargets = [];
     extra;
-
 }

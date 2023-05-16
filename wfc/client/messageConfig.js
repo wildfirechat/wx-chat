@@ -33,6 +33,14 @@ import TypingMessageContent from '../messages/typingMessageContent';
 import RecallMessageNotification from '../messages/notification/recallMessageNotification';
 import DeleteMessageContent from '../messages/deleteMessageContent';
 
+import CallStartMessageContent from '../av/messages/callStartMessageContent';
+import CallAnswerMessageContent from '../av/messages/callAnswerMessageContent';
+import CallAnswerTMessageContent from '../av/messages/callAnswerTMessageContent';
+import CallByeMessageContent from '../av/messages/callByeMessageContent';
+import CallSignalMessageContent from '../av/messages/callSignalMessageContent';
+import CallModifyMessageContent from '../av/messages/callModifyMessageContent';
+import AddParticipantsMessageContent from "../av/messages/addParticipantsMessageContent";
+import MuteVideoMessageContent from "../av/messages/muteVideoMessageContent";
 import GroupJoinTypeNotificationContent from "../messages/notification/groupJoinTypeNotificationContent";
 import GroupMuteNotificationContent from "../messages/notification/groupMuteNotificationContent";
 import GroupSetManagerNotificationContent from "../messages/notification/groupSetManagerNotificationContent";
@@ -42,16 +50,23 @@ import MuteGroupMemberNotification from '../messages/notification/muteGroupMembe
 import AllowGroupMemberNotification from '../messages/notification/allowGroupMemberNotification'
 import CardMessageContent from '../messages/cardMessageContent'
 import CompositeMessageContent from "../messages/compositeMessageContent";
+import ConferenceInviteMessageContent from "../av/messages/conferenceInviteMessageContent";
+import ConferenceChangeModeContent from "../av/messages/conferenceChangeModeContent";
+import ConferenceKickoffMemberMessageContent from "../av/messages/conferenceKickoffMemberMessageContent";
 import MarkUnreadMessageContent from "../messages/markUnreadMessageContent";
-
 import LinkMessageContent from "../messages/linkMessageContent";
 import FriendAddedNotification from "../messages/notification/friendAddedNotification";
 import FriendGreetingNotification from "../messages/notification/friendGreetingNotification";
+// import StartSecretChatNotification from "../messages/notification/startSecretChatNotification";
+import MultiCallOngoingMessageContent from "../av/messages/multiCallOngoingMessageContent";
+import JoinCallRequestMessageContent from "../av/messages/joinCallRequestMessageContent";
 import RichNotificationMessageContent from "../messages/notification/richNotificationMessageContent";
 import ArticlesMessageContent from "../messages/articlesMessageContent";
+import ConferenceCommandMessageContent from "../av/messages/conferenceCommandMessageContent";
 import ChannelMenuEventMessageContent from "../messages/channelMenuEventMessageContent";
 import EnterChannelChatMessageContent from "../messages/enterChannelChatMessageContent";
 import LeaveChannelChatMessageContent from "../messages/leaveChannelChatMessageContent";
+
 export default class MessageConfig {
     static getMessageContentClazz(type) {
         for (const content of MessageConfig.MessageContents) {
@@ -334,11 +349,95 @@ export default class MessageConfig {
             contentClazz: DeleteMessageContent,
         },
         {
+            name: 'callStartMessageContent',
+            flag: PersistFlag.Persist,
+            type: MessageContentType.VOIP_CONTENT_TYPE_START,
+            contentClazz: CallStartMessageContent,
+        },
+        {
+            name: 'callAnswerMessageContent',
+            flag: PersistFlag.No_Persist,
+            type: MessageContentType.VOIP_CONTENT_TYPE_ACCEPT,
+            contentClazz: CallAnswerMessageContent,
+        },
+        {
+            name: 'callAnswerTMessageContent',
+            flag: PersistFlag.Transparent,
+            type: MessageContentType.VOIP_CONTENT_TYPE_ACCEPT_T,
+            contentClazz: CallAnswerTMessageContent,
+        },
+        {
+            name: 'callByeMessageContent',
+            flag: PersistFlag.No_Persist,
+            type: MessageContentType.VOIP_CONTENT_TYPE_END,
+            contentClazz: CallByeMessageContent,
+        },
+        {
+            name: 'callSignalMessageContent',
+            flag: PersistFlag.Transparent,
+            type: MessageContentType.VOIP_CONTENT_TYPE_SIGNAL,
+            contentClazz: CallSignalMessageContent,
+        },
+        {
+            name: 'callModifyMessageContent',
+            flag: PersistFlag.No_Persist,
+            type: MessageContentType.VOIP_CONTENT_TYPE_MODIFY,
+            contentClazz: CallModifyMessageContent,
+        },
+        {
+            name: 'callAddParticipant',
+            flag: PersistFlag.Persist,
+            type: MessageContentType.VOIP_CONTENT_TYPE_ADD_PARTICIPANT,
+            contentClazz: AddParticipantsMessageContent,
+        },
+        {
+            name: 'callMuteVideo',
+            flag: PersistFlag.No_Persist,
+            type: MessageContentType.VOIP_CONTENT_TYPE_MUTE_VIDEO,
+            contentClazz: MuteVideoMessageContent,
+        },
+        {
+            name: 'conferenceInvite',
+            flag: PersistFlag.Persist_And_Count,
+            type: MessageContentType.CONFERENCE_CONTENT_TYPE_INVITE,
+            contentClazz: ConferenceInviteMessageContent,
+        },
+        {
+            name: 'conferenceChangeMode',
+            flag: PersistFlag.Transparent,
+            type: MessageContentType.CONFERENCE_CONTENT_TYPE_CHANGE_MODE,
+            contentClazz: ConferenceChangeModeContent,
+        },
+        {
+            name: 'conferenceKickoffMember',
+            flag: PersistFlag.Transparent,
+            type: MessageContentType.CONFERENCE_CONTENT_TYPE_KICKOFF_MEMBER,
+            contentClazz: ConferenceKickoffMemberMessageContent,
+        },
+        {
+            name: 'multiCallOngoing',
+            flag: PersistFlag.Transparent,
+            type: MessageContentType.VOIP_Multi_Call_Ongoing,
+            contentClazz: MultiCallOngoingMessageContent,
+        },
+        {
+            name: 'joinCallRequest',
+            flag: PersistFlag.Transparent,
+            type: MessageContentType.VOIP_Join_Call_Request,
+            contentClazz: JoinCallRequestMessageContent,
+        },
+        {
             name: 'markUnreadMessage',
             flag: PersistFlag.No_Persist,
             type: MessageContentType.Mark_Unread_Sync,
             contentClazz: MarkUnreadMessageContent,
         },
+        // {
+        //     name: 'startSecretChat',
+        //     flag: PersistFlag.Persist_And_Count,
+        //     type: MessageContentType.StartSecretChat_Notification,
+        //     contentClazz: StartSecretChatNotification,
+        // },
         {
             name: 'richNotification',
             flag: PersistFlag.Persist_And_Count,
@@ -368,6 +467,13 @@ export default class MessageConfig {
             flag: PersistFlag.Transparent,
             type: MessageContentType.Leave_Channel_Chat,
             contentClazz: LeaveChannelChatMessageContent,
+        },
+        {
+            name: 'conferenceCommandMessageContent',
+            flag: PersistFlag.Transparent,
+            type: MessageContentType.CONFERENCE_CONTENT_TYPE_COMMAND,
+            contentClazz: ConferenceCommandMessageContent,
         }
+
     ];
 }

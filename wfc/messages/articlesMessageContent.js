@@ -42,7 +42,6 @@ export default class ArticlesMessageContent extends MessageContent {
             })
         }
     }
-
     toLinkMessageContent() {
         let contents = [];
         contents.push(this.topArticle.toLinkMessageContent())

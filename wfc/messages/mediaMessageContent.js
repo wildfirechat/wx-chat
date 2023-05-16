@@ -55,6 +55,7 @@ export default class MediaMessageContent extends MessageContent {
         if (Config.urlRedirect){
             this.remotePath = Config.urlRedirect(payload.remoteMediaUrl);
     }
+
         this.mediaType = payload.mediaType;
     }
 }
