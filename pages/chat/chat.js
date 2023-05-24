@@ -12,6 +12,7 @@ import MessageStatus from "../../wfc/messages/messageStatus";
 import NotificationMessageContent from "../../wfc/messages/notification/notificationMessageContent";
 import { numberValue } from "../../wfc/util/longUtil";
 import {timeFormat} from '../../utils/time'
+import avenginekitproxy from "../../wfc/av/engine/avenginekitproxy";
 
 /**
  * 聊天页面
@@ -34,8 +35,11 @@ Page({
             picName: 'take_photos',
             description: '拍摄'
         }, {
-            picName: 'close_chat',
-            description: '自定义功能'
+            picName: 'take_photos',
+            description: '音频通话'
+        }, {
+            picName: 'take_photos',
+            description: '视频通话'
         }],
     },
 
@@ -227,22 +231,29 @@ Page({
      * @param e
      */
     onExtraItemClickEvent(e) {
-        console.warn(e);
         let chooseIndex = parseInt(e.detail.index);
-        if (chooseIndex === 2) {
-            this.myFun();
-            return;
+        switch(chooseIndex){
+            case 0:
+            case 1:
+                wx.chooseImage({
+                    count: 1, // 默认9
+                    sizeType: ['compressed'],
+                    sourceType: chooseIndex === 0 ? ['album'] : ['camera'],
+                    success: (res) => {
+                        let tempFilePath = res.tempFilePaths[0];
+                        let imageMessageContent = new ImageMessageContent(res.tempFilePaths[0], null, null);
+                        this.sendMessage(imageMessageContent);
+                    }
+                });
+                break;
+            case 2:
+            case 3:
+                this.voipCall(chooseIndex === 2);
+                break;
+            default:
+                break;
+
         }
-        wx.chooseImage({
-            count: 1, // 默认9
-            sizeType: ['compressed'],
-            sourceType: chooseIndex === 0 ? ['album'] : ['camera'],
-            success: (res) => {
-                let imageMessageContent = new ImageMessageContent(res.tempFilePaths[0], null, null);
-                this.sendMessage(imageMessageContent);
-                // this.msgManager.sendMsg({ type: IMOperator.ImageType, content: res.tempFilePaths[0] })
-            }
-        });
     },
     /**
      * 点击extra按钮时触发
@@ -286,20 +297,9 @@ Page({
     /**
      * 自定义事件
      */
-    myFun() {
-        wx.showModal({
-            title: '小贴士',
-            content: '演示更新会话状态',
-            confirmText: '确认',
-            showCancel: true,
-            success: (res) => {
-                if (res.confirm) {
-                    this.msgManager.sendMsg({
-                        type: IMOperator.CustomType
-                    })
-                }
-            }
-        })
+    voipCall(audioOnly) {
+        console.log('startcall');
+        avenginekitproxy.startCall(this.conversation, audioOnly, [this.conversation.target], '');
     },
 
     resetInputStatus() {
