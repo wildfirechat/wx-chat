@@ -13,6 +13,8 @@ import NotificationMessageContent from "../../wfc/messages/notification/notifica
 import { numberValue } from "../../wfc/util/longUtil";
 import {timeFormat} from '../../utils/time'
 import avenginekitproxy from "../../wfc/av/engine/avenginekitproxy";
+import ConversationType from "../../wfc/model/conversationType";
+import Toast from "../../utils/toast";
 
 /**
  * 聊天页面
@@ -299,6 +301,11 @@ Page({
      */
     voipCall(audioOnly) {
         console.log('startcall');
+        if(this.conversation.type !== ConversationType.Single){
+            Toast.show('warn', '暂只支持单人')
+            console.warn('暂时只支持发起单人音视频通话，多人通话，涉及到选通话参与者，尚未实现');
+            return;
+        }
         avenginekitproxy.startCall(this.conversation, audioOnly, [this.conversation.target], '');
     },
 
