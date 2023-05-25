@@ -3,7 +3,7 @@ import wfc from '../../wfc/client/wfc';
 
 Page({
   data: {
-    url: 'https://192.168.2.180:8082/',
+    url: '',
   },
 
 
@@ -14,7 +14,10 @@ Page({
     let authToken = wx.getStorageSync('authToken');
     let shortLinkInfo = wfc.getShortLinkInfo();
 
-    const voipBaseWebUrl = 'https://192.168.2.180:8082';
+    // 多人版音视频
+    const voipBaseWebUrl = 'https://static.wildfirechat.cn/voip-multi-20230525.html';
+    // 高级版音视频
+    //const voipBaseWebUrl = 'https://static.wildfirechat.cn/voip-multi-20230525.html';
 
     let voipWebUrl = `${voipBaseWebUrl}?type=${options.type}&authToken=${authToken}&token=${shortLinkInfo.token}&clientId=${shortLinkInfo.clientId}&server=${encodeURIComponent(shortLinkInfo.server)}`;
 
