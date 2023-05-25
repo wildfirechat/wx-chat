@@ -2034,6 +2034,9 @@ export class WfcManager {
     releaseLock(lockId, successCB, failCB){
         impl.releaseLock(lockId, successCB, failCB);
     }
+    getShortLinkInfo(){
+      return impl.getShortLinkInfo();
+    }
     _getStore() {
         return impl._getStore();
     }
