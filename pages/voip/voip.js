@@ -18,7 +18,7 @@ Page({
 
     let voipWebUrl = `${voipBaseWebUrl}?type=${options.type}&authToken=${authToken}&token=${shortLinkInfo.token}&clientId=${shortLinkInfo.clientId}&server=${encodeURIComponent(shortLinkInfo.server)}`;
 
-    console.log('xxxx', shortLinkInfo,  voipWebUrl);
+    console.log('start voip page', shortLinkInfo,  voipWebUrl);
     this.setData({url: voipWebUrl});
 
   },
