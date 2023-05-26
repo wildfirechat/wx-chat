@@ -184,11 +184,13 @@ export class AvEngineKitProxy {
         console.log('to send conference request', request)
         wfc.sendConferenceRequestEx(request.sessionId ? request.sessionId : 0, request.roomId ? request.roomId : '', request.request, request.data, request.advance, (errorCode, res) => {
             console.log('send conference request result', errorCode, request, res)
-            window.msgFromUniapp({event: 'sendConferenceRequestResult', args: {
-                error: errorCode,
-                sendConferenceRequestId: request.sendConferenceRequestId,
-                response: res
-            }})
+            window.msgFromUniapp({
+                event: 'sendConferenceRequestResult', args: {
+                    error: errorCode,
+                    sendConferenceRequestId: request.sendConferenceRequestId,
+                    response: res
+                }
+            })
         });
     }
 
@@ -223,17 +225,19 @@ export class AvEngineKitProxy {
 
             // do nothing
         }, (messageUid, timestamp) => {
-            window.msgFromUniapp({event: 'sendMessageResult', args:{
-                error: 0,
-                sendMessageId: msg.sendMessageId,
-                messageUid: messageUid,
-                timestamp: longValue(numberValue(timestamp) - delta)
-            }})
+            window.msgFromUniapp({
+                event: 'sendMessageResult', args: {
+                    error: 0,
+                    sendMessageId: msg.sendMessageId,
+                    messageUid: messageUid,
+                    timestamp: longValue(numberValue(timestamp) - delta)
+                }
+            })
             if (content.type === MessageContentType.VOIP_CONTENT_TYPE_START) {
                 this.inviteMessageUid = messageUid;
             }
         }, (errorCode) => {
-            window.msgFromUniapp({event: 'sendMessageResult', args:{error: errorCode, sendMessageId: msg.sendMessageId}})
+            window.msgFromUniapp({event: 'sendMessageResult', args: {error: errorCode, sendMessageId: msg.sendMessageId}})
         });
     }
 
@@ -308,7 +312,10 @@ export class AvEngineKitProxy {
                     }
                     if (!this.voipWebview) {
                         if (this.conversation) {
-                            this.showCallUI(msg.conversation);
+                            this.showCallUI(msg.conversation, false, {
+                                event: 'message',
+                                args: msg,
+                            });
                         } else {
                             console.log('call ended')
                         }
@@ -331,7 +338,10 @@ export class AvEngineKitProxy {
 
                     if (!this.voipWebview && content.participants.indexOf(selfUserInfo.uid) > -1) {
                         if (this.conversation) {
-                            this.showCallUI(msg.conversation);
+                            this.showCallUI(msg.conversation, false, {
+                                event: 'message',
+                                args: msg,
+                            });
                         } else {
                             console.log('call ended')
                         }
@@ -362,7 +372,6 @@ export class AvEngineKitProxy {
     emitToVoip(event, args) {
         if (this.voipWebview) {
             const
-                _funName = 'msgFromUniapp',
                 _data = {
                     event,
                     args
@@ -377,6 +386,9 @@ export class AvEngineKitProxy {
                 this.voipWebview.setData({
                     url: baseUrl + '#data=' + encodeURIComponent(JSON.stringify(_data, null, ''))
                 })
+                if (event === 'startCall') {
+                    console.log('send startCall', new Date().getTime());
+                }
             }, 1000)
         } else if (this.queueEvents) {
             this.queueEvents.push({event, args});
@@ -473,15 +485,17 @@ export class AvEngineKitProxy {
             let memberIds = wfc.getGroupMemberIds(conversation.target);
             groupMemberUserInfos = wfc.getUserInfos(memberIds, conversation.target);
         }
-        this.showCallUI(conversation, false);
-        this.emitToVoip('startCall', {
-            conversation: conversation,
-            audioOnly: audioOnly,
-            callId: callId,
-            selfUserInfo: selfUserInfo,
-            groupMemberUserInfos: groupMemberUserInfos,
-            participantUserInfos: participantUserInfos,
-            callExtra: callExtra,
+        this.showCallUI(conversation, false, {
+            event: 'startCall',
+            args: {
+                conversation: conversation,
+                audioOnly: audioOnly,
+                callId: callId,
+                selfUserInfo: selfUserInfo,
+                groupMemberUserInfos: groupMemberUserInfos,
+                participantUserInfos: participantUserInfos,
+                callExtra: callExtra,
+            }
         });
     }
 
@@ -526,6 +540,8 @@ export class AvEngineKitProxy {
 
         let selfUserInfo = wfc.getUserInfo(wfc.getUserId());
         this.showCallUI(null, true);
+        // fixme
+        // TODO 参考 startCall
         this.emitToVoip('startConference', {
             audioOnly: audioOnly,
             callId: callId,
@@ -599,10 +615,10 @@ export class AvEngineKitProxy {
         });
     }
 
-    showCallUI(conversation, isConference) {
+    showCallUI(conversation, isConference, options) {
         let type = isConference ? 'conference' : (conversation.type === ConversationType.Single ? 'single' : 'multi');
         wx.navigateTo({
-            url: `/pages/voip/voip?type=${type}`,
+            url: `/pages/voip/voip?type=${type}&options=${encodeURIComponent(JSON.stringify(options, null, ''))}`,
             fail: (e) => {
                 console.log(e)
             }
