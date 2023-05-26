@@ -24,7 +24,7 @@ Page({
 
     let token = shortLinkInfo.token;
     token = token.replaceAll('+', '.').replaceAll('/', '_').replaceAll('=', '-')
-    let voipWebUrl = `${voipBaseWebUrl}?type=${options.type}&authToken=${authToken}&token=${token}&clientId=${shortLinkInfo.clientId}&server=${encodeURIComponent(shortLinkInfo.server)}&debug=true`;
+    let voipWebUrl = `${voipBaseWebUrl}?type=${options.type}&authToken=${authToken}&token=${token}&clientId=${shortLinkInfo.clientId}&server=${encodeURIComponent(shortLinkInfo.server)}&debug=false`;
 
     console.log('start voip page', shortLinkInfo,  voipWebUrl);
     this.setData({url: voipWebUrl});
