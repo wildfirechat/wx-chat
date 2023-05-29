@@ -15,6 +15,7 @@ import {timeFormat} from '../../utils/time'
 import avenginekitproxy from "../../wfc/av/engine/avenginekitproxy";
 import ConversationType from "../../wfc/model/conversationType";
 import Toast from "../../utils/toast";
+import CallStartMessageContent from "../../wfc/av/messages/callStartMessageContent";
 
 /**
  * 聊天页面
@@ -403,6 +404,9 @@ Page({
             } else if (m.messageContent instanceof NotificationMessageContent) {
                 item.type = 'notification';
                 item.notification = m.messageContent.formatNotification(m);
+            } else if (m.messageContent instanceof CallStartMessageContent) {
+                item.type = 'callStart';
+                item.content = m.messageContent.digest();
             } else {
                 // TODO 更多消息类型处理
                 item.type = 'text';

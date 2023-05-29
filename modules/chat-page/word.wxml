@@ -11,7 +11,8 @@
             <view wx:if="{{type==='text'}}" class="{{isMy?'isMyWordStyle':'isOtherWordStyle'}}"
                   style="border-radius: 10rpx;padding: 20rpx;font-size: 30rpx;max-width: 60%;"
                   bindtap="chatTextItemClickEvent"
-                  data-index="{{index}}">{{content}}</view>
+                  data-index="{{index}}">{{content}}
+            </view>
         </block>
 
         <block wx:if="{{type==='image'}}">
@@ -30,6 +31,12 @@
                 <template is="voice-item" data="{{isMy:isMy,isPlaying:isPlaying}}"/>
             </view>
             <view class="voice-duration-style">{{voiceDuration}}"</view>
+        </block>
+
+        <block wx:if="{{type==='callStart'}}">
+            <view wx:if="{{type==='callStart'}}" class="{{isMy?'isMyWordStyle':'isOtherWordStyle'}}"
+                  style="border-radius: 10rpx;padding: 20rpx;font-size: 30rpx;max-width: 60%;"
+                  data-index="{{index}}">{{content}}</view>
         </block>
 
         <!-- todo 更多消息类型处理 -->
