@@ -36,8 +36,20 @@
         <block wx:if="{{type==='callStart'}}">
             <view wx:if="{{type==='callStart'}}" class="{{isMy?'isMyWordStyle':'isOtherWordStyle'}}"
                   style="border-radius: 10rpx;padding: 20rpx;font-size: 30rpx;max-width: 60%;"
-                  data-index="{{index}}">{{content}}</view>
+                  data-message="{{message}}"
+                  data-index="{{index}}">{{content}}
+            </view>
         </block>
+
+        <block wx:if="{{type==='conferenceInvite'}}">
+            <view wx:if="{{type==='conferenceInvite'}}" class="{{isMy?'isMyWordStyle':'isOtherWordStyle'}}"
+                  style="border-radius: 10rpx;padding: 20rpx;font-size: 30rpx;max-width: 60%;"
+                  bindtap="chatConferenceInviteItemClickEvent"
+                  data-message="{{message}}"
+                  data-index="{{index}}">{{content}}
+            </view>
+        </block>
+
 
         <!-- todo 更多消息类型处理 -->
 

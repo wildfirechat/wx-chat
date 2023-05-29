@@ -10,12 +10,13 @@ import ImageMessageContent from "../../wfc/messages/imageMessageContent";
 import SoundMessageContent from "../../wfc/messages/soundMessageContent";
 import MessageStatus from "../../wfc/messages/messageStatus";
 import NotificationMessageContent from "../../wfc/messages/notification/notificationMessageContent";
-import { numberValue } from "../../wfc/util/longUtil";
+import {numberValue} from "../../wfc/util/longUtil";
 import {timeFormat} from '../../utils/time'
 import avenginekitproxy from "../../wfc/av/engine/avenginekitproxy";
 import ConversationType from "../../wfc/model/conversationType";
 import Toast from "../../utils/toast";
 import CallStartMessageContent from "../../wfc/av/messages/callStartMessageContent";
+import ConferenceInviteMessageContent from "../../wfc/av/messages/conferenceInviteMessageContent";
 
 /**
  * 聊天页面
@@ -235,7 +236,7 @@ Page({
      */
     onExtraItemClickEvent(e) {
         let chooseIndex = parseInt(e.detail.index);
-        switch(chooseIndex){
+        switch (chooseIndex) {
             case 0:
             case 1:
                 wx.chooseImage({
@@ -265,21 +266,6 @@ Page({
     onExtraClickEvent(e) {
         console.log(e);
     },
-    //模拟上传文件，注意这里的cbOk回调函数传入的参数应该是上传文件成功时返回的文件url，这里因为模拟，我直接用的savedFilePath
-    simulateUploadFile({
-        savedFilePath,
-        duration,
-        itemIndex
-    }) {
-        return new Promise((resolve, reject) => {
-            setTimeout(() => {
-                let urlFromServerWhenUploadSuccess = savedFilePath;
-                resolve({
-                    url: urlFromServerWhenUploadSuccess
-                });
-            }, 1000);
-        });
-    },
 
     imageClickEvent(e) {
         let dataset = e.currentTarget.dataset;
@@ -297,12 +283,18 @@ Page({
         })
     },
 
+    chatConferenceInviteItemClickEvent(e) {
+        let cmc = e.currentTarget.dataset.message.messageContent;
+        console.log('点击会议邀请消息', cmc);
+        avenginekitproxy.joinConference(cmc.callId, cmc.audioOnly, cmc.pin, cmc.host, cmc.title, cmc.desc, cmc.audience, cmc.advanced, false, false)
+    },
+
     /**
      * 自定义事件
      */
     voipCall(audioOnly) {
         console.log('startcall');
-        if(this.conversation.type !== ConversationType.Single){
+        if (this.conversation.type !== ConversationType.Single) {
             Toast.show('warn', '暂只支持单人')
             console.warn('暂时只支持发起单人音视频通话，多人通话，涉及到选通话参与者，尚未实现');
             return;
@@ -406,6 +398,9 @@ Page({
                 item.notification = m.messageContent.formatNotification(m);
             } else if (m.messageContent instanceof CallStartMessageContent) {
                 item.type = 'callStart';
+                item.content = m.messageContent.digest();
+            } else if (m.messageContent instanceof ConferenceInviteMessageContent) {
+                item.type = 'conferenceInvite';
                 item.content = m.messageContent.digest();
             } else {
                 // TODO 更多消息类型处理

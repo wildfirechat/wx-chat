@@ -1,5 +1,6 @@
 import avenginekitproxy from '../../wfc/av/engine/avenginekitproxy';
 import wfc from '../../wfc/client/wfc';
+import Config from "../../config";
 
 Page({
   data: {
@@ -24,7 +25,21 @@ Page({
 
     let token = shortLinkInfo.token;
     token = token.replaceAll('+', '.').replaceAll('/', '_').replaceAll('=', '-')
-    let voipWebUrl = `${voipBaseWebUrl}?type=${options.type}&options=${options.options}&authToken=${authToken}&token=${token}&clientId=${shortLinkInfo.clientId}&server=${encodeURIComponent(shortLinkInfo.server)}&debug=true`;
+
+    let voipWebUrl = `${voipBaseWebUrl}`
+    voipWebUrl += `?type=${options.type}`
+    // app server info
+    voipWebUrl += `&appServer=${encodeURIComponent(Config.APP_SERVER)}`;
+    voipWebUrl += `&authToken=${authToken}`
+    // im server info
+    voipWebUrl += `&server=${encodeURIComponent(shortLinkInfo.server)}`;
+    voipWebUrl += `&userId=${wfc.getUserId()}`
+    voipWebUrl += `&token=${token}`
+    voipWebUrl += `&clientId=${shortLinkInfo.clientId}`
+    // options
+    voipWebUrl += `&options=${options.options}`
+    // enable voip debug，打开之后，音视频通话页面不会自动关闭
+    voipWebUrl += `&debug=true`;
 
     console.log('start voip page', shortLinkInfo,  voipWebUrl);
     this.setData({url: voipWebUrl});
