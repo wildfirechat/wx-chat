@@ -19,9 +19,9 @@ Page({
     const voipBaseWebUrl = 'https://voip.wfim.work';
 
     // 多人版音视频
-    // const voipBaseWebUrl = 'https://static.wildfirechat.cn/voip-multi-1685070010.html';
+    // const voipBaseWebUrl = 'https://static.wildfirechat.cn/voip-multi-1685347550.html';
     // 高级版音视频
-    // const voipBaseWebUrl = 'https://static.wildfirechat.cn/voip-conference-1685069872.html';
+    // const voipBaseWebUrl = 'https://static.wildfirechat.cn/voip-conference-1685347421.html';
 
     let token = shortLinkInfo.token;
     token = token.replaceAll('+', '.').replaceAll('/', '_').replaceAll('=', '-')
@@ -39,7 +39,7 @@ Page({
     // options
     voipWebUrl += `&options=${options.options}`
     // enable voip debug，打开之后，音视频通话页面不会自动关闭
-    voipWebUrl += `&debug=true`;
+    voipWebUrl += `&debug=false`;
 
     console.log('start voip page', shortLinkInfo,  voipWebUrl);
     this.setData({url: voipWebUrl});
