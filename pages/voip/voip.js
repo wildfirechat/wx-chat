@@ -16,12 +16,12 @@ Page({
     let shortLinkInfo = wfc.getShortLinkInfo();
 
     // 本地调试
-    const voipBaseWebUrl = 'https://voip.wfim.work';
+    // const voipBaseWebUrl = 'https://voip.wfim.work';
 
     // 多人版音视频
     // const voipBaseWebUrl = 'https://static.wildfirechat.cn/voip-multi-1685347550.html';
     // 高级版音视频
-    // const voipBaseWebUrl = 'https://static.wildfirechat.cn/voip-conference-1685347421.html';
+    const voipBaseWebUrl = 'https://static.wildfirechat.cn/voip-conference-1685347421.html';
 
     let token = shortLinkInfo.token;
     token = token.replaceAll('+', '.').replaceAll('/', '_').replaceAll('=', '-')
