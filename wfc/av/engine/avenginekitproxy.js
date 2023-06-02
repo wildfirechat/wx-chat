@@ -300,7 +300,10 @@ export class AvEngineKitProxy {
                         || content.type === MessageContentType.VOIP_CONTENT_TYPE_ADD_PARTICIPANT
                     )) {
                     let memberIds = wfc.getGroupMemberIds(msg.conversation.target);
-                    msg.groupMemberUserInfos = wfc.getUserInfos(memberIds, msg.conversation.target);
+                    // TODO，临时屏蔽，可能会导致 414 Request-URI Too Large
+                    // FIXME 可能会导致 414 Request-URI Too Large
+                    // App.vue 里面再去获取用户信息等
+                    // msg.groupMemberUserInfos = wfc.getUserInfos(memberIds, msg.conversation.target);
                 }
 
                 // patch
@@ -316,14 +319,7 @@ export class AvEngineKitProxy {
                     // 参与者不包含自己
                     this.participants = this.participants.filter(uid => uid !== selfUserInfo.uid)
 
-                    if (msg.conversation.type === ConversationType.Single) {
-                        participantUserInfos = [wfc.getUserInfo(msg.from)];
-                    } else {
-                        let targetIds = content.targetIds.filter(id => id !== selfUserInfo.uid);
-                        targetIds.push(msg.from);
-                        participantUserInfos = wfc.getUserInfos(targetIds, msg.conversation.target);
-                    }
-                    msg.participantUserInfos = participantUserInfos;
+                    msg.participants = this.participants;
                     if (!this.voipWebview) {
                         if (this.conversation) {
                             this.showCallUI(msg.conversation, false, {
@@ -348,10 +344,8 @@ export class AvEngineKitProxy {
                     this.inviteMessageUid = msg.messageUid;
                     this.participants.push(...participantIds);
 
-                    participantIds = participantIds.filter(u => u.uid !== selfUserInfo.uid);
-                    participantUserInfos = wfc.getUserInfos(participantIds, msg.conversation.target);
-
-                    msg.participantUserInfos = participantUserInfos;
+                    this.participants = participantIds.filter(u => u.uid !== selfUserInfo.uid);
+                    msg.participants = participantIds;
                     if (!this.voipWebview && content.participants.indexOf(selfUserInfo.uid) > -1) {
                         if (this.conversation) {
                             this.showCallUI(msg.conversation, false, {
