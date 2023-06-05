@@ -67,12 +67,14 @@
 
 请用微信扫描下方小程序码，进行体验
 
-![野火IM 小程序码](https://static.wildfirechat.cn/wx.jpg)
+![野火IM 小程序码](https://static.wildfirechat.cn/qx.jpeg)
 
 ## 应用截图
 ![conversation_list](https://static.wildfirechat.cn/conversation_list.png)
 ![conversation](https://static.wildfirechat.cn/conversation.png)
 ![friends](https://static.wildfirechat.cn/friends.png)
+![voip-audio](https://static.wildfirechat.cn/voip-audio.jpeg)
+![voip-video](https://static.wildfirechat.cn/voip-video.jpeg)
 
 ## 贡献
 欢迎提交pull request，一起打造一个更好的开源IM。

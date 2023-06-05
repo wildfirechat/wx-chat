@@ -15,9 +15,9 @@ Page({
     let authToken = wx.getStorageSync('authToken');
     let shortLinkInfo = wfc.getShortLinkInfo();
 
+    //
     // 本地调试
     // const voipBaseWebUrl = 'https://voip.wfim.work';
-
     // 多人版音视频
     // const voipBaseWebUrl = 'https://static.wildfirechat.cn/voip-multi-1685693418.html';
     // 高级版音视频
