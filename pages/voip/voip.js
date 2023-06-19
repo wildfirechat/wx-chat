@@ -1,10 +1,14 @@
 import avenginekitproxy from '../../wfc/av/engine/avenginekitproxy';
 import wfc from '../../wfc/client/wfc';
 import Config from "../../config";
+import CallByeMessageContent from "../../wfc/av/messages/callByeMessageContent";
+import CallEndReason from "../../wfc/av/engine/callEndReason";
 
 Page({
   data: {
     url: '',
+    callId:'',
+    conversation: null,
   },
 
 
@@ -41,14 +45,28 @@ Page({
     // enable voip debug，打开之后，音视频通话页面不会自动关闭
     voipWebUrl += `&debug=false`;
 
-    console.log('start voip page', shortLinkInfo,  voipWebUrl);
+    let callOptions = JSON.parse(decodeURIComponent(options.options));
+    this.setData({
+        callId: callOptions.args.callId,
+        conversation: callOptions.args.conversation,
+    });
+    // let sessionId = callOptions.args.sessionId;
+
+    console.log('start voip page',  shortLinkInfo,  voipWebUrl);
     this.setData({url: voipWebUrl});
 
   },
 
   onUnload: function () {
     avenginekitproxy.setVoipWebview(null);
-
+    let byeMessage = new CallByeMessageContent();
+    // 处理用户没有主动挂断，而是直接返回页面时，补偿一个挂断消息
+    // 现在还无法处理会议的情况，会议只能等待超时
+    if (this.data.conversation){
+        byeMessage.callId = this.data.callId;
+        byeMessage.reason = CallEndReason.REASON_Hangup;
+        wfc.sendConversationMessage(this.data.conversation, byeMessage);
+    }
   }
 
 })
