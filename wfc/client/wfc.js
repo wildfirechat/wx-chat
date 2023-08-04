@@ -8,7 +8,9 @@ import Long from 'long';
 
 import impl from '../proto/proto.min';
 import Config from "../../config";
-import avenginekit from "../av/engine/avenginekitproxy";
+import EventType from "./wfcEvent";
+import ConnectionStatus from "./connectionStatus";
+import NullUserInfo from "../model/nullUserInfo";
 
 
 export class WfcManager {
@@ -20,7 +22,19 @@ export class WfcManager {
     eventEmitter = new EventEmitter();
 
     constructor() {
-        impl.eventEmitter = this.eventEmitter;
+        impl.eventEmitter = {
+            emit: (ev, ...args) => {
+                if (ev === EventType.ConnectionStatusChanged || ev === EventType.UserOnlineEvent) {
+                    self.eventEmitter.emit(ev, ...args)
+                } else {
+                    if (impl.connectionStatus === ConnectionStatus.ConnectionStatusConnected) {
+                        self.eventEmitter.emit(ev, ...args)
+                    } else {
+                        // ignore
+                    }
+                }
+            }
+        };
     }
 
     /**
@@ -32,7 +46,6 @@ export class WfcManager {
     init(args = []) {
         console.log('wfc init');
         impl.init(args);
-        avenginekit.setup(self);
     }
     /**
      * 注册新的自定义消息
@@ -224,8 +237,8 @@ export class WfcManager {
      */
     getUserInfo(userId, refresh = false, groupId = '') {
         let userInfo = impl.getUserInfo(userId, refresh, groupId);
-        if (!userInfo.portrait) {
-            userInfo.portrait = Config.DEFAULT_PORTRAIT_URL;
+        if (!userInfo.portrait || userInfo.portrait.startsWith(Config.APP_SERVER)) {
+            userInfo.portrait = this.defaultUserPortrait(userInfo);
         }
         return userInfo;
     }
@@ -242,6 +255,25 @@ export class WfcManager {
     }
 
     /**
+     * 批量从服务端拉取用户信息
+     * @param {[string]} userIds 用户ids
+     * @param {function ([UserInfo])} successCB 成功回调
+     * @param {function (Number)} failCB 失败回调
+     */
+    getUserInfosEx(userIds,  successCB, failCB) {
+        impl.getUserInfosEx(userIds, userInfos => {
+            userInfos.forEach((u)=>{
+                if(!u.portrait || u.portrait.startsWith(Config.APP_SERVER)){
+                    u.portrait = this.defaultUserPortrait(u);
+                }
+            });
+            successCB && successCB(userInfos);
+        }, err => {
+            failCB && failCB(err);
+        });
+    }
+
+    /**
      * 批量获取用户信息
      * @param {[string]} userIds 用户ids
      * @param {string} groupId 群组id
@@ -250,8 +282,8 @@ export class WfcManager {
     getUserInfos(userIds, groupId) {
         let userInfos = impl.getUserInfos(userIds, groupId);
         userInfos.forEach((u) => {
-            if (!u.portrait) {
-                u.portrait = Config.DEFAULT_PORTRAIT_URL;
+            if (!u.portrait || u.portrait.startsWith(Config.APP_SERVER)) {
+                u.portrait = this.defaultUserPortrait(u)
             }
         });
         return userInfos;
@@ -473,7 +505,11 @@ export class WfcManager {
      * @returns {GroupInfo}
      */
     getGroupInfo(groupId, refresh = false) {
-        return impl.getGroupInfo(groupId, refresh);
+        let info = impl.getGroupInfo(groupId, refresh);
+        if (!info.portrait || info.portrait.startsWith(Config.APP_SERVER)) {
+            info.portrait = this.defaultGroupPortrait(info);
+        }
+        return info;
     }
 
     /**
@@ -483,7 +519,13 @@ export class WfcManager {
      * @returns {[GroupInfo]}
      */
     getGroupInfos(groupIds, refresh = false) {
-        return impl.getGroupInfos(groupIds, refresh);
+        let infos = impl.getGroupInfos(groupIds, refresh);
+        infos.forEach(info => {
+            if (!info.portrait || info.portrait.startsWith(Config.APP_SERVER)) {
+                info.portrait = this.defaultGroupPortrait(info);
+    		}
+        })
+        return infos;
     }
     /**
      * 获取群信息
@@ -493,7 +535,12 @@ export class WfcManager {
      * @param {function (number)} failCB 失败回调
      */
     getGroupInfoEx(groupId, refresh = false, successCB, failCB) {
-        impl.getGroupInfoEx(groupId, refresh, successCB, failCB);
+        impl.getGroupInfoEx(groupId, refresh, info => {
+            if (!info.portrait || info.portrait.startsWith(Config.APP_SERVER)) {
+                info.portrait = this.defaultGroupPortrait(info);
+            }
+            successCB && successCB(info);
+        }, failCB);
     }
 
     /**
@@ -1766,7 +1813,7 @@ export class WfcManager {
     /**
      * 上传媒体文件
      * @param {string} fileName
-     * @param {string} fileOrData base64格式的dataUri
+     * @param {string | File} fileOrData base64格式的dataUri 或者 File
      * @param {number} mediaType 媒体类型，可选值参考{@link MessageContentMediaType}
      * @param {function (string)} successCB 回调通知上传成功之后的url
      * @param {function (number)} failCB
@@ -1871,15 +1918,6 @@ export class WfcManager {
      */
     setUserEnableReceipt(enable, successCB, failCB) {
         impl.setUserEnableReceipt(enable, successCB, failCB);
-    }
-
-    /**
-     *
-     * @param conversation
-     * @return {Map<string, Long>}
-     */
-    getConversationDelivery(conversation) {
-        return impl.getConversationDelivery(conversation);
     }
 
     /**
@@ -2083,6 +2121,44 @@ export class WfcManager {
         return str.replace(/\+/g, '-')
             .replace(/\//g, '_')
             .replace(/=/g, '')
+    }
+
+    defaultUserPortrait(userInfo) {
+        return `${Config.APP_SERVER}/avatar?name=${encodeURIComponent(userInfo.displayName)}`
+        // return `http://localhost:8888/avatar?name=${encodeURIComponent(userInfo.displayName)}`
+    }
+
+    defaultGroupPortrait(groupInfo) {
+        let memberIds = this.getGroupMemberIds(groupInfo.target)
+        memberIds = memberIds.slice(0, 9);
+        // let members = this.getUserInfos(memberIds, groupInfo.target);
+        let members = impl.getUserInfos(memberIds, groupInfo.target);
+        let req = {
+            members: []
+        }
+        let pending = false;
+        members.forEach(m => {
+            if (m.portrait && !m.portrait.startsWith(`${Config.APP_SERVER}`)) {
+                req.members.push({
+                    avatarUrl: m.portrait
+                })
+            } else {
+                req.members.push({
+                    name: m.displayName
+                })
+            }
+            if (m instanceof NullUserInfo) {
+                pending = true;
+            }
+        })
+        if (members.length === 0 || pending) {
+            return null;
+        }
+
+        req = JSON.stringify(req, null, '');
+
+        return `${Config.APP_SERVER}/avatar/group?request=${encodeURIComponent(req)}`
+        //return `http://localhost:8888/avatar/group?request=${encodeURIComponent(req)}`
     }
 }
 
