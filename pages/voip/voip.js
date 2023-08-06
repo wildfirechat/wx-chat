@@ -22,9 +22,9 @@ Page({
     //
     // 本地调试
     // const voipBaseWebUrl = 'https://voip.wfim.work';
-    // 多人版音视频
+    // 多人版音视频，根据实际情况，进行切换，需要和其他客户端保持一致，才能互通
     // const voipBaseWebUrl = 'https://static.wildfirechat.cn/voip-multi-1685693418.html';
-    // 高级版音视频
+    // 高级版音视频，根据实际情况，进行切换，需要和其他客户端保持一致，才能互通
     const voipBaseWebUrl = 'https://static.wildfirechat.cn/voip-conference-1685693279.html';
 
     let token = shortLinkInfo.token;

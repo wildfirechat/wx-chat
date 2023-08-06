@@ -22,6 +22,8 @@
 
 
 ## 说明
+本仓库为基于野火IM小程序SDK的微信小程序Demo的源码，目前项目正在活跃开发中。如果遇到问题，特别是返回```errorCode = 22```，请微信联系：`wfchat`
+
 野火IM小程序SDK目前支持以下小程序平台：
 1. wx，微信小程序
 2. qq，QQ小程序
@@ -29,9 +31,11 @@
 4. ali，支付宝小程序
 5. tt，今日头条小程序
 
-本仓库为基于野火IM小程序SDK的微信小程序Demo的源码，目前项目正在活跃开发中。如果遇到问题，特别是返回```errorCode = 22```，请微信联系：wfchat
 
 开发者可自行开发其他小程序平台的UI，也可以采用```uni-app```等跨平台技术开发，需要注意的是，**需要保证```wfc```目录和```config.js```处于同级目录下**
+
+## 音视频通话
+采用`webview`的方式实现音视频通话，支持普通单人、多人音视频通话，支持音视频会议。音视频通话相关代码，请参考[voip-uni](https://github.com/wildfirechat/voip-uni)
 
 ## 开发配置
 1. nodejs v10.16.3
@@ -84,10 +88,6 @@
 2. [protoBufferForWechat](https://github.com/Zhang19910325/protoBufferForWechat) 感谢此项目，让在微信小程序中使用protobuf成为了可能。
 
 如果有什么地方侵犯了您的权益，请联系我们删除🙏🙏🙏
-
-## 案例参考
-
-todo
 
 ## 原始项目README
 [wechat-im README](./README-org.md)
