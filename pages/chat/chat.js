@@ -244,9 +244,55 @@ Page({
                     sizeType: ['compressed'],
                     sourceType: chooseIndex === 0 ? ['album'] : ['camera'],
                     success: (res) => {
-                        let tempFilePath = res.tempFilePaths[0];
-                        let imageMessageContent = new ImageMessageContent(res.tempFilePaths[0], null, null);
+                        let orgImagePath = res.tempFilePaths[0];
+                        //-----返回选定照片的本地文件路径列表，获取照片信息-----------
+                        wx.getImageInfo({
+                            src: res.tempFilePaths[0],
+                            success: (res) => {
+                                //---------利用canvas压缩图片--------------
+                                let ratio = 2;
+                                let imageWidth = res.width;
+                                let imageHeight = res.height;
+                                let canvasWidth = res.width //图片原始长宽
+                                let canvasHeight = res.height
+                                while (canvasWidth > 200 || canvasHeight > 200) {// 保证宽高在200以内
+                                    canvasWidth = Math.trunc(res.width / ratio)
+                                    canvasHeight = Math.trunc(res.height / ratio)
+                                    ratio++;
+                                }
+
+                                //----------绘制图形并取出图片路径--------------
+                                let ctx = wx.createCanvasContext('canvas')
+                                ctx.drawImage(res.path, 0, 0, canvasWidth, canvasHeight)
+                                ctx.draw(false, setTimeout(() => {
+                                    wx.canvasToTempFilePath({
+                                        canvasId: 'canvas',
+                                        destWidth: canvasWidth,
+                                        destHeight: canvasHeight,
+                                        fileType: 'jpg',
+                                        quality: 0.5,
+                                        success: (res) => {
+                                            let tempFilePath = res.tempFilePath;
+                                            const fs = wx.getFileSystemManager()
+                                            // 读取文件， base64 格式
+                                            let base64Str = fs.readFileSync(tempFilePath, 'base64')
+                                            let imageMessageContent = new ImageMessageContent(orgImagePath, null, base64Str);
+                                            imageMessageContent.imageWidth = imageWidth;
+                                            imageMessageContent.imageHeight = imageHeight;
                         this.sendMessage(imageMessageContent);
+
+                                        },
+                                        fail: (res) => {
+                                            console.log('canvasToTempFilePath error', res.errMsg)
+                                        }
+                                    })
+                                }, 100))    //留一定的时间绘制canvas
+                            },
+                            fail: (res) => {
+                                console.log('getImageInfo error', res.errMsg)
+                            }
+                        })
+
                     }
                 });
                 break;
