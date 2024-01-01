@@ -67,6 +67,9 @@ import ChannelMenuEventMessageContent from "../messages/channelMenuEventMessageC
 import EnterChannelChatMessageContent from "../messages/enterChannelChatMessageContent";
 import LeaveChannelChatMessageContent from "../messages/leaveChannelChatMessageContent";
 
+import StreamingTextGeneratingMessageContent from "../messages/streamingTextGeneratingMessageContent";
+import StreamingTextGeneratedMessageContent from "../messages/streamingTextGeneratedMessageContent";
+
 export default class MessageConfig {
     static getMessageContentClazz(type) {
         for (const content of MessageConfig.MessageContents) {
@@ -347,6 +350,18 @@ export default class MessageConfig {
             flag: PersistFlag.No_Persist,
             type: MessageContentType.DeleteMessage_Notification,
             contentClazz: DeleteMessageContent,
+        },
+        {
+            name: 'streamingTextGenerating',
+            flag: PersistFlag.Transparent,
+            type: MessageContentType.Streaming_Text_Generating,
+            contentClazz: StreamingTextGeneratingMessageContent,
+        },
+        {
+            name: 'streamingTextGenerated',
+            flag: PersistFlag.Persist_And_Count,
+            type: MessageContentType.Streaming_Text_Generated,
+            contentClazz: StreamingTextGeneratedMessageContent,
         },
         {
             name: 'callStartMessageContent',

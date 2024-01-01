@@ -10,13 +10,16 @@ import ImageMessageContent from "../../wfc/messages/imageMessageContent";
 import SoundMessageContent from "../../wfc/messages/soundMessageContent";
 import MessageStatus from "../../wfc/messages/messageStatus";
 import NotificationMessageContent from "../../wfc/messages/notification/notificationMessageContent";
-import {numberValue} from "../../wfc/util/longUtil";
+import {eq, gt, numberValue} from "../../wfc/util/longUtil";
 import {timeFormat} from '../../utils/time'
 import avenginekitproxy from "../../wfc/av/engine/avenginekitproxy";
 import ConversationType from "../../wfc/model/conversationType";
 import Toast from "../../utils/toast";
 import CallStartMessageContent from "../../wfc/av/messages/callStartMessageContent";
 import ConferenceInviteMessageContent from "../../wfc/av/messages/conferenceInviteMessageContent";
+import StreamingTextGeneratingMessageContent from "../../wfc/messages/streamingTextGeneratingMessageContent";
+import StreamingTextGeneratedMessageContent from "../../wfc/messages/streamingTextGeneratedMessageContent";
+import MessageContentType from "../../wfc/messages/messageContentType";
 
 /**
  * 聊天页面
@@ -48,11 +51,31 @@ Page({
     },
 
     onReceiveMessage(msg) {
-        if (!msg.conversation.equal(this.conversation)) {
+        if (!msg.conversation.equal(this.conversation) || !this._isDisplayMessage(msg)) {
             return;
         }
         wfc.clearConversationUnreadStatus(this.conversation);
-        this.showMessageList();
+
+        let msgIndex = this.data.chatItems.findIndex(m => {
+            return m.messageId === msg.messageId
+                || (gt(m.messageUid, 0) && eq(m.messageUid, msg.messageUid))
+                || (m.messageContent.type === MessageContentType.Streaming_Text_Generating
+                    && (msg.messageContent.type === MessageContentType.Streaming_Text_Generating || msg.messageContent.type === MessageContentType.Streaming_Text_Generated)
+                    && m.messageContent.streamId === msg.messageContent.streamId
+                )
+        });
+
+        let newUIMsg = this.messagesToUiMessages([msg])[0];
+        if (msgIndex >= 0) {
+            this.data.chatItems[msgIndex] = newUIMsg;
+        } else {
+            this.data.chatItems = this.data.chatItems.concat(newUIMsg);
+        }
+
+        this.setData({
+            chatItems: this.data.chatItems,
+            scrollTopVal: this.data.chatItems.length * 999
+        });
     },
 
     onSendMessage(msg) {
@@ -279,7 +302,7 @@ Page({
                                             let imageMessageContent = new ImageMessageContent(orgImagePath, null, base64Str);
                                             imageMessageContent.imageWidth = imageWidth;
                                             imageMessageContent.imageHeight = imageHeight;
-                        this.sendMessage(imageMessageContent);
+                                            this.sendMessage(imageMessageContent);
 
                                         },
                                         fail: (res) => {
@@ -319,6 +342,15 @@ Page({
             current: dataset.url, // 当前显示图片的http链接
             urls: [dataset.url] // 需要预览的图片http链接列表
         })
+    },
+
+    chatTextItemClickEvent(e) {
+        let convInfo = wfc.getConversationInfo(this.conversation);
+        let lastMessage = convInfo.lastMessage;
+
+        let text = new TextMessageContent('updated message');
+        wfc.updateRemoteMessageContent(lastMessage.messageUid, text, true, true)
+        console.log('to upadte Last message', lastMessage);
     },
 
     chatVoiceItemClickEvent(e) {
@@ -432,6 +464,13 @@ Page({
             if (m.messageContent instanceof TextMessageContent) {
                 item.content = m.messageContent.content;
                 item.type = 'text';
+            } else if (m.messageContent instanceof StreamingTextGeneratingMessageContent || m.messageContent instanceof StreamingTextGeneratedMessageContent) {
+                item.content = m.messageContent.text;
+                if (m.messageContent instanceof StreamingTextGeneratingMessageContent) {
+                    item.type = 'streaming-text-generating';
+                } else {
+                    item.type = 'streaming-text-generated';
+                }
             } else if (m.messageContent instanceof ImageMessageContent) {
                 item.content = m.messageContent.localPath || m.messageContent.remotePath;
                 item.type = 'image';
@@ -459,5 +498,11 @@ Page({
         });
 
         return uiMsgs;
-    }
+    },
+
+    _isDisplayMessage(message) {
+        // return [PersistFlag.Persist, PersistFlag.Persist_And_Count].indexOf(MessageConfig.getMessageContentPersitFlag(message.messageContent.type)) > -1;
+        return message.messageId !== 0 || message.messageContent.type === MessageContentType.Streaming_Text_Generating;
+    },
+
 });

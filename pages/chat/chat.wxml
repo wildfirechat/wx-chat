@@ -28,5 +28,8 @@
         bind:extraClickEvent="onExtraClickEvent"
         bind:extraItemClickEvent="onExtraItemClickEvent"
         bind:voiceRecordEvent="onVoiceRecordEvent"
-        bind:sendMessageEvent="onSendMessageEvent"></chat-input>
+        bind:sendMessageEvent="onSendMessageEvent">
+</chat-input>
+<canvas canvas-id="canvas" style="width:{{cWidth}}px;height:{{cHeight}}px;position: absolute;left:-1000px;top:-1000px;"></canvas>
+
 <!--<template is="chat-input" data="{{inputObj,textMessage,showVoicePart:true}}"/>-->
