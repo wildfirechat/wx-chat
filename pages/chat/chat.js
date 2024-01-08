@@ -290,8 +290,8 @@ Page({
                                 ctx.draw(false, setTimeout(() => {
                                     wx.canvasToTempFilePath({
                                         canvasId: 'canvas',
-                                        destWidth: canvasWidth,
-                                        destHeight: canvasHeight,
+                                        width: canvasWidth,
+                                        height: canvasHeight,
                                         fileType: 'jpg',
                                         quality: 0.5,
                                         success: (res) => {
@@ -387,16 +387,17 @@ Page({
 
     sendMessage(messageContent) {
         wfc.sendConversationMessage(this.conversation, messageContent, null,
-            () => {
+            (messageId, timestamp,) => {
                 this.showMessageList();
             },
-            () => {
+            (progress, total) => {
+                console.log('upload progress', progress, total)
                 this.showMessageList();
             },
-            () => {
+            (messageUid, timestamp) => {
                 this.showMessageList();
             },
-            () => {
+            (error) => {
                 this.showMessageList();
             });
     },

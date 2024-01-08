@@ -1660,7 +1660,7 @@ export class WfcManager {
      * @param {[string]} toUsers 定向发送给会话中的某些用户；为空，则发给所有人；另外对单聊会话，本参数无效
      * @param {function (number, number)} preparedCB 消息已插入本地数据的回调，回调的两个参数表示：messageId, timestamp
      * @param {function (number, number)} progressCB 媒体上传进度回调，针对媒体消息，且媒体大于100K时有效，回调参数表示：uploaded, total
-     * @param {function (number, number)} successCB 发送成功回调，回调参数表示：messageUid, timestamp
+     * @param {function (long, number)} successCB 发送成功回调，回调参数表示：messageUid, timestamp
      * @param {function (number)} failCB
      * @returns {Promise<void>}
      */
