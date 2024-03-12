@@ -8,6 +8,7 @@ import Long from 'long';
 
 import impl from '../proto/proto.min';
 import Config from "../../config";
+import avenginekit from "../av/engine/avenginekitproxy";
 import EventType from "./wfcEvent";
 import ConnectionStatus from "./connectionStatus";
 import NullUserInfo from "../model/nullUserInfo";
@@ -46,6 +47,7 @@ export class WfcManager {
     init(args = []) {
         console.log('wfc init');
         impl.init(args);
+        avenginekit.setup(self);
     }
     /**
      * 注册新的自定义消息
