@@ -22,9 +22,11 @@ export default class CallStartMessageContent extends MessageContent {
      * 7, Timeout,
      * 8, AcceptByOtherClient
      */
-    status;
+    status = 0;
     audioOnly;
     pin;
+    //  0，未知；1，多人版音视频；2，高级版音视频
+    sdkType = 0;
 
     constructor(mentionedType = 0, mentionedTargets = []) {
         super(MessageContentType.VOIP_CONTENT_TYPE_START, mentionedType, mentionedTargets);
@@ -41,6 +43,7 @@ export default class CallStartMessageContent extends MessageContent {
     encode() {
         let payload = super.encode();
         payload.content = this.callId;
+        payload.pushContent = '音视频通话邀请';
 
         let obj = {
             c: this.connectTime,
@@ -49,7 +52,8 @@ export default class CallStartMessageContent extends MessageContent {
             a: this.audioOnly ? 1 : 0,
             ts: this.targetIds,
             t: this.targetIds[0],
-            p: this.pin
+            p: this.pin,
+            ty: this.sdkType
         };
         payload.binaryContent = wfc.utf8_to_b64(JSON.stringify(obj));
 
@@ -58,7 +62,7 @@ export default class CallStartMessageContent extends MessageContent {
             audioOnly:this.audioOnly,
             participants:this.targetIds,
         }
-        payload.pushData = JSON.toString(pushData);
+        payload.pushData = JSON.stringify(pushData);
 
         return payload;
     }
@@ -78,5 +82,6 @@ export default class CallStartMessageContent extends MessageContent {
             this.targetIds = [obj.t];
         }
         this.pin = obj.p;
+        this.sdkType = obj.ty
     }
 }
