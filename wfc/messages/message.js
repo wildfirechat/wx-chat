@@ -135,6 +135,7 @@ export default class Message {
                     try {
                         if (obj.content.data && obj.content.data.length > 0) {
                             obj.content.binaryContent = encode(obj.content.data);
+                            delete obj.content.data;
                         }
                         content.decode(obj.content);
                         content.extra = obj.content.extra;
