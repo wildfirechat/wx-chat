@@ -2,34 +2,38 @@
 <import src="../../modules/chat-page/chat-item.wxml"/>
 <import src="../../modules/chat-page/chat-page-status.wxml"/>
 
-<!-- <template is="chat-page-status" data="{{chatStatue,chatStatusContent}}"/> -->
+        <!-- <template is="chat-page-status" data="{{chatStatue,chatStatusContent}}"/> -->
 
-<scroll-view
+<view
         enable-flex="{{true}}"
         style="height:{{pageHeight}}px;width: 100%;display: flex;flex-direction: column;margin-top: 0rpx;"
-        scroll-y="true"
-        scroll-top="{{scrollTopVal}}"
-        bindscrolltoupper="loadOldMessages"
-        bindtap="resetInputStatus">
-    <block wx:for="{{chatItems}}" wx:key="index">
-        <template is="chat-item"
-                  data="{{length:chatItems.length,index:index,item:item}}"/>
-    </block>
+>
 
-</scroll-view>
-<chat-input
-        id="chatInput"
-        min-voice-time="{{1}}"
-        max-voice-time="{{60}}"
-        start-time-down="{{54}}"
-        tabBarHeight="{{0}}"
-        format="mp3"
-        extra-array="{{extraArr}}"
-        bind:extraClickEvent="onExtraClickEvent"
-        bind:extraItemClickEvent="onExtraItemClickEvent"
-        bind:voiceRecordEvent="onVoiceRecordEvent"
-        bind:sendMessageEvent="onSendMessageEvent">
-</chat-input>
+    <scroll-view
+            style="flex:1"
+            scroll-y="true"
+            bindscrolltoupper="loadOldMessages"
+            bindtap="resetInputStatus">
+        <block wx:for="{{chatItems}}" wx:key="index">
+            <template is="chat-item"
+                      data="{{length:chatItems.length,index,item}}"/>
+        </block>
+
+    </scroll-view>
+    <chat-input
+            id="chatInput"
+            min-voice-time="{{1}}"
+            max-voice-time="{{60}}"
+            start-time-down="{{54}}"
+            tabBarHeight="{{0}}"
+            format="mp3"
+            extra-array="{{extraArr}}"
+            bind:extraClickEvent="onExtraClickEvent"
+            bind:extraItemClickEvent="onExtraItemClickEvent"
+            bind:voiceRecordEvent="onVoiceRecordEvent"
+            bind:sendMessageEvent="onSendMessageEvent">
+    </chat-input>
+</view>
 <canvas canvas-id="canvas" style="width:{{cWidth}}px;height:{{cHeight}}px;position: absolute;left:-1000px;top:-1000px;"></canvas>
 
-<!--<template is="chat-input" data="{{inputObj,textMessage,showVoicePart:true}}"/>-->
+        <!--<template is="chat-input" data="{{inputObj,textMessage,showVoicePart:true}}"/>-->

@@ -11,7 +11,7 @@
                class="chat-input-style" style="margin-left:{{showVoicePart?0:16}}rpx;"
                maxlength="500" confirm-type="send" value="{{textMessage}}" bindconfirm="_chatInput$send$text$message" bindfocus="_chatInput$bind$focus$event" bindblur="_chatInput$bind$blur$event" bindinput="_chatInput$getValue$event"/>
         <view hover-class="press-style-opacity">
-            <view wx:if="{{inputType==='text'}}" class="chat-input-send-button-style" catchtap="_chatInput$send$text$message02">发送</view>
+            <view wx:if="{{inputType==='text' && textMessage}}" class="chat-input-send-button-style" catchtap="_chatInput$send$text$message02">发送</view>
             <image wx:else class="extra-btn-style"
                    src="../../image/chat/extra.png" catchtap="_chatInput$extra$click$event" />
         </view>
