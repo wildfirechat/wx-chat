@@ -19,13 +19,13 @@ Page({
     let authToken = wx.getStorageSync('authToken');
     let shortLinkInfo = wfc.getShortLinkInfo();
 
-    //
+    // 音视频通话功能项目：https://github.com/wildfirechat/voip-uni
     // 本地调试
-    //const voipBaseWebUrl = 'https://voip.wfim.work';
+    // const voipBaseWebUrl = 'https://voip.wfim.work';
     // 多人版音视频，根据实际情况，进行切换，需要和其他客户端保持一致，才能互通
-    // const voipBaseWebUrl = 'https://static.wildfirechat.cn/voip-multi-1710559021.html';
+    // const voipBaseWebUrl = 'https://static.wildfirechat.cn/voip-conference-1724118992.html';
     // 高级版音视频，根据实际情况，进行切换，需要和其他客户端保持一致，才能互通
-    const voipBaseWebUrl = 'https://static.wildfirechat.cn/voip-conference-1710558887.html';
+    const voipBaseWebUrl = 'https://static.wildfirechat.cn/voip-conference-1724118992.html';
 
     let token = shortLinkInfo.token;
     token = token.replaceAll('+', '.').replaceAll('/', '_').replaceAll('=', '-')
