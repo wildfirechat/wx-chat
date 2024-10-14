@@ -345,12 +345,6 @@ Page({
     },
 
     chatTextItemClickEvent(e) {
-        let convInfo = wfc.getConversationInfo(this.conversation);
-        let lastMessage = convInfo.lastMessage;
-
-        let text = new TextMessageContent('updated message');
-        wfc.updateRemoteMessageContent(lastMessage.messageUid, text, true, true)
-        console.log('to upadte Last message', lastMessage);
     },
 
     chatVoiceItemClickEvent(e) {
