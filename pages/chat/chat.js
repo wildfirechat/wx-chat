@@ -27,6 +27,7 @@ import MessageContentType from "../../wfc/messages/messageContentType";
 Page({
 
     conversation: {},
+    lastTimestamp: 0,
     /**
      * 页面的初始数据
      */
@@ -417,7 +418,6 @@ Page({
     },
 
     messagesToUiMessages(messages) {
-        let lastTimestamp = 0;
         let uiMsgs = messages.map(m => {
             // time:item.time,
             // length:length,
@@ -434,13 +434,13 @@ Page({
 
             // TODO item.ui.xx
             let item = {
-                showTime: numberValue(m.timestamp) - lastTimestamp > 2 * 60 * 1000,
+                showTime: numberValue(m.timestamp) - this.lastTimestamp > 2 * 60 * 1000,
                 time: timeFormat(m.timestamp),
                 headUrl: wfc.getUserInfo(m.from).portrait,
                 isMy: m.direction === 0,
                 isPlaying: false,
             };
-            lastTimestamp = numberValue(m.timestamp);
+            this.lastTimestamp = numberValue(m.timestamp);
 
             switch (m.status) {
                 case MessageStatus.Sending:

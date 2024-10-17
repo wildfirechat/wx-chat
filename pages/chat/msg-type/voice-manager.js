@@ -1,5 +1,6 @@
 import { downloadFile } from "../../../utils/tools";
 import Config from "../../../config";
+import SoundMessageContent from "../../../wfc/messages/soundMessageContent";
 
 
 export default class VoiceManager {
@@ -25,7 +26,7 @@ export default class VoiceManager {
             this._stopVoice();
             if (isUpdateView) {
                 that.data.chatItems.forEach(item => {
-                    if ('voice' === item.type) {
+                    if ('voice' === item.type || item.messageContent instanceof SoundMessageContent) {
                         item.isPlaying = false
                     }
                 });
@@ -56,6 +57,7 @@ export default class VoiceManager {
 
             try {
                 await this._myPlayVoice({ filePath });
+                data.chatItems[dataset.index].isPlaying= false
                 console.log('成功读取了本地语音');
             } catch (e) {
                 console.log('读取本地语音文件失败，一般情况下是本地没有该文件，需要从服务器下载');
@@ -64,6 +66,7 @@ export default class VoiceManager {
                 }
                 await downloadFile({ url: filePath });
                 await this._myPlayVoice({ filePath });
+                data.chatItems[dataset.index].isPlaying= false
             }
         }
     }
