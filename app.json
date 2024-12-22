@@ -8,7 +8,8 @@
     "pages/voip/voip",
     "pages/discovery/discovery",
     "pages/create-group/create-group",
-    "pages/search-user/search-user"
+    "pages/search-user/search-user",
+    "pages/select-group-members/select-group-members"
   ],
   "window": {
     "backgroundTextStyle": "light",

@@ -3,6 +3,24 @@
 <import src="../../modules/chat-page/chat-page-status.wxml"/>
 
         <!-- <template is="chat-page-status" data="{{chatStatue,chatStatusContent}}"/> -->
+<cover-view wx:if="{{showGroupMemberModal}}" class="modal">
+    <cover-view class="modal-content">
+        <cover-view class="modal-header">选择群成员</cover-view>
+        <scroll-view class="modal-body" scroll-y="true">
+            <block wx:for="{{groupMembers}}" wx:key="userId">
+                <cover-view class="member-item" bindtap="toggleSelect" data-userid="{{item.userId}}">
+                    <cover-image src="{{item.userHeadUrl}}" class="avatar"/>
+                    <cover-view>{{item.userName}}</cover-view>
+                    <checkbox checked="{{item.selected}}"/>
+                </cover-view>
+            </block>
+        </scroll-view>
+        <cover-view class="modal-footer">
+            <button bindtap="confirmSelection">确定</button>
+            <button bindtap="closeModal">取消</button>
+        </cover-view>
+    </cover-view>
+</cover-view>
 
 <view
         enable-flex="{{true}}"

@@ -322,7 +322,17 @@ Page({
                 break;
             case 2:
             case 3:
-                this.voipCall(chooseIndex === 2);
+                if (this.conversation.type === ConversationType.Group) {
+                    let options = {
+                        op: 'voip',
+                        audioOnly: chooseIndex === 2
+                    }
+                    wx.navigateTo({
+                        url: `/pages/select-group-members/select-group-members?groupId=${this.conversation.target}&options=${JSON.stringify(options)}`,
+                    });
+                } else {
+                    this.voipCall(chooseIndex === 2);
+                }
                 break;
             default:
                 break;
@@ -373,6 +383,24 @@ Page({
             return;
         }
         avenginekitproxy.startCall(this.conversation, audioOnly, [this.conversation.target], '');
+    },
+
+    onSelectGroupMember(selectedMembers, options) {
+        console.log('onSelectGroupMember ', selectedMembers, options)
+        if(options){
+            options = JSON.parse(options);
+        }
+        if (options.op === 'voip') {
+            let audioOnly = options.audioOnly
+            if (selectedMembers.length === 0) {
+                wx.showToast({
+                    title: '请选择至少一个成员',
+                    icon: 'none'
+                });
+                return;
+            }
+            avenginekitproxy.startCall(this.conversation, audioOnly, selectedMembers, '');
+        }
     },
 
     resetInputStatus() {

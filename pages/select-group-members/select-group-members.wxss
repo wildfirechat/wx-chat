@@ -1,0 +1,43 @@
+.container {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.member-list {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.member-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.checkbox {
+    margin-right: 10px;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.confirm-button {
+    margin-top: 20px;
+    width: 100%;
+    background-color: #3E65E4;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.confirm-button[disabled] {
+    background-color: #ccc;
+}

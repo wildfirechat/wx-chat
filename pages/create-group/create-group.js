@@ -56,7 +56,7 @@ Page({
             // Switch to the conversation with the selected friend
             const friendId = this.data.selectedFriends[0].friendId;
             const conversation = {
-                type: ConversationType.Single, // Single chat
+                type: ConversationType.Single,
                 target: friendId,
                 line: 0
             };
@@ -67,24 +67,24 @@ Page({
             // Create a group with the selected friends
             const friendIds = this.data.selectedFriends.map(friend => friend.friendId);
             const groupName = this.data.selectedFriends.slice(1, 5).map(friend => friend.friendName).join('、');
-            wfc.createGroup('', GroupType.Normal, groupName, '', '',  friendIds,'', [0], null
-            , (groupId) => {
-                if (groupId) {
-                    const conversation = {
-                        type: ConversationType.Group, // Group chat
-                        target: groupId,
-                        line: 0
-                    };
-                    wx.redirectTo({
-                        url: `/pages/chat/chat?conversation=${JSON.stringify(conversation)}`
-                    });
-                } else {
-                    wx.showToast({
-                        title: 'Failed to create group',
-                        icon: 'none'
-                    });
-                }
-            });
+            wfc.createGroup('', GroupType.Normal, groupName, '', '', friendIds, '', [0], null,
+                (groupId) => {
+                    if (groupId) {
+                        const conversation = {
+                            type: ConversationType.Group, // Group chat
+                            target: groupId,
+                            line: 0
+                        };
+                        wx.redirectTo({
+                            url: `/pages/chat/chat?conversation=${JSON.stringify(conversation)}`
+                        });
+                    } else {
+                        wx.showToast({
+                            title: 'Failed to create group',
+                            icon: 'none'
+                        });
+                    }
+                });
         }
     },
 

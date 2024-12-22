@@ -1,0 +1,12 @@
+<view class="container">
+    <scroll-view class="member-list" scroll-y="true">
+        <block wx:for="{{members}}" wx:key="userId">
+            <view class="member-item" bindtap="toggleSelect" data-userid="{{item.userId}}">
+                <checkbox checked="{{item.selected}}" class="checkbox"/>
+                <image src="{{item.userHeadUrl}}" class="avatar"/>
+                <text>{{item.userName}}</text>
+            </view>
+        </block>
+    </scroll-view>
+    <button bindtap="confirmSelection" class="confirm-button" disabled="{{isConfirmDisabled}}">确定</button>
+</view>
