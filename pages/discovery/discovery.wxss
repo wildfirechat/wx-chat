@@ -1,9 +1,35 @@
-/* pages/discover/discover.wxss */
 .container {
-  padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-content: flex-start;
+    width: 100%;
+    height: 100%;
+    padding: 0; /* Ensure no padding */
+    margin: 0;  /* Ensure no margin */
 }
 
 .item {
-  padding: 15px;
-  border-bottom: 1px solid #ccc;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #EBEBEB;
+    cursor: pointer;
+}
+
+.item-text {
+    flex: 1;
+    padding-left: 10px;
+}
+
+.item-arrow {
+    margin-right: 10px;
+    color: #EBEBEB;
+}
+
+.item:active {
+    background-color: #f0f0f0;
 }
