@@ -2,13 +2,13 @@
 Page({
     data: {
         items: [
-            { name: '搜索', url: '../search/search' },
-            { name: '创建群组', url: '../create-group/create-group' }
+            {name: '搜索用户', url: '../search-user/search-user'},
+            {name: '创建群组', url: '../create-group/create-group'}
         ]
     },
 
     navigateTo(e) {
         const url = e.currentTarget.dataset.url;
-        wx.navigateTo({ url });
+        wx.navigateTo({url});
     }
 });

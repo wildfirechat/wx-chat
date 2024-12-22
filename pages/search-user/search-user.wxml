@@ -1,0 +1,12 @@
+<view class="search-container">
+    <input class="search-input" placeholder="Search users..." bindinput="onSearchInput"/>
+</view>
+<scroll-view class="user-list" scroll-y="true">
+    <block wx:for="{{searchResults}}" wx:key="userId">
+        <view class="user-item" bindtap="onUserItemTap" data-userid="{{item.userId}}" data-isfriend="{{item.isFriend}}">
+            <image src="{{item.userHeadUrl}}" binderror="handleImageError" data-index="{{index}}"/>
+            <text>{{item.userName}}</text>
+            <button wx:if="{{!item.isFriend}}" class="add-button" data-userid="{{item.userId}}" bindtap="addUser">Add</button>
+        </view>
+    </block>
+</scroll-view>

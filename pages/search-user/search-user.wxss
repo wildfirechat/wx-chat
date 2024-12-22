@@ -1,0 +1,43 @@
+.search-container {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    padding: 10px;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.search-input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.user-list {
+    margin-top: 60px; /* Adjust this value based on the height of the fixed search container */
+}
+
+.user-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.user-item image {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.user-item text {
+    flex: 1;
+}
+
+.add-button {
+    border-radius: 5px;
+    min-width: 60px;
+    font-size: 14px;
+}

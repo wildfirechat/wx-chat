@@ -7,8 +7,8 @@
     "pages/friends/friends",
     "pages/voip/voip",
     "pages/discovery/discovery",
-    "pages/create-group/create-group"
-
+    "pages/create-group/create-group",
+    "pages/search-user/search-user"
   ],
   "window": {
     "backgroundTextStyle": "light",
