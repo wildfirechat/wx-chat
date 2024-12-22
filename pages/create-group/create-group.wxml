@@ -1,0 +1,19 @@
+<view class="fixed-header">
+    <scroll-view class="selected-friends" scroll-x="true">
+        <block wx:for="{{selectedFriends}}" wx:key="friendId">
+            <view class="selected-friend" data-friendid="{{item.friendId}}" bindtap="removeSelectedFriend">
+                <image src="{{item.friendHeadUrl}}" binderror="handleImageError" data-index="{{index}}"/>
+            </view>
+        </block>
+    </scroll-view>
+    <button bindtap="confirmSelection" class="confirm-button">确定</button>
+</view>
+<scroll-view class="friend-list" scroll-y="true">
+    <block wx:for="{{friends}}" wx:key="friendId">
+        <view class="friend-item" data-index="{{index}}" bindtap="toggleSelect">
+            <checkbox checked="{{item.checked}}"/>
+            <image src="{{item.friendHeadUrl}}" binderror="handleImageError" data-index="{{index}}"/>
+            <text>{{item.friendName}}</text>
+        </view>
+    </block>
+</scroll-view>

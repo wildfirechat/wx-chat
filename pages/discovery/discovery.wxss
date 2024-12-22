@@ -1,0 +1,9 @@
+/* pages/discover/discover.wxss */
+.container {
+  padding: 20px;
+}
+
+.item {
+  padding: 15px;
+  border-bottom: 1px solid #ccc;
+}

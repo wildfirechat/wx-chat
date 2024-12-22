@@ -5,7 +5,10 @@
     "pages/chat/chat",
     "pages/chat-input/chat-input",
     "pages/friends/friends",
-    "pages/voip/voip"
+    "pages/voip/voip",
+    "pages/discovery/discovery",
+    "pages/create-group/create-group"
+
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -26,6 +29,12 @@
       {
         "pagePath": "pages/friends/friends",
         "text": "好友列表",
+        "iconPath": "image/tabbar/friend_unselected.png",
+        "selectedIconPath": "image/tabbar/friend.png"
+      },
+      {
+        "pagePath": "pages/discovery/discovery",
+        "text": "发现",
         "iconPath": "image/tabbar/friend_unselected.png",
         "selectedIconPath": "image/tabbar/friend.png"
       }
