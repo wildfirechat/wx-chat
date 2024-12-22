@@ -17,26 +17,26 @@
     "navigationBarTextStyle": "black"
   },
   "tabBar": {
-    "selectedColor": "#35c8fb",
+    "selectedColor": "#3E65E4",
     "color": "#7f8389",
     "list": [
       {
         "pagePath": "pages/chat-list/chat-list",
         "text": "会话列表",
-        "iconPath": "image/tabbar/chat_list_unselected.png",
-        "selectedIconPath": "image/tabbar/chat_list.png"
+        "iconPath": "image/tabbar/message_normal.png",
+        "selectedIconPath": "image/tabbar/message_press.png"
       },
       {
         "pagePath": "pages/friends/friends",
         "text": "好友列表",
-        "iconPath": "image/tabbar/friend_unselected.png",
-        "selectedIconPath": "image/tabbar/friend.png"
+        "iconPath": "image/tabbar/contacts_normal.png",
+        "selectedIconPath": "image/tabbar/contacts_press.png"
       },
       {
         "pagePath": "pages/discovery/discovery",
         "text": "发现",
-        "iconPath": "image/tabbar/friend_unselected.png",
-        "selectedIconPath": "image/tabbar/friend.png"
+        "iconPath": "image/tabbar/discovery_normal.png",
+        "selectedIconPath": "image/tabbar/discovery_press.png"
       }
     ]
   },
