@@ -10,7 +10,8 @@
     "pages/create-group/create-group",
     "pages/search-user/search-user",
     "pages/select-group-members/select-group-members",
-    "pages/friend-requests/friend-requests"
+    "pages/friend-requests/friend-requests",
+    "pages/me/me"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -24,21 +25,21 @@
     "list": [
       {
         "pagePath": "pages/chat-list/chat-list",
-        "text": "会话列表",
+        "text": "会话",
         "iconPath": "image/tabbar/message_normal.png",
         "selectedIconPath": "image/tabbar/message_press.png"
       },
       {
         "pagePath": "pages/friends/friends",
-        "text": "好友列表",
+        "text": "联系人",
         "iconPath": "image/tabbar/contacts_normal.png",
         "selectedIconPath": "image/tabbar/contacts_press.png"
       },
       {
-        "pagePath": "pages/discovery/discovery",
-        "text": "发现",
-        "iconPath": "image/tabbar/discovery_normal.png",
-        "selectedIconPath": "image/tabbar/discovery_press.png"
+        "pagePath": "pages/me/me",
+        "text": "我的",
+        "iconPath": "image/tabbar/me_normal.png",
+        "selectedIconPath": "image/tabbar/me_press.png"
       }
     ]
   },

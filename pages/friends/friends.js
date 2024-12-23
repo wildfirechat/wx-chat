@@ -15,7 +15,12 @@ Page({
      * 页面的初始数据
      */
     data: {
-        friends: []
+        friends: [],
+        navItems: [
+            {name: '添加好友', url: '../search-user/search-user'},
+            {name: '好友请求', url: '../friend-requests/friend-requests'},
+            {name: '创建群组', url: '../create-group/create-group'}
+        ]
     },
 
     onUserInfoUpdate() {
@@ -47,7 +52,7 @@ Page({
                 friendName: userInfo.displayName
             };
         });
-        this.setData({ friends: friendsUs });
+        this.setData({friends: friendsUs});
     },
 
     createFriendItem(item) {
@@ -58,11 +63,11 @@ Page({
         };
     },
 
-    loadPortraitError(e){
-        if(e.type === 'error'){
+    loadPortraitError(e) {
+        if (e.type === 'error') {
             let friendInfos = this.data.friends;
             let index = friendInfos.findIndex(f => f.friendId === e.target.dataset.uid);
-            if(index >= 0){
+            if (index >= 0) {
                 friendInfos[index].friendHeadUrl = Config.DEFAULT_PORTRAIT_URL;
                 this.setData({friends: friendInfos});
             }
@@ -76,6 +81,11 @@ Page({
         wx.navigateTo({
             url: `../chat/chat?conversation=${JSON.stringify(conversation)}`
         });
+    },
+
+    navigateTo(e) {
+        const url = e.currentTarget.dataset.url;
+        wx.navigateTo({url});
     }
 
 });

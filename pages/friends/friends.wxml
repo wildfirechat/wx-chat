@@ -1,5 +1,12 @@
 <!--pages/friends/friends.wxml-->
 <import src="../chat-list/view/chat-item-head.wxml"/>
+<block wx:for="{{navItems}}" wx:key="id">
+    <view class="nav-item" bindtap="navigateTo" data-url="{{item.url}}">
+        <text class="nav-item-text">{{item.name}}</text>
+        <text class="nav-item-arrow">></text>
+    </view>
+    <view class="list-divide-line" style="width: 79.5%;margin-left: 20.5%"/>
+</block>
 <block wx:for="{{friends}}"  wx:key="friendId">
     <view class="chat-item-style" bindtap="chatTo" data-item="{{item}}" >
         <template is="chat-item-head" data="{{headUrl:item.friendHeadUrl,unread:0, uid:item.friendId}}"/>

@@ -1,0 +1,50 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    height: 100vh; /* Full viewport height */
+    justify-content: space-between; /* Space out elements */
+}
+
+.user-info {
+    display: flex;
+    align-items: center; /* Align items horizontally */
+    margin-bottom: 20px;
+    width: 100%; /* Full width */
+    padding: 0 20px; /* Add padding */
+}
+
+.avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-right: 10px; /* Space between avatar and username */
+}
+
+.username {
+    font-size: 18px;
+    color: #333;
+    flex-grow: 1; /* Take remaining space */
+}
+
+.about {
+    white-space: pre-line; /* Preserve whitespace and line breaks */
+    width: 100%;
+    padding: 0 20px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    color: #666666;
+}
+
+.logout-button {
+    width: 100%;
+    padding: 2px;
+    background-color: #ff4d4f;
+    color: white;
+    text-align: center;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-bottom: 20px; /* Add margin to the bottom */
+}

@@ -81,6 +81,11 @@ Page({
             })
           } else {
             console.log('login failed', loginResult);
+            wx.showToast({
+              title: loginResult.message,
+              icon: 'none',
+              duration: 2000,
+            });
           }
         }
       }

@@ -1,0 +1,10 @@
+<view class="container">
+    <view class="user-info">
+        <image class="avatar" src="{{user.portrait}}"/>
+        <text class="username">{{user.displayName}}</text>
+    </view>
+    <view class="about">
+        {{about}}
+    </view>
+    <button class="logout-button" bindtap="logout">退出登录</button>
+</view>

@@ -1,2 +1,28 @@
 /* pages/friends/friends.wxss */
 @import "../chat-list/view/chat-item.wxss";
+
+.nav-item {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    /*border-bottom: 1px solid #EBEBEB;*/
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+.nav-item-text {
+    flex: 1;
+    color: #666666;
+    font-size: 14px;
+    padding-left: 10px;
+}
+
+.nav-item-arrow {
+    color: #EBEBEB;
+}
+
+.nav-item:active {
+    background-color: #f0f0f0;
+}
