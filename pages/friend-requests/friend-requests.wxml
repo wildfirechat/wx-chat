@@ -1,0 +1,13 @@
+<view class="container">
+    <block wx:if="{{!friendRequests.length}}">
+        <view class="placeholder">暂无好友请求</view>
+    </block>
+    <block wx:for="{{friendRequests}}" wx:key="requestId">
+        <view class="request-item">
+            <image src="{{item._target.portrait}}" class="avatar"/>
+            <text>{{item._target.displayName}}</text>
+            <button bindtap="acceptRequest" data-request="{{item}}">接受</button>
+            <!--            <button bindtap="declineRequest" data-requestid="{{item.requestId}}">拒绝</button>-->
+        </view>
+    </block>
+</view>

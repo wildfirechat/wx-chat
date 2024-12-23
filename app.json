@@ -9,7 +9,8 @@
     "pages/discovery/discovery",
     "pages/create-group/create-group",
     "pages/search-user/search-user",
-    "pages/select-group-members/select-group-members"
+    "pages/select-group-members/select-group-members",
+    "pages/friend-requests/friend-requests"
   ],
   "window": {
     "backgroundTextStyle": "light",
