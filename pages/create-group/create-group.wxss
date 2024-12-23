@@ -60,3 +60,9 @@
     border-radius: 50%;
     margin-right: 10px;
 }
+
+.placeholder {
+    text-align: start;
+    color: #999;
+    padding: 20px 0;
+}

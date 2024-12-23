@@ -1,5 +1,8 @@
 <view class="fixed-header">
     <scroll-view class="selected-friends" scroll-x="true">
+        <block wx:if="{{!selectedFriends.length}}">
+            <view class="placeholder">请选择群成员</view>
+        </block>
         <block wx:for="{{selectedFriends}}" wx:key="friendId">
             <view class="selected-friend" data-friendid="{{item.friendId}}" bindtap="removeSelectedFriend">
                 <image src="{{item.friendHeadUrl}}" binderror="handleImageError" data-index="{{index}}"/>
