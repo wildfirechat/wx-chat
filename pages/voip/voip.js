@@ -43,7 +43,7 @@ Page({
     // options
     voipWebUrl += `&options=${options.options}`
     // enable voip debug，打开之后，音视频通话页面不会自动关闭
-    voipWebUrl += `&debug=true`;
+    voipWebUrl += `&debug=false`;
 
     let callOptions = JSON.parse(decodeURIComponent(options.options));
     this.setData({
