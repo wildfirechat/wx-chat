@@ -5,9 +5,16 @@
     <block wx:for="{{friendRequests}}" wx:key="requestId">
         <view class="request-item">
             <image src="{{item._target.portrait}}" class="avatar"/>
-            <text>{{item._target.displayName}}</text>
-            <button bindtap="acceptRequest" data-request="{{item}}">接受</button>
-            <!--            <button bindtap="declineRequest" data-requestid="{{item.requestId}}">拒绝</button>-->
+            <text class="name">{{item._target.displayName}}</text>
+            <block wx:if="{{item.status === 0}}">
+                <button bindtap="acceptRequest" data-request="{{item}}">接受</button>
+            </block>
+            <block wx:elif="{{item.status === 1}}">
+                <text class="desc=">已添加</text>
+            </block>
+            <block wx:elif="{{item.status === 3}}">
+                <text class="desc">已拒绝</text>
+            </block>
         </view>
     </block>
 </view>

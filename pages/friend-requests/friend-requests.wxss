@@ -17,8 +17,13 @@
     border-bottom: 1px solid #eee;
 }
 
-.request-item text {
+.request-item .name {
     flex: 1;
+}
+
+.request-item .desc {
+    color: #999;
+    font-size: 13px;
 }
 
 .avatar {
