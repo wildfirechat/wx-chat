@@ -44,7 +44,7 @@
 1. nodejs v10.16.3
 2. npm 6.9.0
    ![本地设置](https://static.wildfirechat.cn/local_setting.png)
-   ![项目配置](https://static.wildfirechat.cn/project_setting.png)
+   ![项目配置](https://static.wildfirechat.cn/project_settings.png)
 
 ## 开发
 
