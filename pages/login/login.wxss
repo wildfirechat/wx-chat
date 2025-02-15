@@ -21,5 +21,4 @@ button {margin: 10px;}
   background-color: blue;
 }
 .button-hover {
-  background-color: red;
 }
