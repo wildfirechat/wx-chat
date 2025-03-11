@@ -292,19 +292,7 @@ export class AvEngineKitProxy {
                     return;
                 }
 
-                let participantUserInfos = [];
                 let selfUserInfo = wfc.getUserInfo(wfc.getUserId());
-
-                if (msg.conversation.type === ConversationType.Group
-                    && (content.type === MessageContentType.VOIP_CONTENT_TYPE_START
-                        || content.type === MessageContentType.VOIP_CONTENT_TYPE_ADD_PARTICIPANT
-                    )) {
-                    let memberIds = wfc.getGroupMemberIds(msg.conversation.target);
-                    // TODO，临时屏蔽，可能会导致 414 Request-URI Too Large
-                    // FIXME 可能会导致 414 Request-URI Too Large
-                    // App.vue 里面再去获取用户信息等
-                    // msg.groupMemberUserInfos = wfc.getUserInfos(memberIds, msg.conversation.target);
-                }
 
                 // patch
                 msg.selfUserInfo = selfUserInfo;
@@ -478,12 +466,6 @@ export class AvEngineKitProxy {
         this.participants.push(...participants)
         this.callId = callId;
 
-        let participantUserInfos = wfc.getUserInfos(participants);
-        let groupMemberUserInfos;
-        if (conversation.type === ConversationType.Group) {
-            let memberIds = wfc.getGroupMemberIds(conversation.target);
-            groupMemberUserInfos = wfc.getUserInfos(memberIds, conversation.target);
-        }
         this.showCallUI(conversation, false, {
             event: 'startCall',
             args: {
@@ -491,8 +473,7 @@ export class AvEngineKitProxy {
                 audioOnly: audioOnly,
                 callId: callId,
                 selfUserInfo: selfUserInfo,
-                groupMemberUserInfos: groupMemberUserInfos,
-                participantUserInfos: participantUserInfos,
+                participants: participants,
                 callExtra: callExtra,
             }
         });
