@@ -8,9 +8,9 @@ import CallEndReason from "../../wfc/av/engine/callEndReason";
 // 本地调试
 //export  const voipBaseWebUrl = 'https://voip.wfim.work';
 // 多人版音视频，根据实际情况，进行切换，需要和其他客户端保持一致，才能互通
-// export const voipBaseWebUrl = 'https://static.wildfirechat.cn/voip-multi-1741665483.html';
+// export const voipBaseWebUrl = 'https://static.wildfirechat.cn/voip-multi-1763117315.html';
 // 高级版音视频，根据实际情况，进行切换，需要和其他客户端保持一致，才能互通
-export const voipBaseWebUrl = 'https://static.wildfirechat.cn/voip-conference-1741665337.html';
+export const voipBaseWebUrl = 'https://static.wildfirechat.cn/voip-conf-20250915-2.html';
 
 Page({
   data: {
