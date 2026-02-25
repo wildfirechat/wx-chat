@@ -2,6 +2,7 @@
 @import "../../modules/chat-page/notificaiton.wxss";
 page {
     background-color: #EFEFEF;
+    height: 100%;
 }
 
 .modal {
@@ -50,9 +51,19 @@ page {
     margin-right: 10px;
 }
 
-.modal-footer {
-    display: flex;
-    justify-content: space-around;
-    padding: 10px;
-    border-top: 1px solid #eee;
+.new-message-tip {
+    position: fixed;
+    right: 20rpx;
+    bottom: 120rpx;
+    background-color: #fff;
+    padding: 10rpx 20rpx;
+    border-radius: 30rpx;
+    box-shadow: 0 2rpx 10rpx rgba(0,0,0,0.2);
+    color: #3E65E4;
+    font-size: 24rpx;
+    z-index: 100;
+}
+
+#bottomElement {
+    height: 10rpx;
 }

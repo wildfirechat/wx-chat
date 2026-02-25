@@ -70,28 +70,35 @@ Page({
         let newUIMsg = this.messagesToUiMessages([msg])[0];
         if (msgIndex >= 0) {
             this.data.chatItems[msgIndex] = newUIMsg;
+            this.setData({
+                chatItems: this.data.chatItems
+            });
         } else {
-            this.data.chatItems = this.data.chatItems.concat(newUIMsg);
+            this.data.chatItems.push(newUIMsg);
+            let updateData = {
+                chatItems: this.data.chatItems
+            };
+            if (this.isBottom) {
+                updateData.scrollIntoView = 'bottomElement';
+            } else {
+                updateData.showNewMessageTip = true;
+            }
+            this.setData(updateData);
         }
-
-        this.setData({
-            chatItems: this.data.chatItems,
-            scrollTopVal: this.data.chatItems.length * 999
-        });
     },
 
     onSendMessage(msg) {
         if (!msg.conversation.equal(this.conversation)) {
             return;
         }
-        this.showMessageList();
+        this.showMessageList(true);
     },
 
     onMessageStatusUpdate(msg) {
         if (!msg.conversation.equal(this.conversation)) {
             return;
         }
-        this.showMessageList();
+        this.showMessageList(false);
     },
 
     onRecallMessage(operator, messageUid) {
@@ -99,7 +106,7 @@ Page({
         if (!msg.conversation.equal(this.conversation)) {
             return;
         }
-        this.showMessageList();
+        this.showMessageList(false);
     },
 
     /**
@@ -112,6 +119,8 @@ Page({
         const conversationJson = JSON.parse(options.conversation);
         this.setData({
             pageHeight: wx.getSystemInfoSync().windowHeight,
+            scrollIntoView: '',
+            showNewMessageTip: false
         });
         this.conversation = Object.assign(new Conversation(), conversationJson);
         const conversationInfo = new ConversationInfo();
@@ -129,6 +138,8 @@ Page({
         wfc.eventEmitter.on(EventType.SendMessage, this.onSendMessage);
         wfc.eventEmitter.on(EventType.MessageStatusUpdate, this.onMessageStatusUpdate);
         wfc.eventEmitter.on(EventType.RecallMessage, this.onRecallMessage)
+
+        this.showMessageList(true);
     },
 
     onUnload() {
@@ -144,30 +155,88 @@ Page({
 
     onShow() {
         wfc.onForeground();
-        this.showMessageList();
+        // this.showMessageList(false);
     },
     onReady() {
         this.chatInput = this.selectComponent('#chatInput');
     },
 
+    onScroll(e) {
+        // detail: {scrollLeft, scrollTop, scrollHeight, scrollWidth, deltaX, deltaY}
+        const {scrollTop, scrollHeight} = e.detail;
+        const query = wx.createSelectorQuery();
+        query.select('.scroll-view').boundingClientRect(rect => {
+            if (rect) {
+                const height = rect.height;
+                // Determine if at bottom (allow some threshold, e.g. 50px)
+                const isBottom = scrollHeight - scrollTop - height < 50;
+                this.isBottom = isBottom;
+                if (isBottom && this.data.showNewMessageTip) {
+                    this.setData({
+                        showNewMessageTip: false
+                    });
+                }
+            }
+        }).exec();
+    },
+
+    onNewMessageTipClick() {
+        this.setData({
+            scrollIntoView: 'bottomElement',
+            showNewMessageTip: false
+        });
+    },
+
     loadOldMessages() {
         let messages = this.data.chatItems;
-        let beforeUid = messages.length > 0 ? messages[0].messageUid : 0;
-        let beforeId = messages.length > 0 ? messages[0].messageId : 0;
+        if (messages.length === 0) return;
+
+        let beforeUid = messages[0].messageUid;
+        let beforeId = messages[0].messageId;
+
+        // Store current top message ID to maintain position
+        let topMessageId = `msg-${beforeId}`;
+
         wfc.getMessagesV2(this.conversation, beforeId, true, 20, '', msgs => {
             if (msgs.length > 0) {
                 let uiMsgs = this.messagesToUiMessages(msgs);
-                uiMsgs = uiMsgs.concat(messages);
+                // Assign IDs to messages for scrolling
+                uiMsgs = uiMsgs.map(m => {
+                    m.uiId = `msg-${m.messageId}`;
+                    return m;
+                });
+
+                // Keep existing IDs
+                messages = messages.map(m => {
+                    if (!m.uiId) m.uiId = `msg-${m.messageId}`;
+                    return m;
+                });
+
+                let newChatItems = uiMsgs.concat(messages);
+
                 this.setData({
-                    chatItems: uiMsgs
+                    chatItems: newChatItems,
+                    scrollIntoView: topMessageId
                 });
             } else {
                 wfc.loadRemoteConversationMessages(this.conversation, [], beforeUid, 50, (msgs) => {
                     if (msgs.length > 0) {
                         let uiMsgs = this.messagesToUiMessages(msgs);
-                        uiMsgs = uiMsgs.concat(messages);
+                        uiMsgs = uiMsgs.map(m => {
+                            m.uiId = `msg-${m.messageId}`;
+                            return m;
+                        });
+
+                        messages = messages.map(m => {
+                            if (!m.uiId) m.uiId = `msg-${m.messageId}`;
+                            return m;
+                        });
+
+                        let newChatItems = uiMsgs.concat(messages);
+
                         this.setData({
-                            chatItems: uiMsgs
+                            chatItems: newChatItems,
+                            scrollIntoView: topMessageId
                         });
                     }
 
@@ -227,7 +296,7 @@ Page({
 
     deleteMessage(msg) {
         wfc.deleteMessage(msg.messageId)
-        this.showMessageList();
+        this.showMessageList(false);
     },
 
     copyMessage(msg) {
@@ -478,21 +547,21 @@ Page({
     sendMessage(messageContent) {
         wfc.sendConversationMessage(this.conversation, messageContent, null,
             (messageId, timestamp,) => {
-                this.showMessageList();
+                this.showMessageList(true);
             },
             (progress, total) => {
                 console.log('upload progress', progress, total)
-                this.showMessageList();
+                this.showMessageList(true);
             },
             (messageUid, timestamp) => {
-                this.showMessageList();
+                this.showMessageList(true);
             },
             (error) => {
-                this.showMessageList();
+                this.showMessageList(true);
             });
     },
 
-    showMessageList() {
+    showMessageList(scrollToBottom) {
         wfc.getMessagesV2(this.conversation, 0, true, 20, '', messages => {
             if (messages.length < 20) {
                 this.loadOldMessages();
@@ -502,10 +571,13 @@ Page({
             }
 
             let uiMsgs = this.messagesToUiMessages(messages);
-            this.setData({
-                chatItems: uiMsgs,
-                scrollTopVal: uiMsgs.length * 999
-            });
+            let data = {
+                chatItems: uiMsgs
+            };
+            if (scrollToBottom) {
+                data.scrollIntoView = 'bottomElement';
+            }
+            this.setData(data);
         }, err => {
             console.error('getMessagesV2 error', this.conversation, err);
 

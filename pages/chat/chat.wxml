@@ -28,16 +28,23 @@
 >
 
     <scroll-view
-            style="flex:1"
+            class="scroll-view"
+            style="height: calc(100% - 100rpx);"
             scroll-y="true"
+            scroll-into-view="{{scrollIntoView}}"
+            bindscroll="onScroll"
             bindscrolltoupper="loadOldMessages"
             bindtap="resetInputStatus">
         <block wx:for="{{chatItems}}" wx:key="index">
             <template is="chat-item"
                       data="{{length:chatItems.length,index,item}}"/>
         </block>
+        <view id="bottomElement"></view>
 
     </scroll-view>
+    <view wx:if="{{showNewMessageTip}}" class="new-message-tip" bindtap="onNewMessageTipClick">
+        <text>↓ 有新消息</text>
+    </view>
     <chat-input
             id="chatInput"
             min-voice-time="{{1}}"
