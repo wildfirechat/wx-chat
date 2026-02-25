@@ -31,6 +31,11 @@
                    mode="aspectFill" bindtap="imageClickEvent" data-url="{{content}}"/>
         </block>
 
+        <block wx:if="{{type==='video'}}">
+            <image wx:if="{{type==='video'}}" class="chat-list-pic-style" src="{{message.ui.thumbnail ? 'data:image/png;base64,' + message.ui.thumbnail : './../../image/chat/chat_video.png'}}"
+                   mode="aspectFill" bindtap="videoClickEvent" data-url="{{content}}" data-thumbnail="{{message.ui.thumbnail ? 'data:image/png;base64,' + message.ui.thumbnail :undefined}}"/>
+        </block>
+
         <block wx:if="{{type==='voice'}}">
             <view style="width: {{(voiceDuration-1)*0.6+10}}%;border-radius: 10rpx;padding: 20rpx;font-size: 30rpx;max-width: 60%;display: flex;justify-content: {{isMy?'flex-end':'flex-start'}}"
                   class="{{isMy?'isMyWordStyle':'isOtherWordStyle'}}"

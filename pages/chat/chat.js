@@ -6,7 +6,7 @@ import ConversationInfo from "../../wfc/model/conversationInfo";
 import TextMessageContent from "../../wfc/messages/textMessageContent";
 import EventType from "../../wfc/client/wfcEvent";
 import Conversation from "../../wfc/model/conversation";
-import ImageMessageContent from "../../wfc/messages/imageMessageContent";
+import VideoMessageContent from "../../wfc/messages/videoMessageContent";
 import SoundMessageContent from "../../wfc/messages/soundMessageContent";
 import MessageStatus from "../../wfc/messages/messageStatus";
 import NotificationMessageContent from "../../wfc/messages/notification/notificationMessageContent";
@@ -20,6 +20,7 @@ import ConferenceInviteMessageContent from "../../wfc/av/messages/conferenceInvi
 import StreamingTextGeneratingMessageContent from "../../wfc/messages/streamingTextGeneratingMessageContent";
 import StreamingTextGeneratedMessageContent from "../../wfc/messages/streamingTextGeneratedMessageContent";
 import MessageContentType from "../../wfc/messages/messageContentType";
+import ImageMessageContent from '../../wfc/messages/imageMessageContent'
 
 /**
  * 聊天页面
@@ -471,6 +472,18 @@ Page({
         })
     },
 
+    videoClickEvent(e) {
+        let dataset = e.currentTarget.dataset;
+        wx.previewMedia({
+            sources: [{
+                url: dataset.url,
+                type: 'video',
+				poster: dataset.thumbnail,
+            }],
+            autoplay: true
+        })
+    },
+
     chatTextItemClickEvent(e) {
     },
 
@@ -636,6 +649,10 @@ Page({
             } else if (m.messageContent instanceof ImageMessageContent) {
                 item.content = m.messageContent.localPath || m.messageContent.remotePath;
                 item.type = 'image';
+            } else if (m.messageContent instanceof VideoMessageContent) {
+                item.content = m.messageContent.localPath || m.messageContent.remotePath;
+                item.thumbnail = m.messageContent.thumbnail;
+                item.type = 'video';
             } else if (m.messageContent instanceof SoundMessageContent) {
                 item.content = m.messageContent.localPath || m.messageContent.remotePath;
                 item.voiceDuration = m.messageContent.duration;
