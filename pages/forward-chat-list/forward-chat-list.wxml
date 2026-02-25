@@ -1,0 +1,6 @@
+<import src="view/chat-item.wxml"/>
+<view>
+    <block wx:for="{{conversations}}" wx:key="conversationId">
+        <template is="chat-item" data="{{item:item}}"/>
+    </block>
+</view>

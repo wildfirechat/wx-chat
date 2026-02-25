@@ -9,7 +9,8 @@ const MIN_VOICE_TIME = 1, MAX_VOICE_TIME = 60, START_TIME_DOWN = 54, status = {
     EXTRA_CLICK: 'extraClickEvent',
     EXTRA_ITEM_CLICK: 'extraItemClickEvent',
     VOICE_RECORD: 'voiceRecordEvent',
-    SEND_MESSAGE: 'sendMessageEvent'
+    SEND_MESSAGE: 'sendMessageEvent',
+    MENTION: 'mentionEvent'
 };
 Component({
     properties: {
@@ -276,6 +277,9 @@ Component({
             this.setData({
                 textMessage
             })
+            if (textMessage.endsWith('@')) {
+                this.triggerEvent(EVENT.MENTION);
+            }
         },
         _chatInput$extra$item$click$event(e) {
             const {currentTarget: {dataset}} = e;

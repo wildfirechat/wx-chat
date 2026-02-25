@@ -49,7 +49,8 @@
             bind:extraClickEvent="onExtraClickEvent"
             bind:extraItemClickEvent="onExtraItemClickEvent"
             bind:voiceRecordEvent="onVoiceRecordEvent"
-            bind:sendMessageEvent="onSendMessageEvent">
+            bind:sendMessageEvent="onSendMessageEvent"
+            bind:mentionEvent="onMentionEvent">
     </chat-input>
 </view>
 <canvas canvas-id="canvas" style="width:{{cWidth}}px;height:{{cHeight}}px;position: absolute;left:-1000px;top:-1000px;"></canvas>

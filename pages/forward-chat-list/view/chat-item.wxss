@@ -1,0 +1,33 @@
+@import "chat-item-head.wxss";
+
+.chat-item-style {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding-top: 20rpx;
+    padding-bottom: 20rpx;
+    background-color: white;
+}
+
+.press-style {
+    background-color: #F3F3F3;
+}
+
+.chat-item-content-super-style {
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+    justify-content: center;
+}
+
+.chat-item-name-style {
+    color: #333333;
+    font-size: 34rpx;
+    margin-bottom: 0;
+}
+
+.list-divide-line {
+    background-color: #E5E5E5;
+    height: 1rpx;
+}

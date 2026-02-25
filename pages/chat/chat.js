@@ -36,6 +36,7 @@ Page({
         chatItems: [],
         latestPlayVoicePath: '',
         chatStatue: 'open',
+        currentMentions: [],
         extraArr: [{
             picName: 'choose_picture',
             description: '照片'
@@ -181,7 +182,7 @@ Page({
 
     onMessageLongTap(e) {
         let msg = e.currentTarget.dataset.item;
-        let menuItems = ['删除', '复制'];
+        let menuItems = ['删除', '复制', '转发'];
         // TODO 还需时间判断是否可以撤回
         if (msg.direction === 0) {
             menuItems = ['撤回'].concat(menuItems);
@@ -200,6 +201,9 @@ Page({
                     case '复制':
                         self.copyMessage(msg);
                         break;
+                    case '转发':
+                        self.forwardMessage(msg);
+                        break;
                     case '撤回':
                         self.recallMessage(msg);
                         break;
@@ -210,6 +214,14 @@ Page({
             fail(res) {
                 console.log(res.errMsg)
             }
+        });
+    },
+
+    forwardMessage(msg) {
+        let message = wfc.getMessageById(msg.messageId);
+        getApp().globalData.forwardMessage = message;
+        wx.navigateTo({
+            url: '/pages/forward-chat-list/forward-chat-list'
         });
     },
 
@@ -235,7 +247,42 @@ Page({
     onSendMessageEvent(e) {
         let content = e.detail.value;
         let textMsgContent = new TextMessageContent(content);
+        if (this.data.currentMentions.length > 0) {
+            let mentionedTargets = [];
+            let mentionedType = 0;
+
+            if (this.data.currentMentions.indexOf('All') >= 0 && content.indexOf('@所有人') >= 0) {
+                mentionedType = 2;
+            } else {
+                // Filter mentions that are still in the text
+                this.data.currentMentions.forEach(uid => {
+                    const userInfo = wfc.getUserInfo(uid);
+                    if (content.indexOf(`@${userInfo.displayName}`) >= 0) {
+                        mentionedTargets.push(uid);
+                    }
+                });
+
+                if (mentionedTargets.length > 0) {
+                    mentionedType = 1; // MentionedType_Part
+                    textMsgContent.mentionedTargets = mentionedTargets;
+                }
+            }
+            textMsgContent.mentionedType = mentionedType;
+            this.setData({currentMentions: []});
+        }
         this.sendMessage(textMsgContent);
+    },
+
+    onMentionEvent(e) {
+        if (this.conversation.type === ConversationType.Group) {
+            let options = {
+                op: 'mention',
+                mode: 'single'
+            }
+            wx.navigateTo({
+                url: `/pages/select-group-members/select-group-members?groupId=${this.conversation.target}&options=${JSON.stringify(options)}&mode=single`,
+            });
+        }
     },
 
     onVoiceRecordEvent(e) {
@@ -387,9 +434,6 @@ Page({
 
     onSelectGroupMember(selectedMembers, options) {
         console.log('onSelectGroupMember ', selectedMembers, options)
-        if(options){
-            options = JSON.parse(options);
-        }
         if (options.op === 'voip') {
             let audioOnly = options.audioOnly
             if (selectedMembers.length === 0) {
@@ -400,6 +444,29 @@ Page({
                 return;
             }
             avenginekitproxy.startCall(this.conversation, audioOnly, selectedMembers, '');
+        } else if (options.op === 'mention') {
+            const userId = selectedMembers[0];
+            if (userId === 'All') {
+                const mentionText = '所有人 ';
+                this.setData({
+                    textMessage: this.data.textMessage + mentionText
+                });
+                this.data.currentMentions.push('All');
+                this.chatInput.setData({
+                    textMessage: this.chatInput.data.textMessage + mentionText
+                });
+            } else {
+                const userInfo = wfc.getUserInfo(userId);
+                const mentionText = `${userInfo.displayName} `;
+                this.setData({
+                    textMessage: this.data.textMessage + mentionText
+                });
+                this.data.currentMentions.push(userId);
+                // Need to update the input component's value
+                this.chatInput.setData({
+                    textMessage: this.chatInput.data.textMessage + mentionText
+                });
+            }
         }
     },
 

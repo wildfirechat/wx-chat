@@ -10,12 +10,23 @@ Page({
 
     onLoad(options) {
         const groupId = options.groupId;
-        this.setData({options: options.options});
+        let opts = options.options;
+        if (opts && typeof opts === 'string') {
+            try {
+                opts = JSON.parse(opts);
+            } catch (e) {
+                console.error('parse options error', e);
+            }
+        }
+        this.setData({
+            options: opts,
+            mode: options.mode
+        });
         this.loadGroupMembers(groupId);
     },
 
     loadGroupMembers(groupId) {
-        const members = wfc.getGroupMembers(groupId).map(member => {
+        let members = wfc.getGroupMembers(groupId).map(member => {
             const userInfo = wfc.getUserInfo(member.memberId, false);
             return {
                 userId: userInfo.uid,
@@ -24,11 +35,28 @@ Page({
                 selected: false
             };
         });
+
+        if (this.data.mode === 'single' && this.data.options && this.data.options.op === 'mention') {
+            members.unshift({
+                userId: 'All',
+                userHeadUrl: Config.DEFAULT_PORTRAIT_URL, // You might want a specific icon for @All
+                userName: '所有人',
+                selected: false
+            });
+        }
         this.setData({members});
     },
 
     toggleSelect(e) {
         const userId = e.currentTarget.dataset.userid;
+        if (this.data.mode === 'single') {
+            const pages = getCurrentPages();
+            const prevPage = pages[pages.length - 2];
+            wx.navigateBack();
+            prevPage.onSelectGroupMember([userId], this.data.options);
+            return;
+        }
+
         const members = this.data.members.map(member => {
             if (member.userId === userId) {
                 member.selected = !member.selected;

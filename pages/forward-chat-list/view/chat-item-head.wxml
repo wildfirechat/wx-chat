@@ -1,0 +1,5 @@
+<template name="chat-item-head">
+    <view class="chat-item-head-super-style">
+        <image class="chat-item-head-style" src="{{headUrl}}" mode="aspectFill" />
+    </view>
+</template>

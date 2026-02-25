@@ -1,0 +1,10 @@
+<import src="../../../pages/chat-list/view/chat-item-head.wxml" />
+<template name="chat-item">
+    <view class="chat-item-style" bindtap="chatTo" data-item="{{item}}" hover-class="press-style">
+        <template is="chat-item-head" data="{{headUrl:item.ui.portrait}}" />
+        <view class="chat-item-content-super-style">
+            <view class="chat-item-name-style">{{item.ui.title}}</view>
+        </view>
+    </view>
+    <view class="list-divide-line" style="width: 79.5%;margin-left: 20.5%" />
+</template>

@@ -10,6 +10,7 @@
     "pages/create-group/create-group",
     "pages/search-user/search-user",
     "pages/select-group-members/select-group-members",
+    "pages/forward-chat-list/forward-chat-list",
     "pages/friend-requests/friend-requests",
     "pages/me/me"
   ],
