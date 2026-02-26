@@ -466,22 +466,45 @@ Page({
 
     imageClickEvent(e) {
         let dataset = e.currentTarget.dataset;
-        wx.previewImage({
-            current: dataset.url, // 当前显示图片的http链接
-            urls: [dataset.url] // 需要预览的图片http链接列表
-        })
+        this.previewMedia(dataset.messageId);
     },
 
     videoClickEvent(e) {
         let dataset = e.currentTarget.dataset;
+        this.previewMedia(dataset.messageId);
+    },
+
+    previewMedia(currentMessageId) {
+        let sources = [];
+        let current = 0;
+        let index = 0;
+        this.data.chatItems.forEach(item => {
+            if (item.ui.type === 'image') {
+                sources.push({
+                    url: item.ui.content,
+                    type: 'image'
+                });
+                if (item.messageId == currentMessageId) {
+                    current = index;
+                }
+                index++;
+            } else if (item.ui.type === 'video') {
+                sources.push({
+                    url: item.ui.content,
+                    type: 'video',
+                    poster: item.ui.thumbnail ? 'data:image/png;base64,' + item.ui.thumbnail : undefined
+                });
+                if (item.messageId == currentMessageId) {
+                    current = index;
+                }
+                index++;
+            }
+        });
+
         wx.previewMedia({
-            sources: [{
-                url: dataset.url,
-                type: 'video',
-				poster: dataset.thumbnail,
-            }],
-            autoplay: true
-        })
+            sources: sources,
+            current: current
+        });
     },
 
     chatTextItemClickEvent(e) {

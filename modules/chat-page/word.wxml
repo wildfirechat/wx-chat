@@ -28,12 +28,12 @@
 
         <block wx:if="{{type==='image'}}">
             <image wx:if="{{type==='image'}}" class="chat-list-pic-style" src="{{content}}"
-                   mode="aspectFill" bindtap="imageClickEvent" data-url="{{content}}"/>
+                   mode="aspectFill" bindtap="imageClickEvent" data-url="{{content}}" data-message-id="{{message.messageId}}"/>
         </block>
 
         <block wx:if="{{type==='video'}}">
             <image wx:if="{{type==='video'}}" class="chat-list-pic-style" src="{{message.ui.thumbnail ? 'data:image/png;base64,' + message.ui.thumbnail : './../../image/chat/chat_video.png'}}"
-                   mode="aspectFill" bindtap="videoClickEvent" data-url="{{content}}" data-thumbnail="{{message.ui.thumbnail ? 'data:image/png;base64,' + message.ui.thumbnail :undefined}}"/>
+                   mode="aspectFill" bindtap="videoClickEvent" data-url="{{content}}" data-thumbnail="{{message.ui.thumbnail ? 'data:image/png;base64,' + message.ui.thumbnail :undefined}}" data-message-id="{{message.messageId}}"/>
         </block>
 
         <block wx:if="{{type==='voice'}}">

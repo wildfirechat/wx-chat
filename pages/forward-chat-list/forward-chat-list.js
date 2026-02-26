@@ -13,17 +13,9 @@ Page({
         wx.setNavigationBarTitle({
             title: '选择转发对象'
         });
-        wfc.eventEmitter.on(EventType.ConnectionStatusChanged, this.onConnnectionStatusChange);
-        wfc.eventEmitter.on(EventType.UserInfosUpdate, this.onUserInfosUpdate);
-        wfc.eventEmitter.on(EventType.GroupInfosUpdate, this.onGroupInfosUpdate);
-        wfc.eventEmitter.on(EventType.ConversationInfoUpdate, this.onConversationInfoUpdate);
     },
 
     onUnload() {
-        wfc.eventEmitter.removeListener(EventType.ConnectionStatusChanged, this.onConnnectionStatusChange);
-        wfc.eventEmitter.removeListener(EventType.UserInfosUpdate, this.onUserInfosUpdate);
-        wfc.eventEmitter.removeListener(EventType.GroupInfosUpdate, this.onGroupInfosUpdate);
-        wfc.eventEmitter.removeListener(EventType.ConversationInfoUpdate, this.onConversationInfoUpdate);
     },
 
     onShow() {
@@ -31,17 +23,6 @@ Page({
             this.showConversationList();
         }
     },
-
-    onConnnectionStatusChange(status) {
-        if (status === ConnectionStatus.ConnectionStatusConnected) {
-            this.showConversationList();
-        }
-    },
-
-    onUserInfosUpdate() { this.showConversationList(); },
-    onGroupInfosUpdate() { this.showConversationList(); },
-    onConversationInfoUpdate() { this.showConversationList(); },
-
     showConversationList() {
         let conversations = wfc.getConversationList([0, 1, 2], [0, 1]);
         let clUi = conversations.map(item => {
