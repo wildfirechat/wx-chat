@@ -1,0 +1,37 @@
+.result-cell {
+    align-items: flex-start;
+    padding-top: 20rpx;
+}
+
+.result-head {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.result-name {
+    font-size: 26rpx;
+    color: #888;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.result-time {
+    margin-left: 16rpx;
+    font-size: 22rpx;
+    color: #b2b2b2;
+    flex-shrink: 0;
+}
+
+.result-content {
+    margin-top: 8rpx;
+    font-size: 30rpx;
+    color: #111;
+    word-break: break-all;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+}

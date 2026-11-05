@@ -1,18 +1,47 @@
-<!--pages/friends/friends.wxml-->
-<import src="../chat-list/view/chat-item-head.wxml"/>
-<block wx:for="{{navItems}}" wx:key="id">
-    <view class="nav-item" bindtap="navigateTo" data-url="{{item.url}}">
-        <text class="nav-item-text">{{item.name}}</text>
-        <text class="nav-item-arrow">></text>
-    </view>
-    <view class="list-divide-line" style="width: 79.5%;margin-left: 20.5%"/>
-</block>
-<block wx:for="{{friends}}"  wx:key="friendId">
-    <view class="chat-item-style" bindtap="chatTo" data-item="{{item}}" >
-        <template is="chat-item-head" data="{{headUrl:item.friendHeadUrl,unread:0, uid:item.friendId}}"/>
-        <view class="chat-item-content-super-style">
-            <view class="chat-item-name-style">{{item.friendName}}</view>
+<view class="page-gray">
+    <view class="search-bar" bindtap="navigateTo" data-url="/pages/search/search">
+        <view class="search-box search-box-fake">
+            <image class="search-icon" src="/image/icons/search.svg"/>
+            <text class="search-placeholder">搜索</text>
         </view>
     </view>
-    <view class="list-divide-line" style="width: 79.5%;margin-left: 20.5%"/>
-</block>
+
+    <view class="section" style="margin-top:0">
+        <view class="cell" hover-class="cell-hover" bindtap="navigateTo" data-url="/pages/friend-requests/friend-requests">
+            <image class="cell-avatar" src="/image/icons/new_friend.svg"/>
+            <view class="cell-body"><text class="cell-title">新的朋友</text></view>
+            <text wx:if="{{friendRequestCount > 0}}" class="cell-badge">{{friendRequestCount > 99 ? '99+' : friendRequestCount}}</text>
+        </view>
+        <view class="cell" hover-class="cell-hover" bindtap="navigateTo" data-url="/pages/group-list/group-list">
+            <image class="cell-avatar" src="/image/icons/group_chat.svg"/>
+            <view class="cell-body"><text class="cell-title">群聊</text></view>
+        </view>
+        <view class="cell" hover-class="cell-hover" bindtap="navigateTo" data-url="/pages/search-user/search-user">
+            <image class="cell-avatar" src="/image/icons/add_friend.svg"/>
+            <view class="cell-body"><text class="cell-title">添加朋友</text></view>
+        </view>
+        <view class="cell" hover-class="cell-hover" bindtap="navigateTo" data-url="/pages/create-group/create-group">
+            <image class="cell-avatar" src="/image/icons/create_group.svg"/>
+            <view class="cell-body"><text class="cell-title">发起群聊</text></view>
+        </view>
+    </view>
+
+    <block wx:if="{{favFriends.length > 0}}">
+        <view class="section-title">星标朋友</view>
+        <view class="section" style="margin-top:0">
+            <view wx:for="{{favFriends}}" wx:key="uid" class="cell" hover-class="cell-hover" bindtap="onFriendTap" data-uid="{{item.uid}}">
+                <image class="cell-avatar" src="{{item.portrait}}" mode="aspectFill"/>
+                <view class="cell-body"><text class="cell-title">{{item.name}}</text></view>
+            </view>
+        </view>
+    </block>
+
+    <view class="section-title">联系人</view>
+    <view class="section" style="margin-top:0">
+        <view wx:for="{{friends}}" wx:key="uid" class="cell" hover-class="cell-hover" bindtap="onFriendTap" data-uid="{{item.uid}}">
+            <image class="cell-avatar" src="{{item.portrait}}" mode="aspectFill"/>
+            <view class="cell-body"><text class="cell-title">{{item.name}}</text></view>
+        </view>
+    </view>
+    <view class="friend-count">{{friends.length}}位联系人</view>
+</view>

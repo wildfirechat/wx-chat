@@ -1,3 +1,0 @@
-<template name="chat-custom">
-    <text class="chat-list-time-style">{{content}}</text>
-</template>

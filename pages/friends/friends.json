@@ -1,1 +1,5 @@
-{"navigationBarTitleText": "好友"}
+{
+  "navigationBarTitleText": "通讯录",
+  "navigationBarBackgroundColor": "#EDEDED",
+  "backgroundColor": "#EDEDED"
+}

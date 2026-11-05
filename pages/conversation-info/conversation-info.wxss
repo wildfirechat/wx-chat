@@ -1,0 +1,66 @@
+.member-grid {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 24rpx 12rpx 8rpx 12rpx;
+}
+
+.member-item {
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20rpx;
+}
+
+.member-avatar {
+    width: 100rpx;
+    height: 100rpx;
+    border-radius: 10rpx;
+    background-color: #eee;
+}
+
+.member-action {
+    width: 96rpx;
+    height: 96rpx;
+    border: 2rpx dashed #c7c7cc;
+    border-radius: 10rpx;
+    color: #b2b2b2;
+    font-size: 56rpx;
+    line-height: 92rpx;
+    text-align: center;
+}
+
+.member-name {
+    width: 120rpx;
+    margin-top: 8rpx;
+    font-size: 22rpx;
+    color: #666;
+    text-align: center;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    min-height: 30rpx;
+}
+
+.member-more {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 16rpx 0 20rpx 0;
+    font-size: 28rpx;
+    color: #888;
+}
+
+.announcement {
+    white-space: normal;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+}
+
+.bottom-space {
+    height: 80rpx;
+}

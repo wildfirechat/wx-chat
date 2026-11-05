@@ -1,0 +1,131 @@
+<import src="./voice.wxml"/>
+<import src="../loading/common.wxml"/>
+
+<!--
+消息模版，数据由 utils/messageView.js 生成
+页面需要实现的事件处理方法：
+onMessageTap, onMessageLongPress, onAvatarTap, onAvatarLongPress, onResendTap, onReeditTap, onMessageCheckTap
+-->
+<template name="message-item">
+    <view class="msg-wrap" id="msg-{{item.key}}">
+        <view wx:if="{{item.showTime}}" class="msg-time">{{item.time}}</view>
+
+        <!-- 通知消息 -->
+        <view wx:if="{{item.type === 'notification'}}" class="msg-notification">
+            <text>{{item.content}}</text>
+            <text wx:if="{{item.reeditable}}" class="msg-reedit" data-key="{{item.key}}" catchtap="onReeditTap">重新编辑</text>
+        </view>
+
+        <!-- 富通知消息 -->
+        <view wx:elif="{{item.type === 'rich'}}" class="msg-rich">
+            <view class="msg-rich-title">{{item.title}}</view>
+            <view wx:if="{{item.desc}}" class="msg-rich-desc">{{item.desc}}</view>
+            <view wx:for="{{item.datas}}" wx:for-item="d" wx:key="key" class="msg-rich-data">
+                <text class="msg-rich-key">{{d.key}}</text>
+                <text class="msg-rich-value" style="color:{{d.color || '#333'}}">{{d.value}}</text>
+            </view>
+            <view wx:if="{{item.remark}}" class="msg-rich-desc">{{item.remark}}</view>
+            <view wx:if="{{item.exName}}" class="msg-rich-footer">{{item.exName}}</view>
+        </view>
+
+        <!-- 普通消息 -->
+        <view wx:else class="msg-row {{item.isMy ? 'msg-row-my' : ''}} {{highlightKey === item.key ? 'msg-row-highlight' : ''}}">
+            <view wx:if="{{multiSelect}}" class="msg-check {{item.checked ? 'msg-check-on' : ''}} {{item.selectable ? '' : 'msg-check-disabled'}}"></view>
+            <image class="msg-avatar" src="{{item.portrait}}" data-uid="{{item.from}}" catchtap="onAvatarTap" catchlongpress="onAvatarLongPress"/>
+            <view class="msg-main">
+                <text wx:if="{{item.senderName}}" class="msg-sender">{{item.senderName}}</text>
+                <view class="msg-content-row">
+                    <view class="msg-content" data-key="{{item.key}}" bindtap="onMessageTap" bindlongpress="onMessageLongPress">
+                        <!-- 文本 -->
+                        <view wx:if="{{item.type === 'text' || item.type === 'call'}}"
+                              class="bubble {{item.isMy ? 'bubble-my' : 'bubble-other'}} {{item.unsupported ? 'bubble-unsupported' : ''}}">
+                            <text wx:if="{{item.type === 'call'}}" class="msg-call-icon">{{item.audioOnly ? '☏ ' : '▶ '}}</text>
+                            <text>{{item.content}}</text>
+                            <template wx:if="{{item.streaming}}" is="common-loading"/>
+                        </view>
+
+                        <!-- 图片、表情 -->
+                        <image wx:elif="{{item.type === 'image'}}"
+                               class="msg-image {{item.sticker ? 'msg-sticker' : ''}}"
+                               style="width:{{item.width}}rpx;height:{{item.height}}rpx;"
+                               src="{{item.url || item.thumb}}" mode="aspectFill" lazy-load="{{true}}"/>
+
+                        <!-- 视频 -->
+                        <view wx:elif="{{item.type === 'video'}}" class="msg-video">
+                            <image wx:if="{{item.thumb}}" class="msg-video-thumb" src="{{item.thumb}}" mode="aspectFill"/>
+                            <view class="msg-video-play"><view class="msg-video-triangle"></view></view>
+                            <text wx:if="{{item.duration}}" class="msg-video-duration">{{item.duration}}</text>
+                        </view>
+
+                        <!-- 语音 -->
+                        <view wx:elif="{{item.type === 'voice'}}"
+                              class="bubble {{item.isMy ? 'bubble-my' : 'bubble-other'}} msg-voice"
+                              style="width:{{item.voiceWidth}}rpx;">
+                            <template is="voice-item" data="{{isMy:item.isMy,isPlaying:item.isPlaying}}"/>
+                            <text class="msg-voice-duration">{{item.voiceDuration}}"</text>
+                        </view>
+
+                        <!-- 文件 -->
+                        <view wx:elif="{{item.type === 'file'}}" class="msg-card msg-file">
+                            <view class="msg-file-info">
+                                <text class="msg-file-name">{{item.name}}</text>
+                                <text class="msg-file-size">{{item.size}}</text>
+                            </view>
+                            <view class="msg-file-icon">{{item.ext || 'FILE'}}</view>
+                        </view>
+
+                        <!-- 位置 -->
+                        <view wx:elif="{{item.type === 'location'}}" class="msg-card msg-location">
+                            <text class="msg-location-title">{{item.title}}</text>
+                            <image class="msg-location-map" src="{{item.thumb || '/image/icons/location_pin.svg'}}" mode="aspectFill"/>
+                        </view>
+
+                        <!-- 链接 -->
+                        <view wx:elif="{{item.type === 'link'}}" class="msg-card msg-link">
+                            <text class="msg-link-title">{{item.title}}</text>
+                            <view class="msg-link-body">
+                                <text class="msg-link-desc">{{item.desc}}</text>
+                                <image wx:if="{{item.thumb}}" class="msg-link-thumb" src="{{item.thumb}}" mode="aspectFill"/>
+                            </view>
+                        </view>
+
+                        <!-- 名片 -->
+                        <view wx:elif="{{item.type === 'card'}}" class="msg-card msg-user-card">
+                            <view class="msg-user-card-body">
+                                <image class="msg-user-card-portrait" src="{{item.thumb}}"/>
+                                <text class="msg-user-card-name">{{item.title}}</text>
+                            </view>
+                            <view class="msg-card-footer">{{item.desc}}</view>
+                        </view>
+
+                        <!-- 合并转发的聊天记录 -->
+                        <view wx:elif="{{item.type === 'composite'}}" class="msg-card msg-composite">
+                            <text class="msg-composite-title">{{item.title}}</text>
+                            <text wx:for="{{item.lines}}" wx:for-item="line" wx:key="k" class="msg-composite-line">{{line.text}}</text>
+                            <view class="msg-card-footer">聊天记录</view>
+                        </view>
+
+                        <!-- 会议邀请 -->
+                        <view wx:elif="{{item.type === 'conference'}}" class="msg-card msg-conference">
+                            <text class="msg-link-title">{{item.title}}</text>
+                            <text class="msg-link-desc">{{item.content}}</text>
+                            <view class="msg-card-footer">点击加入会议</view>
+                        </view>
+                    </view>
+
+                    <view wx:if="{{item.isMy && item.status !== 'success'}}" class="msg-status">
+                        <template wx:if="{{item.status === 'sending'}}" is="common-loading"/>
+                        <image wx:elif="{{item.status === 'failed'}}" class="msg-fail" src="/image/chat/send_fail.png"
+                               data-key="{{item.key}}" catchtap="onResendTap"/>
+                    </view>
+                </view>
+                <view wx:if="{{item.quote}}" class="msg-quote">
+                    <text class="msg-quote-text">{{item.quote.name}}：{{item.quote.digest}}</text>
+                </view>
+                <text wx:if="{{item.readStatus}}" class="msg-read {{item.readStatus === '已读' ? 'msg-read-done' : ''}}">{{item.readStatus}}</text>
+            </view>
+            <!-- 多选时，覆盖在消息上，拦截点击 -->
+            <view wx:if="{{multiSelect}}" class="msg-select-mask" data-key="{{item.key}}" catchtap="onMessageCheckTap" catchlongpress="noop"></view>
+        </view>
+    </view>
+</template>

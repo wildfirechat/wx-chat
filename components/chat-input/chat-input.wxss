@@ -16,18 +16,37 @@ input{
 .input-text-voice-super{
     display: flex;
     flex-direction: row;
-    background-color: white;
+    background-color: #F7F7F7;
     width: 100%;
     align-items: center;
-    height:100rpx;
+    min-height:100rpx;
 }
 .input-flex-column{
     width:100%;
     display: flex;
     flex-direction:column;
-    position: fixed;
-    left: 0;
-    bottom: 0;
+    flex-shrink: 0;
+    background-color: #F7F7F7;
+    border-top: 1rpx solid #e0e0e0;
+}
+
+.keyboard-placeholder {
+    width: 100%;
+    flex-shrink: 0;
+}
+
+.safe-area-bottom {
+    width: 100%;
+    height: constant(safe-area-inset-bottom);
+    height: env(safe-area-inset-bottom);
+}
+
+.input-disabled {
+    height: 100rpx;
+    line-height: 100rpx;
+    text-align: center;
+    color: #999;
+    font-size: 28rpx;
 }
 
 .list-divide-line {
@@ -43,7 +62,8 @@ input{
     margin-bottom: 13rpx;
     padding:10rpx;
     min-height: 51rpx;
-    background-color: #EFEFEF;
+    flex: 1;
+    background-color: #FFFFFF;
 }
 
 .chat-input-send-button-style{
@@ -53,6 +73,6 @@ input{
     text-align: center;
     margin: 0 10rpx;
     border-radius: 10rpx;
-    background-color: mediumseagreen;
+    background-color: #3E65E4;
     color: white;
 }

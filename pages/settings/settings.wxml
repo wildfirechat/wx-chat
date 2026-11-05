@@ -1,0 +1,46 @@
+<view class="page-gray">
+    <view class="section-title">消息通知</view>
+    <view class="section" style="margin-top:0">
+        <view class="cell">
+            <view class="cell-body">
+                <text class="cell-title">勿扰模式</text>
+                <text class="cell-desc">开启后，所有新消息都不会推送通知</text>
+            </view>
+            <switch class="cell-switch" checked="{{globalSilent}}" color="#3E65E4" bindchange="onGlobalSilentChange"/>
+        </view>
+        <view class="cell">
+            <view class="cell-body">
+                <text class="cell-title">通知显示消息详情</text>
+                <text class="cell-desc">关闭后，推送通知中不显示发送人和消息内容</text>
+            </view>
+            <switch class="cell-switch" checked="{{showNotificationDetail}}" color="#3E65E4" bindchange="onNotificationDetailChange"/>
+        </view>
+    </view>
+
+    <block wx:if="{{receiptSupported}}">
+        <view class="section-title">隐私</view>
+        <view class="section" style="margin-top:0">
+            <view class="cell">
+                <view class="cell-body">
+                    <text class="cell-title">消息回执</text>
+                    <text class="cell-desc">关闭后，你将不能查看别人的已读状态，别人也不能查看你的已读状态</text>
+                </view>
+                <switch class="cell-switch" checked="{{receiptEnabled}}" color="#3E65E4" bindchange="onReceiptChange"/>
+            </view>
+        </view>
+    </block>
+
+    <view class="section">
+        <view class="cell" hover-class="cell-hover" bindtap="onBlacklistTap">
+            <view class="cell-body"><text class="cell-title">通讯录黑名单</text></view>
+            <text wx:if="{{blacklistCount > 0}}" class="cell-value">{{blacklistCount}}</text>
+            <view class="cell-arrow"></view>
+        </view>
+        <view class="cell" hover-class="cell-hover" bindtap="onAboutTap">
+            <view class="cell-body"><text class="cell-title">关于</text></view>
+            <view class="cell-arrow"></view>
+        </view>
+    </view>
+
+    <view class="action-button action-danger" bindtap="onLogout">退出登录</view>
+</view>

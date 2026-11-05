@@ -1,0 +1,50 @@
+<view class="page-gray" wx:if="{{loaded}}">
+    <view class="user-header">
+        <image class="user-portrait" src="{{portrait}}" mode="aspectFill" bindtap="onPreviewPortrait"/>
+        <view class="user-names">
+            <view class="user-title-row">
+                <text class="user-title">{{alias || displayName}}</text>
+                <text wx:if="{{gender}}" class="user-gender {{gender === '女' ? 'user-gender-female' : ''}}">{{gender === '女' ? '♀' : '♂'}}</text>
+            </view>
+            <text wx:if="{{alias}}" class="user-sub">昵称：{{displayName}}</text>
+            <text wx:if="{{groupAlias}}" class="user-sub">群昵称：{{groupAlias}}</text>
+            <text wx:if="{{account}}" class="user-sub">账号：{{account}}</text>
+        </view>
+        <view wx:if="{{!isSelf}}" class="user-more" bindtap="onMore">
+            <image class="user-more-icon" src="/image/icons/more.svg"/>
+        </view>
+    </view>
+
+    <view class="section" wx:if="{{mobile || email}}">
+        <view wx:if="{{mobile}}" class="cell">
+            <view class="cell-body"><text class="cell-title">手机号</text></view>
+            <text class="cell-value">{{mobile}}</text>
+        </view>
+        <view wx:if="{{email}}" class="cell">
+            <view class="cell-body"><text class="cell-title">邮箱</text></view>
+            <text class="cell-value">{{email}}</text>
+        </view>
+    </view>
+
+    <view class="section" wx:if="{{isFriend && !isSelf}}">
+        <view class="cell" hover-class="cell-hover" bindtap="onSetAlias">
+            <view class="cell-body"><text class="cell-title">备注</text></view>
+            <text class="cell-value">{{alias || '未设置'}}</text>
+            <view class="cell-arrow"></view>
+        </view>
+    </view>
+
+    <view wx:if="{{isBlacklisted}}" class="blacklist-tip">已加入黑名单，你将不再收到对方的消息</view>
+
+    <block wx:if="{{!isSelf}}">
+        <view class="action-button" bindtap="onSendMessage">发消息</view>
+        <block wx:if="{{isFriend}}">
+            <view class="action-button action-top-none" bindtap="onAudioCall">语音通话</view>
+            <view class="action-button action-top-none" bindtap="onVideoCall">视频通话</view>
+        </block>
+        <view wx:else class="action-button action-top-none" bindtap="onAddFriend">添加到通讯录</view>
+    </block>
+    <block wx:else>
+        <view class="action-button" bindtap="onSendMessage">给自己发消息</view>
+    </block>
+</view>

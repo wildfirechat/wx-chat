@@ -1,0 +1,9 @@
+@import "../../modules/chat-page/message.wxss";
+
+page {
+    background-color: #EDEDED;
+}
+
+.composite-page {
+    padding-bottom: 40rpx;
+}

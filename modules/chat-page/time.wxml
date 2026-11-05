@@ -1,3 +1,0 @@
-<template name="chat-time">
-    <text wx:if="{{showTime}}" class="chat-list-time-style">{{time}}</text>
-</template>

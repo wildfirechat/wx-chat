@@ -8,10 +8,15 @@
 
 .extra-super{
     display: flex;
-    padding-top: 25rpx;
-    height: 234rpx;
+    flex-wrap: wrap;
+    padding: 30rpx 0 10rpx 0;
     width: 100%;
-    background-color: white
+    background-color: #F7F7F7;
+}
+
+.extra-item {
+    width: 25%;
+    margin-bottom: 24rpx;
 }
 .extra-image-size{
     width: 114rpx;

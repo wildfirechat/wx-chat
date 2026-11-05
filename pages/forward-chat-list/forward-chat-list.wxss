@@ -1,1 +1,1 @@
-@import "../../pages/chat-list/view/chat-item.wxss";
+/* 使用 app.wxss 中的通用列表样式 */

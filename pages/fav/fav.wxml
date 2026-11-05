@@ -1,0 +1,35 @@
+<view class="page-gray fav-page">
+    <view wx:for="{{items}}" wx:key="id" class="fav-item" hover-class="cell-hover"
+          bindtap="onItemTap" bindlongpress="onItemLongPress" data-id="{{item.id}}">
+        <text wx:if="{{item.type === 'text'}}" class="fav-text">{{item.title}}</text>
+
+        <image wx:elif="{{item.type === 'image'}}" class="fav-image" src="{{item.url}}" mode="aspectFill" lazy-load="{{true}}"/>
+
+        <view wx:elif="{{item.type === 'video'}}" class="fav-video">
+            <image wx:if="{{item.thumb}}" class="fav-video-thumb" src="{{item.thumb}}" mode="aspectFill"/>
+            <text class="fav-video-play">▶</text>
+            <text wx:if="{{item.duration}}" class="fav-video-duration">{{item.duration}}</text>
+        </view>
+
+        <view wx:elif="{{item.type === 'file'}}" class="fav-file">
+            <view class="fav-file-icon">FILE</view>
+            <view class="fav-file-info">
+                <text class="fav-file-name">{{item.title}}</text>
+                <text class="fav-file-size">{{item.size}}</text>
+            </view>
+        </view>
+
+        <view wx:elif="{{item.type === 'composite'}}" class="fav-composite">
+            <text class="fav-composite-title">{{item.title}}</text>
+            <text wx:for="{{item.lines}}" wx:for-item="line" wx:key="k" class="fav-composite-line">{{line.text}}</text>
+        </view>
+
+        <view class="fav-footer">
+            <text class="fav-origin">{{item.origin}}</text>
+            <text class="fav-time">{{item.time}}</text>
+        </view>
+    </view>
+
+    <view wx:if="{{loaded && items.length === 0}}" class="empty-tip">暂无收藏{{'\n'}}在聊天中长按消息，可以收藏消息</view>
+    <view wx:if="{{loading}}" class="fav-loading">加载中...</view>
+</view>

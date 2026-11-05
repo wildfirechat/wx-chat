@@ -1,20 +1,18 @@
-<view class="container">
-    <block wx:if="{{!friendRequests.length}}">
-        <view class="placeholder">暂无好友请求</view>
-    </block>
-    <block wx:for="{{friendRequests}}" wx:key="requestId">
-        <view class="request-item">
-            <image src="{{item._target.portrait}}" class="avatar"/>
-            <text class="name">{{item._target.displayName}}</text>
+<view class="page-gray">
+    <view wx:if="{{!friendRequests.length}}" class="empty-tip">暂无好友请求</view>
+    <view class="section" wx:else>
+        <view wx:for="{{friendRequests}}" wx:key="uid" class="cell" hover-class="cell-hover" bindtap="onItemTap" data-uid="{{item.uid}}">
+            <image class="cell-avatar" src="{{item.portrait}}" mode="aspectFill"/>
+            <view class="cell-body">
+                <text class="cell-title">{{item.name}}</text>
+                <text class="cell-desc">{{item.reason || '请求添加你为朋友'}}</text>
+            </view>
             <block wx:if="{{item.status === 0}}">
-                <button bindtap="acceptRequest" data-request="{{item}}">接受</button>
+                <view class="request-btn request-decline" catchtap="declineRequest" data-uid="{{item.uid}}">拒绝</view>
+                <view class="request-btn request-accept" catchtap="acceptRequest" data-uid="{{item.uid}}">接受</view>
             </block>
-            <block wx:elif="{{item.status === 1}}">
-                <text class="desc=">已添加</text>
-            </block>
-            <block wx:elif="{{item.status === 3}}">
-                <text class="desc">已拒绝</text>
-            </block>
+            <text wx:elif="{{item.status === 1}}" class="request-status">已添加</text>
+            <text wx:elif="{{item.status === 3}}" class="request-status">已拒绝</text>
         </view>
-    </block>
+    </view>
 </view>

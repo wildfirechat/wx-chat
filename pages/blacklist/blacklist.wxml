@@ -1,0 +1,10 @@
+<view class="page-gray">
+    <view wx:if="{{users.length === 0}}" class="empty-tip">黑名单为空</view>
+    <view wx:else class="section" style="margin-top:0">
+        <view wx:for="{{users}}" wx:key="uid" class="cell" hover-class="cell-hover" bindtap="onUserTap" data-uid="{{item.uid}}">
+            <image class="cell-avatar" src="{{item.portrait}}" mode="aspectFill"/>
+            <view class="cell-body"><text class="cell-title">{{item.name}}</text></view>
+            <view class="blacklist-remove" catchtap="onRemove" data-uid="{{item.uid}}">移出</view>
+        </view>
+    </view>
+</view>

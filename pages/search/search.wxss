@@ -1,0 +1,11 @@
+.search-bar-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.search-cancel {
+    margin-left: 20rpx;
+    color: #3E65E4;
+    font-size: 30rpx;
+}

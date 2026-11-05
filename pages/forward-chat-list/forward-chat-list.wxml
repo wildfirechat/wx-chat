@@ -1,6 +1,21 @@
-<import src="view/chat-item.wxml"/>
-<view>
-    <block wx:for="{{conversations}}" wx:key="conversationId">
-        <template is="chat-item" data="{{item:item}}"/>
-    </block>
+<view class="page-gray">
+    <view class="section">
+        <view class="cell" hover-class="cell-hover" bindtap="onPickFriend">
+            <view class="cell-body">
+                <text class="cell-title">选择好友</text>
+            </view>
+            <view class="cell-arrow"></view>
+        </view>
+    </view>
+    <view class="section-title">最近聊天</view>
+    <view class="section">
+        <view wx:for="{{conversations}}" wx:key="key" class="cell" hover-class="cell-hover"
+              bindtap="onConversationTap" data-item="{{item}}">
+            <image class="cell-avatar" src="{{item.portrait}}" mode="aspectFill"/>
+            <view class="cell-body">
+                <text class="cell-title">{{item.title}}</text>
+            </view>
+        </view>
+        <view wx:if="{{conversations.length === 0}}" class="empty-tip">暂无最近聊天</view>
+    </view>
 </view>

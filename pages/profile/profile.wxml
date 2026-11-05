@@ -1,0 +1,34 @@
+<view class="page-gray">
+    <view class="section">
+        <view class="cell profile-portrait-cell" hover-class="cell-hover" bindtap="onPortraitTap">
+            <view class="cell-body"><text class="cell-title">头像</text></view>
+            <image class="profile-portrait" src="{{portrait}}" mode="aspectFill"/>
+            <view class="cell-arrow"></view>
+        </view>
+        <view class="cell" hover-class="cell-hover" bindtap="onDisplayNameTap">
+            <view class="cell-body"><text class="cell-title">昵称</text></view>
+            <text class="cell-value">{{displayName}}</text>
+            <view class="cell-arrow"></view>
+        </view>
+        <view class="cell" hover-class="cell-hover" bindtap="onCopyAccount">
+            <view class="cell-body"><text class="cell-title">账号</text></view>
+            <text class="cell-value">{{account}}</text>
+        </view>
+        <view class="cell" hover-class="cell-hover" bindtap="onGenderTap">
+            <view class="cell-body"><text class="cell-title">性别</text></view>
+            <text class="cell-value">{{gender}}</text>
+            <view class="cell-arrow"></view>
+        </view>
+    </view>
+    <view class="section">
+        <view wx:if="{{mobile}}" class="cell">
+            <view class="cell-body"><text class="cell-title">手机号</text></view>
+            <text class="cell-value">{{mobile}}</text>
+        </view>
+        <view class="cell" hover-class="cell-hover" bindtap="onEmailTap">
+            <view class="cell-body"><text class="cell-title">邮箱</text></view>
+            <text class="cell-value">{{email || '未设置'}}</text>
+            <view class="cell-arrow"></view>
+        </view>
+    </view>
+</view>

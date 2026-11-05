@@ -1,97 +1,59 @@
 import wfc from "../../wfc/client/wfc";
-import Config from "../../config";
-import GroupType from "../../wfc/model/groupType";
-import ConversationType from "../../wfc/model/conversationType";
+import {sortByName, userItem} from "../../utils/display";
+import {createGroupAndChat} from "../../utils/group";
+import {toast} from "../../utils/ui";
 
+/**
+ * 发起群聊：选择好友，选择一个人时打开单聊，多个人时创建群聊
+ */
 Page({
     data: {
-        friends: [],
-        selectedFriends: []
+        items: [],
+        keyword: '',
+        selectedCount: 0,
     },
 
     onLoad() {
-        this.showFriendList();
+        this.selected = new Set();
+        this.allItems = sortByName(wfc.getMyFriendList(false).map(uid => {
+            let item = userItem(uid);
+            item.checked = false;
+            return item;
+        }));
+        this.setData({items: this.allItems});
     },
 
-    showFriendList() {
-        let friends = wfc.getMyFriendList(false);
-        let friendsUs = friends.map(f => {
-            let userInfo = wfc.getUserInfo(f, false);
-            return {
-                friendId: userInfo.uid,
-                friendHeadUrl: userInfo.portrait ? userInfo.portrait : Config.DEFAULT_USER_PORTRAIT,
-                friendName: userInfo.displayName,
-                checked: false
-            };
-        });
-        this.setData({friends: friendsUs});
+    onSearchInput(e) {
+        let keyword = (e.detail.value || '').trim().toLowerCase();
+        let items = keyword ? this.allItems.filter(i => (i.name || '').toLowerCase().indexOf(keyword) >= 0) : this.allItems;
+        this.setData({keyword, items});
     },
 
-    toggleSelect(e) {
-        const index = e.currentTarget.dataset.index;
-        let friends = this.data.friends;
-        friends[index].checked = !friends[index].checked;
-        this.setData({friends});
-
-        let selectedFriends = friends.filter(f => f.checked);
-        this.setData({selectedFriends});
-    },
-
-    removeSelectedFriend(e) {
-        const friendId = e.currentTarget.dataset.friendid;
-        let friends = this.data.friends.map(f => {
-            if (f.friendId === friendId) {
-                f.checked = false;
-            }
-            return f;
-        });
-        this.setData({friends});
-
-        let selectedFriends = friends.filter(f => f.checked);
-        this.setData({selectedFriends});
-    },
-
-    confirmSelection() {
-        if (this.data.selectedFriends.length === 1) {
-            // Switch to the conversation with the selected friend
-            const friendId = this.data.selectedFriends[0].friendId;
-            const conversation = {
-                type: ConversationType.Single,
-                target: friendId,
-                line: 0
-            };
-            wx.redirectTo({
-                url: `/pages/chat/chat?conversation=${JSON.stringify(conversation)}`
-            });
-        } else if (this.data.selectedFriends.length > 1) {
-            // Create a group with the selected friends
-            const friendIds = this.data.selectedFriends.map(friend => friend.friendId);
-            const groupName = this.data.selectedFriends.slice(1, 5).map(friend => friend.friendName).join('、');
-            wfc.createGroup('', GroupType.Normal, groupName, '', '', friendIds, '', [0], null,
-                (groupId) => {
-                    if (groupId) {
-                        const conversation = {
-                            type: ConversationType.Group, // Group chat
-                            target: groupId,
-                            line: 0
-                        };
-                        wx.redirectTo({
-                            url: `/pages/chat/chat?conversation=${JSON.stringify(conversation)}`
-                        });
-                    } else {
-                        wx.showToast({
-                            title: 'Failed to create group',
-                            icon: 'none'
-                        });
-                    }
-                });
+    onItemTap(e) {
+        let uid = e.currentTarget.dataset.uid;
+        let item = this.allItems.find(i => i.uid === uid);
+        if (!item) {
+            return;
         }
+        if (this.selected.has(uid)) {
+            this.selected.delete(uid);
+        } else {
+            this.selected.add(uid);
+        }
+        item.checked = this.selected.has(uid);
+        let data = {selectedCount: this.selected.size};
+        let index = this.data.items.findIndex(i => i.uid === uid);
+        if (index >= 0) {
+            data[`items[${index}].checked`] = item.checked;
+        }
+        this.setData(data);
     },
 
-    handleImageError(e) {
-        const index = e.currentTarget.dataset.index;
-        let friends = this.data.friends;
-        friends[index].friendHeadUrl = Config.DEFAULT_PORTRAIT_URL; // 设置默认头像路径
-        this.setData({friends});
-    }
+    onConfirm() {
+        if (this.selected.size === 0) {
+            toast('请选择联系人');
+            return;
+        }
+        createGroupAndChat(Array.from(this.selected), true);
+    },
 });

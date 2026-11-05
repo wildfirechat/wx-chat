@@ -72,7 +72,7 @@ Page({
             })
             wx.setStorage({
                 key:'authToken',
-                data: res.header['authToken']
+                data: res.header['authToken'] || res.header['authtoken'] || res.header['AuthToken']
             })
             wx.switchTab({
               url: '../chat-list/chat-list', fail: (e) => {

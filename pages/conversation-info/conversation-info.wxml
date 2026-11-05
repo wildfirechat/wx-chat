@@ -1,0 +1,90 @@
+<view class="page-gray">
+    <!-- 成员宫格 -->
+    <view class="section member-grid">
+        <view wx:for="{{members}}" wx:key="uid" class="member-item" bindtap="onMemberTap" data-uid="{{item.uid}}">
+            <image class="member-avatar" src="{{item.portrait}}" mode="aspectFill"/>
+            <text class="member-name">{{item.name}}</text>
+        </view>
+        <view wx:if="{{!isGroup || canAdd}}" class="member-item" bindtap="onAddMember">
+            <view class="member-action">+</view>
+            <text class="member-name"> </text>
+        </view>
+        <view wx:if="{{isGroup && canRemove}}" class="member-item" bindtap="onRemoveMember">
+            <view class="member-action">−</view>
+            <text class="member-name"> </text>
+        </view>
+        <view wx:if="{{isGroup && hasMoreMembers}}" class="member-more" bindtap="onViewAllMembers">
+            <text>查看全部群成员({{memberCount}})</text>
+            <view class="cell-arrow"></view>
+        </view>
+    </view>
+
+    <!-- 群信息 -->
+    <block wx:if="{{isGroup && isMember}}">
+        <view class="section">
+            <view class="cell" hover-class="cell-hover" bindtap="onEditGroupName">
+                <view class="cell-body"><text class="cell-title">群聊名称</text></view>
+                <text class="cell-value">{{groupName || '未命名'}}</text>
+                <view wx:if="{{canModify}}" class="cell-arrow"></view>
+            </view>
+            <view class="cell" hover-class="cell-hover" bindtap="onChangeGroupPortrait">
+                <view class="cell-body"><text class="cell-title">群头像</text></view>
+                <image class="cell-avatar cell-avatar-small" style="margin-right:0" src="{{groupPortrait}}" mode="aspectFill"/>
+                <view wx:if="{{canModify}}" class="cell-arrow"></view>
+            </view>
+            <view class="cell" hover-class="cell-hover" bindtap="onEditAnnouncement">
+                <view class="cell-body">
+                    <text class="cell-title">群公告</text>
+                    <text wx:if="{{announcement}}" class="cell-desc announcement">{{announcement}}</text>
+                </view>
+                <text wx:if="{{!announcement}}" class="cell-value">{{canModifyAnnouncement ? '未设置' : '无'}}</text>
+                <view class="cell-arrow"></view>
+            </view>
+            <view class="cell" hover-class="cell-hover" bindtap="onEditRemark">
+                <view class="cell-body"><text class="cell-title">备注</text></view>
+                <text class="cell-value">{{groupRemark}}</text>
+                <view class="cell-arrow"></view>
+            </view>
+            <view wx:if="{{isManager}}" class="cell" hover-class="cell-hover" bindtap="onGroupManage">
+                <view class="cell-body"><text class="cell-title">群管理</text></view>
+                <view class="cell-arrow"></view>
+            </view>
+        </view>
+    </block>
+
+    <view class="section">
+        <view class="cell" hover-class="cell-hover" bindtap="onSearchMessages">
+            <view class="cell-body"><text class="cell-title">查找聊天记录</text></view>
+            <view class="cell-arrow"></view>
+        </view>
+    </view>
+
+    <view class="section">
+        <view class="cell">
+            <view class="cell-body"><text class="cell-title">消息免打扰</text></view>
+            <switch class="cell-switch" checked="{{isSilent}}" color="#3E65E4" bindchange="onSilentChange"/>
+        </view>
+        <view class="cell">
+            <view class="cell-body"><text class="cell-title">置顶聊天</text></view>
+            <switch class="cell-switch" checked="{{isTop}}" color="#3E65E4" bindchange="onTopChange"/>
+        </view>
+        <view wx:if="{{isGroup && isMember}}" class="cell">
+            <view class="cell-body"><text class="cell-title">保存到通讯录</text></view>
+            <switch class="cell-switch" checked="{{isFav}}" color="#3E65E4" bindchange="onFavChange"/>
+        </view>
+    </view>
+
+    <view wx:if="{{isGroup && isMember}}" class="section">
+        <view class="cell" hover-class="cell-hover" bindtap="onEditMyAlias">
+            <view class="cell-body"><text class="cell-title">我在本群的昵称</text></view>
+            <text class="cell-value">{{myAlias}}</text>
+            <view class="cell-arrow"></view>
+        </view>
+    </view>
+
+    <view class="action-button" bindtap="onClearMessages">清空聊天记录</view>
+    <view wx:if="{{isGroup && canDismiss}}" class="action-button action-danger" bindtap="onDismissGroup">解散群聊</view>
+    <view wx:elif="{{isGroup && canQuit}}" class="action-button action-danger" bindtap="onQuitGroup">退出群聊</view>
+    <view wx:if="{{isGroup && !isMember}}" class="action-button action-danger" bindtap="onDeleteConversation">删除聊天</view>
+    <view class="bottom-space"></view>
+</view>

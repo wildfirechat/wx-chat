@@ -1,0 +1,22 @@
+<view class="page-gray">
+    <view class="search-bar">
+        <view class="search-box">
+            <image class="search-icon" src="/image/icons/search.svg"/>
+            <input class="search-input" placeholder="搜索聊天记录" placeholder-class="search-placeholder"
+                   value="{{keyword}}" focus="{{!keyword}}" confirm-type="search" bindinput="onSearchInput"/>
+        </view>
+    </view>
+    <view wx:if="{{searched && results.length === 0}}" class="empty-tip">没有找到相关的聊天记录</view>
+    <view wx:if="{{results.length > 0}}" class="section" style="margin-top:0">
+        <view wx:for="{{results}}" wx:key="messageId" class="cell result-cell" hover-class="cell-hover" bindtap="onResultTap" data-id="{{item.messageId}}">
+            <image class="cell-avatar" src="{{item.portrait}}" mode="aspectFill"/>
+            <view class="cell-body">
+                <view class="result-head">
+                    <text class="result-name">{{item.name}}</text>
+                    <text class="result-time">{{item.time}}</text>
+                </view>
+                <text class="result-content">{{item.hl.before}}<text class="highlight">{{item.hl.match}}</text>{{item.hl.after}}</text>
+            </view>
+        </view>
+    </view>
+</view>

@@ -1,12 +1,22 @@
-<view class="search-container">
-    <input class="search-input" placeholder="搜索用户..." bindinput="onSearchInput"/>
-</view>
-<scroll-view class="user-list" scroll-y="true">
-    <block wx:for="{{searchResults}}" wx:key="userId">
-        <view class="user-item" bindtap="onUserItemTap" data-userid="{{item.userId}}" data-isfriend="{{item.isFriend}}">
-            <image src="{{item.userHeadUrl}}" binderror="handleImageError" data-index="{{index}}"/>
-            <text>{{item.userName}}</text>
-            <button wx:if="{{!item.isFriend}}" class="add-button" data-userid="{{item.userId}}" bindtap="addUser">添加</button>
+<view class="page-gray">
+    <view class="search-bar">
+        <view class="search-box">
+            <image class="search-icon" src="/image/icons/search.svg"/>
+            <input class="search-input" placeholder="账号/手机号/昵称" placeholder-class="search-placeholder"
+                   confirm-type="search" focus="{{!keyword}}" value="{{keyword}}" bindinput="onSearchInput" bindconfirm="onSearchConfirm"/>
+            <text wx:if="{{keyword}}" class="search-action" bindtap="onSearchConfirm">搜索</text>
         </view>
-    </block>
-</scroll-view>
+    </view>
+    <view wx:if="{{searched && searchResults.length === 0}}" class="empty-tip">该用户不存在</view>
+    <view wx:if="{{searchResults.length > 0}}" class="section" style="margin-top:0">
+        <view wx:for="{{searchResults}}" wx:key="uid" class="cell" hover-class="cell-hover" bindtap="onUserTap" data-uid="{{item.uid}}">
+            <image class="cell-avatar" src="{{item.portrait}}" mode="aspectFill"/>
+            <view class="cell-body">
+                <text class="cell-title">{{item.name}}</text>
+                <text wx:if="{{item.account}}" class="cell-desc">账号：{{item.account}}</text>
+            </view>
+            <text wx:if="{{item.isFriend}}" class="search-user-tag">已添加</text>
+            <view wx:elif="{{!item.isSelf}}" class="search-user-add" catchtap="addUser" data-uid="{{item.uid}}">添加</view>
+        </view>
+    </view>
+</view>

@@ -1,3 +1,5 @@
 {
-    "navigationBarTitleText": "搜索用户"
+  "navigationBarTitleText": "添加朋友",
+  "navigationBarBackgroundColor": "#EDEDED",
+  "backgroundColor": "#EDEDED"
 }

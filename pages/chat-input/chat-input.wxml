@@ -1,12 +1,14 @@
-<chat-input
-        id="chatInput"
-        min-voice-time="{{1}}"
-        max-voice-time="{{60}}"
-        start-time-down="{{54}}"
-        tabBarHeight="{{0}}"
-        format="mp3"
-        extra-array="{{extraArr}}"
-        bind:extraClickEvent="onExtraClickEvent"
-        bind:extraItemClickEvent="onExtraItemClickEvent"
-        bind:voiceRecordEvent="onVoiceRecordEvent"
-        bind:sendMessageEvent="onSendMessageEvent"></chat-input>
+<view style="position: fixed;left: 0;bottom: 0;width: 100%;">
+    <chat-input
+            id="chatInput"
+            min-voice-time="{{1}}"
+            max-voice-time="{{60}}"
+            start-time-down="{{54}}"
+            tabBarHeight="{{0}}"
+            format="mp3"
+            extra-array="{{extraArr}}"
+            bind:extraClickEvent="onExtraClickEvent"
+            bind:extraItemClickEvent="onExtraItemClickEvent"
+            bind:voiceRecordEvent="onVoiceRecordEvent"
+            bind:sendMessageEvent="onSendMessageEvent"></chat-input>
+</view>

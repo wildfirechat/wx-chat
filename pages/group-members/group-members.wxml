@@ -1,0 +1,18 @@
+<view class="page-gray">
+    <view class="search-bar">
+        <view class="search-box">
+            <image class="search-icon" src="/image/icons/search.svg"/>
+            <input class="search-input" placeholder="搜索群成员" placeholder-class="search-placeholder" bindinput="onSearchInput"/>
+        </view>
+    </view>
+    <view class="section" style="margin-top:0">
+        <view wx:for="{{items}}" wx:key="uid" class="cell" hover-class="cell-hover" bindtap="onMemberTap" data-uid="{{item.uid}}">
+            <image class="cell-avatar" src="{{item.portrait}}" mode="aspectFill"/>
+            <view class="cell-body">
+                <text class="cell-title">{{item.name}}</text>
+            </view>
+            <text wx:if="{{item.role}}" class="role-tag">{{item.role}}</text>
+        </view>
+        <view wx:if="{{items.length === 0}}" class="empty-tip">没有找到相关成员</view>
+    </view>
+</view>

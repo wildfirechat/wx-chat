@@ -1,0 +1,151 @@
+.fav-page {
+    padding: 20rpx 0;
+    box-sizing: border-box;
+}
+
+.fav-item {
+    margin: 0 24rpx 20rpx 24rpx;
+    padding: 28rpx 28rpx 20rpx 28rpx;
+    border-radius: 12rpx;
+    background-color: #fff;
+}
+
+.fav-text {
+    font-size: 30rpx;
+    color: #111;
+    line-height: 44rpx;
+    word-break: break-all;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+    overflow: hidden;
+}
+
+.fav-image {
+    width: 240rpx;
+    height: 240rpx;
+    border-radius: 8rpx;
+    background-color: #eee;
+}
+
+.fav-video {
+    position: relative;
+    width: 240rpx;
+    height: 240rpx;
+    border-radius: 8rpx;
+    overflow: hidden;
+    background-color: #333;
+}
+
+.fav-video-thumb {
+    width: 100%;
+    height: 100%;
+}
+
+.fav-video-play {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+    font-size: 48rpx;
+}
+
+.fav-video-duration {
+    position: absolute;
+    right: 10rpx;
+    bottom: 6rpx;
+    color: #fff;
+    font-size: 22rpx;
+}
+
+.fav-file {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.fav-file-icon {
+    width: 80rpx;
+    height: 90rpx;
+    margin-right: 20rpx;
+    border-radius: 6rpx;
+    background-color: #3E65E4;
+    color: #fff;
+    font-size: 20rpx;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.fav-file-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.fav-file-name {
+    font-size: 28rpx;
+    color: #111;
+    word-break: break-all;
+}
+
+.fav-file-size {
+    margin-top: 8rpx;
+    font-size: 22rpx;
+    color: #999;
+}
+
+.fav-composite-title {
+    display: block;
+    font-size: 30rpx;
+    color: #111;
+    margin-bottom: 8rpx;
+}
+
+.fav-composite-line {
+    display: block;
+    font-size: 24rpx;
+    line-height: 36rpx;
+    color: #999;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.fav-footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 20rpx;
+    font-size: 22rpx;
+    color: #b2b2b2;
+}
+
+.fav-origin {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.fav-time {
+    margin-left: 16rpx;
+    flex-shrink: 0;
+}
+
+.fav-loading {
+    padding: 20rpx 0;
+    text-align: center;
+    color: #999;
+    font-size: 24rpx;
+}
+
+.empty-tip {
+    white-space: pre-line;
+    line-height: 48rpx;
+}

@@ -11,3 +11,240 @@
 .press-style{
   background-color: #F8F8F8;
 }
+
+/* ========== 通用列表样式 ========== */
+.page-gray {
+  min-height: 100vh;
+  background-color: #EDEDED;
+}
+
+.section {
+  margin-top: 20rpx;
+  background-color: #fff;
+}
+
+.section-title {
+  padding: 24rpx 32rpx 12rpx 32rpx;
+  font-size: 26rpx;
+  color: #888;
+}
+
+.cell {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  min-height: 112rpx;
+  padding: 0 32rpx;
+  background-color: #fff;
+  box-sizing: border-box;
+}
+
+.cell::after {
+  content: '';
+  position: absolute;
+  left: 32rpx;
+  right: 0;
+  bottom: 0;
+  height: 1rpx;
+  background-color: #eee;
+}
+
+.cell:last-child::after {
+  display: none;
+}
+
+.cell-hover {
+  background-color: #F3F3F3;
+}
+
+.cell-avatar {
+  width: 80rpx;
+  height: 80rpx;
+  margin-right: 24rpx;
+  border-radius: 8rpx;
+  flex-shrink: 0;
+  background-color: #eee;
+}
+
+.cell-avatar-small {
+  width: 64rpx;
+  height: 64rpx;
+}
+
+.cell-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 20rpx 0;
+}
+
+.cell-title {
+  font-size: 32rpx;
+  color: #111;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.cell-desc {
+  margin-top: 6rpx;
+  font-size: 24rpx;
+  color: #999;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.cell-value {
+  max-width: 400rpx;
+  margin-left: 20rpx;
+  font-size: 28rpx;
+  color: #888;
+  text-align: right;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.cell-arrow {
+  width: 16rpx;
+  height: 16rpx;
+  margin-left: 16rpx;
+  border-top: 3rpx solid #c7c7cc;
+  border-right: 3rpx solid #c7c7cc;
+  transform: rotate(45deg);
+  flex-shrink: 0;
+}
+
+.cell-badge {
+  min-width: 36rpx;
+  height: 36rpx;
+  padding: 0 10rpx;
+  margin-left: 12rpx;
+  border-radius: 18rpx;
+  background-color: #fa5151;
+  color: #fff;
+  font-size: 22rpx;
+  line-height: 36rpx;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.cell-switch {
+  margin-left: 20rpx;
+  transform: scale(0.85);
+  transform-origin: right center;
+}
+
+.action-button {
+  margin-top: 20rpx;
+  height: 104rpx;
+  line-height: 104rpx;
+  text-align: center;
+  font-size: 32rpx;
+  color: #3E65E4;
+  background-color: #fff;
+}
+
+.action-button:active {
+  background-color: #F3F3F3;
+}
+
+.action-danger {
+  color: #fa5151;
+}
+
+.btn-primary {
+  background-color: #3E65E4 !important;
+  color: #fff !important;
+}
+
+.btn-danger {
+  color: #fa5151 !important;
+}
+
+.empty-tip {
+  padding: 120rpx 0;
+  text-align: center;
+  color: #999;
+  font-size: 28rpx;
+}
+
+/* ========== 搜索框 ========== */
+.search-bar {
+  padding: 16rpx 24rpx;
+  background-color: #EDEDED;
+}
+
+.search-box {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 72rpx;
+  padding: 0 20rpx;
+  border-radius: 10rpx;
+  background-color: #fff;
+}
+
+.search-icon {
+  width: 32rpx;
+  height: 32rpx;
+  margin-right: 12rpx;
+  flex-shrink: 0;
+}
+
+.search-input {
+  flex: 1;
+  height: 72rpx;
+  font-size: 28rpx;
+}
+
+.search-placeholder {
+  color: #b2b2b2;
+  font-size: 28rpx;
+}
+
+.search-box-fake {
+  justify-content: center;
+}
+
+/* ========== 多选框 ========== */
+.check-circle {
+  width: 40rpx;
+  height: 40rpx;
+  margin-right: 24rpx;
+  border-radius: 50%;
+  border: 2rpx solid #c7c7cc;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.check-circle-on {
+  border-color: #3E65E4;
+  background-color: #3E65E4;
+}
+
+.check-circle-on::after {
+  content: '';
+  position: absolute;
+  left: 12rpx;
+  top: 5rpx;
+  width: 10rpx;
+  height: 18rpx;
+  border-right: 4rpx solid #fff;
+  border-bottom: 4rpx solid #fff;
+  transform: rotate(45deg);
+}
+
+.check-circle-disabled {
+  border-color: #e5e5e5;
+  background-color: #e5e5e5;
+}
+
+.highlight {
+  color: #3E65E4;
+}

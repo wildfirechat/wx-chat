@@ -1,3 +1,5 @@
 {
-    "navigationBarTitleText": "好友请求"
+  "navigationBarTitleText": "新的朋友",
+  "navigationBarBackgroundColor": "#EDEDED",
+  "backgroundColor": "#EDEDED"
 }

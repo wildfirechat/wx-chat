@@ -1,0 +1,11 @@
+.group-count {
+    padding: 32rpx 0;
+    text-align: center;
+    font-size: 26rpx;
+    color: #999;
+}
+
+.empty-tip {
+    white-space: pre-line;
+    line-height: 48rpx;
+}

@@ -1,6 +1,0 @@
-@import "../loading/common.wxss";
-.sendStatusStyle{
-    height:100%;
-    display: flex;
-    align-self: center;
-}

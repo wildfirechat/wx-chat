@@ -10,7 +10,11 @@ const MIN_VOICE_TIME = 1, MAX_VOICE_TIME = 60, START_TIME_DOWN = 54, status = {
     EXTRA_ITEM_CLICK: 'extraItemClickEvent',
     VOICE_RECORD: 'voiceRecordEvent',
     SEND_MESSAGE: 'sendMessageEvent',
-    MENTION: 'mentionEvent'
+    MENTION: 'mentionEvent',
+    // 输入内容变化，detail: {value}
+    TEXT_CHANGE: 'textChangeEvent',
+    // 键盘高度变化，detail: {height}
+    KEYBOARD_HEIGHT_CHANGE: 'keyboardHeightChangeEvent',
 };
 Component({
     properties: {
@@ -37,6 +41,19 @@ Component({
         extraArray: {
             type: Array,
             value: []
+        },
+        placeholder: {
+            type: String,
+            value: ''
+        },
+        // 禁言等情况下，不允许输入
+        disabled: {
+            type: Boolean,
+            value: false
+        },
+        disabledTip: {
+            type: String,
+            value: ''
         }
     },
     data: {
@@ -53,7 +70,8 @@ Component({
             chatInputExtraArr: []
         },
         inputStatus: 'text',
-        inputValueEventTemp: ''
+        focus: false,
+        keyboardHeight: 0,
     },
     observers: {
         'extraArray'(value) {
@@ -71,12 +89,45 @@ Component({
             return {...status};
         },
         closeExtraView() {
+            if (this.data.extraObj.chatInputShowExtra) {
+                this.setData({
+                    'extraObj.chatInputShowExtra': false
+                });
+            }
+        },
+        /**
+         * 设置输入框内容
+         */
+        setText(text) {
             this.setData({
-                'extraObj.chatInputShowExtra': false
+                textMessage: text || '',
+                inputStatus: 'text',
+            });
+        },
+        getText() {
+            return this.data.textMessage;
+        },
+        /**
+         * 在输入框末尾追加内容，并弹出键盘
+         */
+        appendText(text) {
+            this.setData({
+                textMessage: (this.data.textMessage || '') + text,
+                inputStatus: 'text',
+            }, () => {
+                this.focusInput();
+            });
+        },
+        focusInput() {
+            this.setData({focus: false, inputStatus: 'text'}, () => {
+                this.setData({focus: true});
             });
         },
         _chatInput$extra$click$event() {
             const isShow = !this.data.extraObj.chatInputShowExtra;
+            if (isShow) {
+                wx.hideKeyboard();
+            }
             this.setData({
                 'extraObj.chatInputShowExtra': isShow
             }, () => {
@@ -109,7 +160,7 @@ Component({
                 }, (res) => {
                     //录音失败
                     console.error('录音拒绝授权');
-                    clearInterval(timer);
+                    clearInterval(this.data.timer);
                     this._endRecord();
                     this.setData({
                         'voiceObj.status': 'end',
@@ -237,49 +288,53 @@ Component({
             });
         },
         _chatInput$bind$focus$event() {
-            this.setData({
-                'inputType': 'text'
-            })
+            this.closeExtraView();
         },
-        _chatInput$send$text$message(e) {
+        _sendText(text) {
+            if (!text || !text.trim()) {
+                return;
+            }
             this.setData({
                 textMessage: ''
             }, () => {
-                this.triggerEvent(EVENT.SEND_MESSAGE, {value: e.detail.value});
-                this.data.inputValueEventTemp = '';
+                this.triggerEvent(EVENT.SEND_MESSAGE, {value: text});
+                this.triggerEvent(EVENT.TEXT_CHANGE, {value: ''});
             });
+        },
+        // 键盘上的发送按钮
+        _chatInput$send$text$message(e) {
+            this._sendText(e.detail.value);
         },
         _chatInput$bind$blur$event() {
-            setTimeout(() => {
-                let obj = {};
-                if (!this.data.inputValueEventTemp) {
-                    this.data.inputValueEventTemp = '';
-                    obj['inputType'] = 'none';
-                }
-                obj['extraObj.chatInputShowExtra'] = false;
-                this.setData(obj);
-            });
+            this.setData({focus: false});
+            this._updateKeyboardHeight(0);
         },
+        // 输入框右侧的发送按钮
         _chatInput$send$text$message02() {
-            this.setData({
-                textMessage: '',
-                'inputType': 'none'
-            }, () => {
-                if (!!this.data.inputValueEventTemp) {
-                    this.triggerEvent(EVENT.SEND_MESSAGE, {value: this.data.inputValueEventTemp});
-                    this.data.inputValueEventTemp = '';
-                }
-            });
+            this._sendText(this.data.textMessage);
         },
         _chatInput$getValue$event(e) {
             const {detail: {value: textMessage}} = e;
-            this.data.inputValueEventTemp = textMessage;
+            const oldText = this.data.textMessage || '';
             this.setData({
                 textMessage
-            })
-            if (textMessage.endsWith('@')) {
+            });
+            this.triggerEvent(EVENT.TEXT_CHANGE, {value: textMessage});
+            // 只有新输入 @ 时，才触发选择 @ 对象
+            if (textMessage.length > oldText.length && textMessage.endsWith('@')) {
                 this.triggerEvent(EVENT.MENTION);
             }
+        },
+        _onKeyboardHeightChange(e) {
+            this._updateKeyboardHeight(e.detail.height || 0);
+        },
+        _updateKeyboardHeight(height) {
+            if (height === this.data.keyboardHeight) {
+                return;
+            }
+            this.setData({keyboardHeight: height}, () => {
+                this.triggerEvent(EVENT.KEYBOARD_HEIGHT_CHANGE, {height});
+            });
         },
         _chatInput$extra$item$click$event(e) {
             const {currentTarget: {dataset}} = e;
@@ -347,13 +402,3 @@ Component({
         }
     }
 });
-
-// module.exports = {
-//     clickExtraListener: clickExtraItemListener,
-//     closeExtraView: closeExtraView,
-//     recordVoiceListener: sendVoiceListener,
-//     setVoiceRecordStatusListener: setVoiceRecordStatusListener,
-//     setTextMessageListener: setTextMessageListener,
-//     setExtraButtonClickListener: setExtraButtonClickListener,
-//     VRStatus: status
-// };

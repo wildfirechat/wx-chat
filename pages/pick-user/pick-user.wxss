@@ -1,0 +1,36 @@
+page {
+    background-color: #EDEDED;
+}
+
+.pick-page {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.pick-list {
+    flex: 1;
+    height: 0;
+    background-color: #fff;
+}
+
+.pick-bottom {
+    flex-shrink: 0;
+    display: flex;
+    justify-content: flex-end;
+    padding: 16rpx 32rpx;
+    padding-bottom: calc(16rpx + env(safe-area-inset-bottom));
+    background-color: #F7F7F7;
+    border-top: 1rpx solid #e0e0e0;
+}
+
+.pick-confirm {
+    margin: 0 !important;
+    min-width: 180rpx;
+    font-size: 28rpx !important;
+    line-height: 64rpx !important;
+}
+
+.pick-confirm[disabled] {
+    opacity: 0.5;
+}

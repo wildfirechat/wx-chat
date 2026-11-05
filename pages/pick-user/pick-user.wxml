@@ -1,0 +1,23 @@
+<view class="pick-page">
+    <view class="search-bar">
+        <view class="search-box">
+            <image class="search-icon" src="/image/icons/search.svg"/>
+            <input class="search-input" placeholder="搜索" placeholder-class="search-placeholder" bindinput="onSearchInput"/>
+        </view>
+    </view>
+    <scroll-view class="pick-list" scroll-y="true">
+        <view wx:for="{{items}}" wx:key="uid" class="cell" hover-class="cell-hover" bindtap="onItemTap" data-uid="{{item.uid}}">
+            <view wx:if="{{multi}}" class="check-circle {{item.disabled ? 'check-circle-disabled' : (item.checked ? 'check-circle-on' : '')}}"></view>
+            <image class="cell-avatar" src="{{item.portrait}}" mode="aspectFill"/>
+            <view class="cell-body">
+                <text class="cell-title">{{item.name}}</text>
+            </view>
+        </view>
+        <view wx:if="{{items.length === 0}}" class="empty-tip">{{keyword ? '没有找到相关联系人' : '暂无可选的联系人'}}</view>
+    </scroll-view>
+    <view wx:if="{{multi}}" class="pick-bottom">
+        <button class="pick-confirm btn-primary" size="mini" disabled="{{selectedCount === 0}}" bindtap="onConfirm">
+            {{confirmText}}{{selectedCount > 0 ? '(' + selectedCount + ')' : ''}}
+        </button>
+    </view>
+</view>

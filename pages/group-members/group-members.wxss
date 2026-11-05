@@ -1,0 +1,7 @@
+.role-tag {
+    padding: 2rpx 12rpx;
+    border-radius: 6rpx;
+    border: 1rpx solid #3E65E4;
+    color: #3E65E4;
+    font-size: 22rpx;
+}

@@ -1,0 +1,81 @@
+.user-header {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 40rpx 32rpx 48rpx 32rpx;
+    background-color: #fff;
+}
+
+.user-portrait {
+    width: 128rpx;
+    height: 128rpx;
+    border-radius: 12rpx;
+    flex-shrink: 0;
+    background-color: #eee;
+}
+
+.user-names {
+    flex: 1;
+    min-width: 0;
+    margin-left: 32rpx;
+    display: flex;
+    flex-direction: column;
+}
+
+.user-title-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.user-title {
+    font-size: 40rpx;
+    font-weight: 500;
+    color: #111;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.user-gender {
+    margin-left: 12rpx;
+    font-size: 30rpx;
+    color: #2782d7;
+}
+
+.user-gender-female {
+    color: #fa5151;
+}
+
+.user-sub {
+    margin-top: 8rpx;
+    font-size: 26rpx;
+    color: #888;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.user-more {
+    width: 64rpx;
+    height: 64rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.user-more-icon {
+    width: 36rpx;
+    height: 36rpx;
+}
+
+.action-top-none {
+    margin-top: 0;
+    border-top: 1rpx solid #eee;
+}
+
+.blacklist-tip {
+    padding: 20rpx 32rpx;
+    font-size: 24rpx;
+    color: #fa5151;
+}

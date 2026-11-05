@@ -1,1 +1,4 @@
-{"navigationBarTitleText": "会话列表"}
+{
+  "navigationBarTitleText": "会话",
+  "navigationBarBackgroundColor": "#EDEDED"
+}

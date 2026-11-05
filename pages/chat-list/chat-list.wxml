@@ -1,4 +1,39 @@
-<import src="view/chat-item.wxml"/>
-<block wx:for="{{conversations}}" wx:key="conversationId">
-    <template is="chat-item" data="{{item:item}}"/>
-</block>
+<import src="../../modules/loading/common.wxml"/>
+
+<view class="chat-list-page">
+    <view class="search-bar" bindtap="onSearchTap">
+        <view class="search-box search-box-fake">
+            <image class="search-icon" src="/image/icons/search.svg"/>
+            <text class="search-placeholder">搜索</text>
+        </view>
+    </view>
+
+    <view wx:for="{{conversations}}" wx:key="key"
+          class="conversation-item {{item.isTop ? 'conversation-top' : ''}}"
+          hover-class="conversation-hover"
+          bindtap="chatTo" bindlongpress="onConversationLongTap" data-item="{{item}}">
+        <view class="conversation-avatar-wrap">
+            <image class="conversation-avatar" src="{{item.portrait}}" mode="aspectFill" lazy-load="{{true}}"/>
+            <block wx:if="{{item.unread > 0}}">
+                <view wx:if="{{item.isSilent}}" class="unread-dot"></view>
+                <text wx:else class="unread-count">{{item.unread > 99 ? '99+' : item.unread}}</text>
+            </block>
+        </view>
+        <view class="conversation-body">
+            <view class="conversation-row">
+                <text class="conversation-title">{{item.title}}</text>
+                <text class="conversation-time">{{item.time}}</text>
+            </view>
+            <view class="conversation-row">
+                <view class="conversation-digest-wrap">
+                    <template wx:if="{{item.sendStatus === 'sending'}}" is="common-loading"/>
+                    <image wx:elif="{{item.sendStatus === 'failed'}}" class="conversation-fail" src="/image/chat/send_fail.png"/>
+                    <text class="conversation-digest"><text wx:if="{{item.prefix}}" class="conversation-prefix">{{item.prefix}}</text>{{item.digest}}</text>
+                </view>
+                <image wx:if="{{item.isSilent}}" class="conversation-silent" src="/image/icons/silent.svg"/>
+            </view>
+        </view>
+    </view>
+
+    <view wx:if="{{conversations.length === 0}}" class="empty-tip">暂无会话</view>
+</view>

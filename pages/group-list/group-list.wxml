@@ -1,0 +1,15 @@
+<view class="page-gray">
+    <view wx:if="{{groups.length === 0}}" class="empty-tip">
+        暂无保存到通讯录的群聊{{'\n'}}可在群聊信息中开启“保存到通讯录”
+    </view>
+    <view wx:else class="section" style="margin-top:0">
+        <view wx:for="{{groups}}" wx:key="groupId" class="cell" hover-class="cell-hover" bindtap="onGroupTap" data-id="{{item.groupId}}">
+            <image class="cell-avatar" src="{{item.portrait}}" mode="aspectFill"/>
+            <view class="cell-body">
+                <text class="cell-title">{{item.name}}</text>
+            </view>
+            <text wx:if="{{item.memberCount}}" class="cell-value">{{item.memberCount}}人</text>
+        </view>
+    </view>
+    <view wx:if="{{groups.length > 0}}" class="group-count">{{groups.length}}个群聊</view>
+</view>

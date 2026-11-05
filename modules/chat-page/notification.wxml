@@ -1,3 +1,0 @@
-<template name="chat-notification">
-       <text class="chat-list-notification-style">{{notification}}</text>
-</template>

@@ -1,0 +1,8 @@
+<import src="../../modules/chat-page/message.wxml"/>
+
+<view class="composite-page">
+    <block wx:for="{{chatItems}}" wx:key="key">
+        <template is="message-item" data="{{item, multiSelect, highlightKey}}"/>
+    </block>
+    <view wx:if="{{chatItems.length === 0}}" class="empty-tip">聊天记录为空</view>
+</view>

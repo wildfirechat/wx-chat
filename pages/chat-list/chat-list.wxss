@@ -1,2 +1,159 @@
-/* pages/chat-list/chat-list.wxss */
-@import "view/chat-item.wxss";
+@import "../../modules/loading/common.wxss";
+
+page {
+    background-color: #fff;
+}
+
+.chat-list-page {
+    min-height: 100vh;
+    background-color: #fff;
+}
+
+.conversation-item {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 136rpx;
+    padding: 0 32rpx;
+    background-color: #fff;
+}
+
+.conversation-item::after {
+    content: '';
+    position: absolute;
+    left: 152rpx;
+    right: 0;
+    bottom: 0;
+    height: 1rpx;
+    background-color: #eee;
+}
+
+.conversation-top {
+    background-color: #F7F7F7;
+}
+
+.conversation-hover {
+    background-color: #ECECEC;
+}
+
+.conversation-avatar-wrap {
+    position: relative;
+    width: 96rpx;
+    height: 96rpx;
+    margin-right: 24rpx;
+    flex-shrink: 0;
+}
+
+.conversation-avatar {
+    width: 96rpx;
+    height: 96rpx;
+    border-radius: 10rpx;
+    background-color: #eee;
+}
+
+.unread-count {
+    position: absolute;
+    top: -12rpx;
+    right: -12rpx;
+    min-width: 36rpx;
+    height: 36rpx;
+    padding: 0 8rpx;
+    border-radius: 18rpx;
+    background-color: #fa5151;
+    color: #fff;
+    font-size: 22rpx;
+    line-height: 36rpx;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.unread-dot {
+    position: absolute;
+    top: -8rpx;
+    right: -8rpx;
+    width: 20rpx;
+    height: 20rpx;
+    border-radius: 50%;
+    background-color: #fa5151;
+}
+
+.conversation-body {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.conversation-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.conversation-row + .conversation-row {
+    margin-top: 10rpx;
+}
+
+.conversation-title {
+    flex: 1;
+    min-width: 0;
+    font-size: 32rpx;
+    color: #111;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.conversation-time {
+    margin-left: 16rpx;
+    font-size: 22rpx;
+    color: #b2b2b2;
+    flex-shrink: 0;
+}
+
+.conversation-digest-wrap {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.conversation-digest-wrap .chat-loading-common {
+    width: 28rpx;
+    height: 28rpx;
+    margin-right: 6rpx;
+    flex-shrink: 0;
+}
+
+.conversation-fail {
+    width: 28rpx;
+    height: 28rpx;
+    margin-right: 6rpx;
+    flex-shrink: 0;
+}
+
+.conversation-digest {
+    flex: 1;
+    min-width: 0;
+    font-size: 26rpx;
+    color: #999;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.conversation-prefix {
+    color: #fa5151;
+    margin-right: 4rpx;
+}
+
+.conversation-silent {
+    width: 30rpx;
+    height: 30rpx;
+    margin-left: 12rpx;
+    flex-shrink: 0;
+}

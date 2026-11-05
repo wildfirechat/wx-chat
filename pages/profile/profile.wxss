@@ -1,0 +1,10 @@
+.profile-portrait-cell {
+    min-height: 160rpx;
+}
+
+.profile-portrait {
+    width: 112rpx;
+    height: 112rpx;
+    border-radius: 10rpx;
+    background-color: #eee;
+}

@@ -1,0 +1,38 @@
+<view class="page-gray">
+    <view class="section">
+        <view class="cell">
+            <view class="cell-body">
+                <text class="cell-title">全员禁言</text>
+                <text class="cell-desc">开启后，只有群主、管理员可以发言</text>
+            </view>
+            <switch class="cell-switch" checked="{{muteAll}}" color="#3E65E4" bindchange="onMuteAllChange"/>
+        </view>
+    </view>
+
+    <view class="section-title">禁言成员</view>
+    <view class="section">
+        <view wx:for="{{mutedMembers}}" wx:key="uid" class="cell" hover-class="cell-hover" bindtap="onMutedTap" data-uid="{{item.uid}}">
+            <image class="cell-avatar cell-avatar-small" src="{{item.portrait}}" mode="aspectFill"/>
+            <view class="cell-body"><text class="cell-title">{{item.name}}</text></view>
+        </view>
+        <view class="cell" hover-class="cell-hover" bindtap="onAddMuted">
+            <view class="cell-body"><text class="cell-title link">+ 添加禁言成员</text></view>
+        </view>
+    </view>
+
+    <view class="section-title">管理员</view>
+    <view class="section">
+        <view wx:for="{{managers}}" wx:key="uid" class="cell" hover-class="cell-hover" bindtap="onManagerTap" data-uid="{{item.uid}}">
+            <image class="cell-avatar cell-avatar-small" src="{{item.portrait}}" mode="aspectFill"/>
+            <view class="cell-body"><text class="cell-title">{{item.name}}</text></view>
+        </view>
+        <view wx:if="{{managers.length === 0 && !isOwner}}" class="cell">
+            <view class="cell-body"><text class="cell-desc">暂无管理员</text></view>
+        </view>
+        <view wx:if="{{isOwner}}" class="cell" hover-class="cell-hover" bindtap="onAddManager">
+            <view class="cell-body"><text class="cell-title link">+ 添加管理员</text></view>
+        </view>
+    </view>
+
+    <view wx:if="{{isOwner}}" class="action-button action-danger" bindtap="onTransferOwner">转让群主</view>
+</view>

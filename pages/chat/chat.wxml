@@ -1,65 +1,69 @@
-<!--pages/list/list.wxml-->
-<import src="../../modules/chat-page/chat-item.wxml"/>
-<import src="../../modules/chat-page/chat-page-status.wxml"/>
+<import src="../../modules/chat-page/message.wxml"/>
 
-        <!-- <template is="chat-page-status" data="{{chatStatue,chatStatusContent}}"/> -->
-<cover-view wx:if="{{showGroupMemberModal}}" class="modal">
-    <cover-view class="modal-content">
-        <cover-view class="modal-header">选择群成员</cover-view>
-        <scroll-view class="modal-body" scroll-y="true">
-            <block wx:for="{{groupMembers}}" wx:key="userId">
-                <cover-view class="member-item" bindtap="toggleSelect" data-userid="{{item.userId}}">
-                    <cover-image src="{{item.userHeadUrl}}" class="avatar"/>
-                    <cover-view>{{item.userName}}</cover-view>
-                    <checkbox checked="{{item.selected}}"/>
-                </cover-view>
-            </block>
-        </scroll-view>
-        <cover-view class="modal-footer">
-            <button bindtap="confirmSelection">确定</button>
-            <button bindtap="closeModal">取消</button>
-        </cover-view>
-    </cover-view>
-</cover-view>
-
-<view
-        enable-flex="{{true}}"
-        style="height:{{pageHeight}}px;width: 100%;display: flex;flex-direction: column;margin-top: 0rpx;"
->
+<view class="chat-page">
+    <nav-bar title="{{title}}" subtitle="{{subtitle}}" show-more="{{!multiSelect}}" bind:more="onNavMore"/>
 
     <scroll-view
             class="scroll-view"
-            style="height: calc(100% - 100rpx);"
             scroll-y="true"
             scroll-into-view="{{scrollIntoView}}"
             bindscroll="onScroll"
-            bindscrolltoupper="loadOldMessages"
+            bindscrolltoupper="loadOlder"
+            bindscrolltolower="loadNewer"
+            upper-threshold="80"
             bindtap="resetInputStatus">
-        <block wx:for="{{chatItems}}" wx:key="index">
-            <template is="chat-item"
-                      data="{{length:chatItems.length,index,item}}"/>
-        </block>
+        <view class="message-list">
+            <block wx:for="{{chatItems}}" wx:key="key">
+                <template is="message-item" data="{{item, multiSelect, highlightKey}}"/>
+            </block>
+        </view>
         <view id="bottomElement"></view>
-
     </scroll-view>
+
     <view wx:if="{{showNewMessageTip}}" class="new-message-tip" bindtap="onNewMessageTipClick">
         <text>↓ 有新消息</text>
     </view>
-    <chat-input
-            id="chatInput"
-            min-voice-time="{{1}}"
-            max-voice-time="{{60}}"
-            start-time-down="{{54}}"
-            tabBarHeight="{{0}}"
-            format="mp3"
-            extra-array="{{extraArr}}"
-            bind:extraClickEvent="onExtraClickEvent"
-            bind:extraItemClickEvent="onExtraItemClickEvent"
-            bind:voiceRecordEvent="onVoiceRecordEvent"
-            bind:sendMessageEvent="onSendMessageEvent"
-            bind:mentionEvent="onMentionEvent">
-    </chat-input>
-</view>
-<canvas canvas-id="canvas" style="width:{{cWidth}}px;height:{{cHeight}}px;position: absolute;left:-1000px;top:-1000px;"></canvas>
 
-        <!--<template is="chat-input" data="{{inputObj,textMessage,showVoicePart:true}}"/>-->
+    <!-- 多选操作栏 -->
+    <view wx:if="{{multiSelect}}" class="multi-select-bar">
+        <view class="multi-select-action" bindtap="onMultiForwardOneByOne">
+            <text>逐条转发</text>
+        </view>
+        <view class="multi-select-action" bindtap="onMultiForwardComposite">
+            <text>合并转发</text>
+        </view>
+        <view class="multi-select-action multi-select-danger" bindtap="onMultiDelete">
+            <text>删除</text>
+        </view>
+        <view class="multi-select-action" bindtap="exitMultiSelect">
+            <text>取消({{selectedCount}})</text>
+        </view>
+    </view>
+
+    <view hidden="{{multiSelect}}" class="input-area">
+        <view wx:if="{{quote}}" class="quote-bar">
+            <text class="quote-bar-text">{{quote.name}}：{{quote.digest}}</text>
+            <view class="quote-bar-close" bindtap="cancelQuote">✕</view>
+        </view>
+        <chat-input
+                id="chatInput"
+                min-voice-time="{{1}}"
+                max-voice-time="{{60}}"
+                start-time-down="{{54}}"
+                tabBarHeight="{{0}}"
+                format="mp3"
+                extra-array="{{extraArr}}"
+                disabled="{{inputDisabled}}"
+                disabled-tip="{{inputDisabledTip}}"
+                bind:extraClickEvent="onExtraClickEvent"
+                bind:extraItemClickEvent="onExtraItemClickEvent"
+                bind:voiceRecordEvent="onVoiceRecordEvent"
+                bind:sendMessageEvent="onSendMessageEvent"
+                bind:mentionEvent="onMentionEvent"
+                bind:textChangeEvent="onTextChangeEvent"
+                bind:keyboardHeightChangeEvent="onKeyboardHeightChange">
+        </chat-input>
+    </view>
+</view>
+<!-- 用于生成图片缩略图 -->
+<canvas canvas-id="canvas" style="width:200px;height:200px;position:fixed;left:-1000px;top:-1000px;"></canvas>

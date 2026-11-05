@@ -1,6 +1,8 @@
 {
   "usingComponents": {
-    "chat-input": "../../components/chat-input/chat-input"
+    "chat-input": "../../components/chat-input/chat-input",
+    "nav-bar": "../../components/nav-bar/nav-bar"
   },
-  "navigationBarTitleText": "会话页面"
+  "navigationStyle": "custom",
+  "disableScroll": true
 }

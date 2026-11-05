@@ -1,22 +1,23 @@
-<view class="fixed-header">
-    <scroll-view class="selected-friends" scroll-x="true">
-        <block wx:if="{{!selectedFriends.length}}">
-            <view class="placeholder">请选择群成员</view>
-        </block>
-        <block wx:for="{{selectedFriends}}" wx:key="friendId">
-            <view class="selected-friend" data-friendid="{{item.friendId}}" bindtap="removeSelectedFriend">
-                <image src="{{item.friendHeadUrl}}" binderror="handleImageError" data-index="{{index}}"/>
-            </view>
-        </block>
-    </scroll-view>
-    <button bindtap="confirmSelection" class="confirm-button">确定</button>
-</view>
-<scroll-view class="friend-list" scroll-y="true">
-    <block wx:for="{{friends}}" wx:key="friendId">
-        <view class="friend-item" data-index="{{index}}" bindtap="toggleSelect">
-            <checkbox checked="{{item.checked}}"/>
-            <image src="{{item.friendHeadUrl}}" binderror="handleImageError" data-index="{{index}}"/>
-            <text>{{item.friendName}}</text>
+<view class="pick-page">
+    <view class="search-bar">
+        <view class="search-box">
+            <image class="search-icon" src="/image/icons/search.svg"/>
+            <input class="search-input" placeholder="搜索" placeholder-class="search-placeholder" bindinput="onSearchInput"/>
         </view>
-    </block>
-</scroll-view>
+    </view>
+    <scroll-view class="pick-list" scroll-y="true">
+        <view wx:for="{{items}}" wx:key="uid" class="cell" hover-class="cell-hover" bindtap="onItemTap" data-uid="{{item.uid}}">
+            <view class="check-circle {{item.checked ? 'check-circle-on' : ''}}"></view>
+            <image class="cell-avatar" src="{{item.portrait}}" mode="aspectFill"/>
+            <view class="cell-body">
+                <text class="cell-title">{{item.name}}</text>
+            </view>
+        </view>
+        <view wx:if="{{items.length === 0}}" class="empty-tip">{{keyword ? '没有找到相关联系人' : '暂无好友'}}</view>
+    </scroll-view>
+    <view class="pick-bottom">
+        <button class="pick-confirm btn-primary" size="mini" disabled="{{selectedCount === 0}}" bindtap="onConfirm">
+            完成{{selectedCount > 0 ? '(' + selectedCount + ')' : ''}}
+        </button>
+    </view>
+</view>

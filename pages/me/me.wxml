@@ -1,10 +1,26 @@
-<view class="container">
-    <view class="user-info">
-        <image class="avatar" src="{{user.portrait}}"/>
-        <text class="username">{{user.displayName}}</text>
+<view class="page-gray">
+    <view class="me-header" hover-class="cell-hover" bindtap="navigateTo" data-url="/pages/profile/profile">
+        <image class="me-avatar" src="{{user.portrait}}" mode="aspectFill"/>
+        <view class="me-names">
+            <text class="me-name">{{user.displayName}}</text>
+            <text wx:if="{{user.account}}" class="me-account">账号：{{user.account}}</text>
+        </view>
+        <view class="cell-arrow"></view>
     </view>
-    <view class="about">
-        {{about}}
+
+    <view class="section">
+        <view class="cell" hover-class="cell-hover" bindtap="navigateTo" data-url="/pages/fav/fav">
+            <image class="cell-avatar cell-avatar-small" src="/image/icons/fav.svg"/>
+            <view class="cell-body"><text class="cell-title">收藏</text></view>
+            <view class="cell-arrow"></view>
+        </view>
     </view>
-    <button class="logout-button" bindtap="logout">退出登录</button>
+
+    <view class="section">
+        <view class="cell" hover-class="cell-hover" bindtap="navigateTo" data-url="/pages/settings/settings">
+            <image class="cell-avatar cell-avatar-small" src="/image/icons/settings.svg"/>
+            <view class="cell-body"><text class="cell-title">设置</text></view>
+            <view class="cell-arrow"></view>
+        </view>
+    </view>
 </view>

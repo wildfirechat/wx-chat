@@ -1,0 +1,20 @@
+<!-- 左右两侧等宽，保证标题居中；右侧按钮在胶囊按钮左侧，胶囊区域留空 -->
+<view class="nav-bar" style="padding-top:{{statusBarHeight}}px;background:{{background}};">
+    <view class="nav-bar-inner" style="height:{{navHeight}}px;">
+        <view class="nav-side" style="width:{{sideWidth + 44}}px;">
+            <view wx:if="{{showBack}}" class="nav-btn" hover-class="nav-btn-hover" bindtap="onBack">
+                <image class="nav-icon" src="/image/icons/back.svg"/>
+            </view>
+        </view>
+        <view class="nav-title" bindtap="onTitleTap">
+            <text class="nav-title-text">{{title}}</text>
+            <text wx:if="{{subtitle}}" class="nav-subtitle">{{subtitle}}</text>
+        </view>
+        <view class="nav-side nav-right" style="width:{{sideWidth + 44}}px;">
+            <view wx:if="{{showMore}}" class="nav-btn" hover-class="nav-btn-hover" bindtap="onMore">
+                <image class="nav-icon" src="/image/icons/more.svg"/>
+            </view>
+            <view style="width:{{sideWidth}}px;height:100%;flex-shrink:0;"></view>
+        </view>
+    </view>
+</view>

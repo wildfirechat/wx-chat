@@ -1,0 +1,68 @@
+<template name="hl-text">
+    <text class="{{cls}}">{{hl.before}}<text class="highlight">{{hl.match}}</text>{{hl.after}}</text>
+</template>
+
+<view class="page-gray">
+    <view class="search-bar search-bar-row">
+        <view class="search-box" style="flex:1">
+            <image class="search-icon" src="/image/icons/search.svg"/>
+            <input class="search-input" placeholder="搜索联系人、群聊、聊天记录" placeholder-class="search-placeholder"
+                   focus="{{true}}" confirm-type="search" bindinput="onSearchInput"/>
+        </view>
+        <text class="search-cancel" bindtap="onCancel">取消</text>
+    </view>
+
+    <block wx:if="{{keyword}}">
+        <block wx:if="{{contacts.length > 0}}">
+            <view class="section-title">联系人</view>
+            <view class="section" style="margin-top:0">
+                <view wx:for="{{contacts}}" wx:key="uid" class="cell" hover-class="cell-hover" bindtap="onContactTap" data-uid="{{item.uid}}">
+                    <image class="cell-avatar" src="{{item.portrait}}" mode="aspectFill"/>
+                    <view class="cell-body">
+                        <template is="hl-text" data="{{hl: item.hl, cls: 'cell-title'}}"/>
+                    </view>
+                </view>
+            </view>
+        </block>
+
+        <block wx:if="{{groups.length > 0}}">
+            <view class="section-title">群聊</view>
+            <view class="section" style="margin-top:0">
+                <view wx:for="{{groups}}" wx:key="groupId" class="cell" hover-class="cell-hover" bindtap="onGroupTap" data-id="{{item.groupId}}">
+                    <image class="cell-avatar" src="{{item.portrait}}" mode="aspectFill"/>
+                    <view class="cell-body">
+                        <template is="hl-text" data="{{hl: item.hl, cls: 'cell-title'}}"/>
+                        <text wx:if="{{item.desc}}" class="cell-desc">{{item.desc}}</text>
+                    </view>
+                </view>
+            </view>
+        </block>
+
+        <block wx:if="{{conversations.length > 0}}">
+            <view class="section-title">聊天记录</view>
+            <view class="section" style="margin-top:0">
+                <view wx:for="{{conversations}}" wx:key="key" class="cell" hover-class="cell-hover" bindtap="onConversationTap" data-item="{{item}}">
+                    <image class="cell-avatar" src="{{item.portrait}}" mode="aspectFill"/>
+                    <view class="cell-body">
+                        <text class="cell-title">{{item.title}}</text>
+                        <template is="hl-text" data="{{hl: item.desc, cls: 'cell-desc'}}"/>
+                    </view>
+                </view>
+            </view>
+        </block>
+
+        <view class="section">
+            <view class="cell" hover-class="cell-hover" bindtap="onSearchUser">
+                <image class="cell-avatar cell-avatar-small" src="/image/icons/add_friend.svg"/>
+                <view class="cell-body">
+                    <text class="cell-title">搜索用户：<text class="highlight">{{keyword}}</text></text>
+                </view>
+                <view class="cell-arrow"></view>
+            </view>
+        </view>
+
+        <view wx:if="{{contacts.length === 0 && groups.length === 0 && conversations.length === 0}}" class="empty-tip">
+            没有找到相关的联系人、群聊和聊天记录
+        </view>
+    </block>
+</view>

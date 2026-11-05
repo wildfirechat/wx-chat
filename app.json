@@ -9,16 +9,29 @@
     "pages/discovery/discovery",
     "pages/create-group/create-group",
     "pages/search-user/search-user",
-    "pages/select-group-members/select-group-members",
     "pages/forward-chat-list/forward-chat-list",
     "pages/friend-requests/friend-requests",
-    "pages/me/me"
+    "pages/me/me",
+    "pages/conversation-info/conversation-info",
+    "pages/group-members/group-members",
+    "pages/group-manage/group-manage",
+    "pages/user-detail/user-detail",
+    "pages/pick-user/pick-user",
+    "pages/group-list/group-list",
+    "pages/search/search",
+    "pages/message-search/message-search",
+    "pages/composite-message/composite-message",
+    "pages/profile/profile",
+    "pages/settings/settings",
+    "pages/blacklist/blacklist",
+    "pages/fav/fav"
   ],
   "window": {
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "WeChat",
-    "navigationBarTextStyle": "black"
+    "navigationBarBackgroundColor": "#EDEDED",
+    "navigationBarTitleText": "野火IM",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#EDEDED"
   },
   "tabBar": {
     "selectedColor": "#3E65E4",
@@ -32,17 +45,25 @@
       },
       {
         "pagePath": "pages/friends/friends",
-        "text": "联系人",
+        "text": "通讯录",
         "iconPath": "image/tabbar/contacts_normal.png",
         "selectedIconPath": "image/tabbar/contacts_press.png"
       },
       {
         "pagePath": "pages/me/me",
-        "text": "我的",
+        "text": "我",
         "iconPath": "image/tabbar/me_normal.png",
         "selectedIconPath": "image/tabbar/me_press.png"
       }
     ]
   },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "用于在聊天中发送位置"
+    }
+  },
+  "requiredPrivateInfos": [
+    "chooseLocation"
+  ],
   "sitemapLocation": "sitemap.json"
 }

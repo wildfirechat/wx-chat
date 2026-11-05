@@ -1,41 +1,44 @@
 import wfc from "../../wfc/client/wfc";
-import Config from "../../config";
-import {voipBaseWebUrl} from "../voip/voip";
+import EventType from "../../wfc/client/wfcEvent";
+import {bindWfcEvents, unbindWfcEvents} from "../../utils/wfcEvents";
+import {portraitOrDefault} from "../../utils/display";
+import {updateTabBarBadges} from "../../utils/badge";
 
+/**
+ * 我
+ */
 Page({
     data: {
         user: {},
-        about: ''
     },
 
     onLoad() {
+        bindWfcEvents(this, {
+            [EventType.UserInfosUpdate]: 'loadUserInfo',
+        });
+    },
+
+    onUnload() {
+        unbindWfcEvents(this);
+    },
+
+    onShow() {
         this.loadUserInfo();
-        let desc = '';
-        desc = `版本信息如下：
-        App-Server: ${Config.APP_SERVER}
-        IM-Server: ${wfc.getHost()}
-        SDK Version: ${wfc.getVersion()}
-        AV: ${voipBaseWebUrl.includes('voip-multi') ? '多人版' : '高级版'}
-        `
-        this.setData({about: desc});
+        updateTabBarBadges();
     },
 
     loadUserInfo() {
-        let userInfo = wfc.getUserInfo(wfc.getUserId())
-        this.setData({user: userInfo});
-    },
-
-    logout() {
-        wfc.disconnect()
-        wx.showToast({
-            title: 'Logged out',
-            icon: 'none',
-            duration: 2000,
-            success: () => {
-                wx.redirectTo({
-                    url: '/pages/login/login'
-                });
+        let userInfo = wfc.getUserInfo(wfc.getUserId(), false);
+        this.setData({
+            user: {
+                portrait: portraitOrDefault(userInfo.portrait),
+                displayName: userInfo.displayName || '',
+                account: userInfo.name || '',
             }
         });
-    }
+    },
+
+    navigateTo(e) {
+        wx.navigateTo({url: e.currentTarget.dataset.url});
+    },
 });
